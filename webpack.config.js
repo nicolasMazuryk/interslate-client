@@ -6,9 +6,14 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const isProd = process.env.NODE_ENV === 'production'
 
 const config = {
+  context: __dirname,
   entry: {
     app: './app/index.jsx',
-    vendor: ['react', 'react-dom']
+    vendor: [
+      'react', 'react-dom', 'redux',
+      'react-redux', 'redux-saga',
+      'prop-types'
+    ]
   },
   output: {
     path: path.resolve('public'),

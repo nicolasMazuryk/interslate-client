@@ -1,10 +1,10 @@
 import React from 'react'
-import App from './app'
+import Main from './main'
 import {shallow} from 'enzyme'
 
-describe('<App />', () => {
+describe('<Main />', () => {
   it('renders', () => {
-    const wrapper = shallow(<App />)
+    const wrapper = shallow(<Main />)
     expect(wrapper).to.be.ok
   })
 })
