@@ -12,7 +12,7 @@ const config = {
   },
   output: {
     path: path.resolve('public'),
-    filename: '[name].bundle.js'
+    filename: '[name].[hash].js'
   },
   resolve: {
     modules: ['node_modules', 'app']
@@ -24,7 +24,7 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './app/index.html',
+      template: './static/index.html',
       filename: './index.html',
       inject: 'body'
     }),

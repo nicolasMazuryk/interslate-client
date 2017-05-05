@@ -5,6 +5,11 @@
         "commonjs": true,
         "es6": true
     },
+    "globals": {
+        "describe": true,
+        "it": true,
+        "expect": true
+    },
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended"
