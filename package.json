@@ -14,9 +14,12 @@
     "build:prod": "./node_modules/.bin/cross-env NODE_ENV=production ./node_modules/.bin/webpack",
     "test": "./node_modules/.bin/cross-env NODE_PATH=./app ./node_modules/.bin/mocha --require setup.js ./app/**/*.spec.js",
     "test:watch": "./node_modules/.bin/cross-env NODE_PATH=./app ./node_modules/.bin/mocha --require setup.js --watch ./app/*.spec.js",
-    "eslint": "./node_modules/.bin/eslint"
+    "eslint": "./node_modules/.bin/eslint app/**.js"
   },
-  "pre-commit": ["eslint", "test"],
+  "pre-commit": [
+    "eslint",
+    "test"
+  ],
   "devDependencies": {
     "babel-core": "6.24.1",
     "babel-eslint": "^7.2.3",
@@ -29,16 +32,16 @@
     "cross-env": "4.0.0",
     "enzyme": "2.8.2",
     "eslint": "3.19.0",
-    "eslint-plugin-react": "6.10.3",
+    "eslint-plugin-react": "7.0.0",
     "html-webpack-plugin": "2.28.0",
-    "jsdom": "^10.1.0",
+    "jsdom": "10.1.0",
     "mocha": "3.3.0",
+    "pre-commit": "1.2.2",
     "react-addons-test-utils": "15.5.1",
     "sinon": "2.2.0",
     "uglifyjs-webpack-plugin": "0.4.3",
     "webpack": "2.5.0",
-    "webpack-dev-server": "2.4.5",
-    "pre-commit": "1.2.2"
+    "webpack-dev-server": "2.4.5"
   },
   "dependencies": {
     "prop-types": "15.5.8",
