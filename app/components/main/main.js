@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {loadApplication} from './actions'
+import Header from 'components/header/header'
 
 const mapState = (state) => {
   return {
@@ -24,7 +25,7 @@ class Main extends PureComponent {
   
   render() {
     return (
-      <div>{this.props.loaded}</div>
+      <Header />
     )
   }
   
