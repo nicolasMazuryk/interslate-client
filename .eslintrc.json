@@ -8,7 +8,9 @@
     "globals": {
         "describe": true,
         "it": true,
-        "expect": true
+        "expect": true,
+        "before": true,
+        "after": true
     },
     "parser": "babel-eslint",
     "extends": [
