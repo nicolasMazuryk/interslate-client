@@ -1,6 +1,9 @@
 import React, {PureComponent} from 'react'
+import {Switch, Route} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
+
+import Translations from 'components/translations/translations'
 import {loadApplication} from './actions'
 
 const mapState = (state) => {
@@ -24,7 +27,12 @@ class Main extends PureComponent {
   
   render() {
     return (
-      <div>{this.props.loaded}</div>
+      <main>
+        
+        <Switch>
+          <Route exact path="/" component={Translations} />
+        </Switch>
+      </main>
     )
   }
   
