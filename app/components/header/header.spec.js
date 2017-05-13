@@ -17,15 +17,16 @@ describe('<Header />', () => {
   })
 
   it('should render logotype image', () => {
-    expect(wrapper.find('img.logotype')).to.be.ok
+    expect(wrapper.find('img.logotype').length).to.equal(1)
   })
 
   it('should render logout link', () => {
-    expect(wrapper.find('a.logout')).to.be.ok
+    expect(wrapper.find('a.logout').length).to.equal(1)
   })
 
   it('should call logout when logout link is clicked', () => {
     wrapper.find('a.logout').simulate('click')
     expect(logout.calledOnce).to.be.true
   })
+
 })
