@@ -1,6 +1,9 @@
 import React, {PureComponent} from 'react'
+import {Switch, Route} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
+
+import Translations from 'components/translations/translations'
 import {loadApplication} from './actions'
 import Header from 'components/header/header'
 
@@ -25,7 +28,12 @@ class Main extends PureComponent {
   
   render() {
     return (
-      <Header />
+      <main>
+        <Header />
+        <Switch>
+          <Route exact path="/" component={Translations} />
+        </Switch>
+      </main>
     )
   }
   
