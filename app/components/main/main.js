@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 
 import Translations from 'components/translations/translations'
 import {loadApplication} from './actions'
+import Header from 'components/header/header'
 
 const mapState = (state) => {
   return {
@@ -28,7 +29,7 @@ class Main extends PureComponent {
   render() {
     return (
       <main>
-        
+        <Header />
         <Switch>
           <Route exact path="/" component={Translations} />
         </Switch>
