@@ -18,13 +18,15 @@ const config = {
     vendor: [
       'react', 'react-dom', 'redux',
       'react-redux', 'redux-saga',
-      'prop-types'
+      'whatwg-fetch', 'prop-types',
+      'babel-polyfill', 'reselect'
     ]
   },
   output: {
     path: path.resolve('public'),
     filename: '[name].[hash].js'
   },
+  devtool: 'source-map',
   resolve: {
     modules: ['node_modules', 'app']
   },

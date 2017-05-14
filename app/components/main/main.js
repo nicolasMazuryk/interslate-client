@@ -4,19 +4,23 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 
 import Translations from 'components/translations/translations'
-import {loadApplication} from './actions'
+import {loadApplicationRequest, selectLanguage} from './actions'
 import Header from 'components/header/header'
 import ActionBar from 'components/actionBar/actionBar'
+import Loader from 'components/loader/loader'
 
 const mapState = (state) => {
   return {
-    loaded: state.main.loaded
+    loaded: state.main.loaded,
+    languages: state.main.languages,
+    selectedLanguage: state.main.selectedLanguage
   }
 }
 
 const mapDispatch = (dispatch) => {
   return {
-    loadApplication: () => dispatch(loadApplication())
+    loadApplication: () => dispatch(loadApplicationRequest()),
+    selectLanguage: (key) => dispatch(selectLanguage(key))
   }
 }
 
@@ -28,21 +32,36 @@ class Main extends PureComponent {
   }
   
   render() {
-    return (
-      <main>
-        <Header />
-        <ActionBar />
-        <Switch>
-          <Route exact path="/" component={Translations} />
-        </Switch>
-      </main>
-    )
+    const {
+      loaded,
+      languages,
+      selectLanguage,
+      selectedLanguage
+    } = this.props
+
+    return !loaded ? <Loader /> :
+      (
+        <main>
+          <Header />
+          <ActionBar
+            languages={languages}
+            onLanguageChange={selectLanguage}
+            selectedLanguage={selectedLanguage}
+          />
+          <Switch>
+            <Route exact path="/" component={Translations} />
+          </Switch>
+        </main>
+      )
   }
   
 }
 
 Main.propTypes = {
   loaded: PropTypes.bool,
+  languages: PropTypes.array,
+  selectedLanguage: PropTypes.string,
+  selectLanguage: PropTypes.func,
   loadApplication: PropTypes.func
 }
 

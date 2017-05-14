@@ -1,6 +1,13 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
-const ActionBar = () => {
+const ActionBar = (props) => {
+  const {
+    languages,
+    onLanguageChange,
+    selectedLanguage
+  } = props
+
   return (
     <nav className="panel">
       <div className="panel-block" style={{justifyContent: 'flex-end'}}>
@@ -8,9 +15,14 @@ const ActionBar = () => {
           <div className="level-right">
             <p className="level-item">
               <span className="select">
-                <select name="languages">
-                  <option>Select language</option>
-                  <option>With options</option>
+                <select
+                  value={selectedLanguage}
+                  onChange={(e) => onLanguageChange(e.target.value)}
+                  name="languages"
+                >
+                  {languages.map(({key, value}) => (
+                    <option key={key} value={key}>{value}</option>
+                  ))}
                 </select>
               </span>
             </p>
@@ -35,6 +47,12 @@ const ActionBar = () => {
       </div>
     </nav>
   )
+}
+
+ActionBar.propTypes = {
+  languages: PropTypes.array,
+  selectedLanguage: PropTypes.string,
+  onLanguageChange: PropTypes.func
 }
 
 export default ActionBar
