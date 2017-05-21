@@ -1,6 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import TranslationCard from './translationCard'
+import TranslationCard from './TranslationCard'
 
 describe('<TranslationCard />', () => {
 
@@ -26,7 +26,7 @@ describe('<TranslationCard />', () => {
   })
 
   it('should render save key button', () => {
-    expect(wrapper.find('button[name="saveKey"]').length).to.equal(1)
+    expect(wrapper.find('button[name="save-key"]').length).to.equal(1)
   })
 
   it('should render value input button', () => {
@@ -34,7 +34,7 @@ describe('<TranslationCard />', () => {
   })
 
   it('should render save value button', () => {
-    expect(wrapper.find('button[name="saveValue"]').length).to.equal(1)
+    expect(wrapper.find('button[name="save-value"]').length).to.equal(1)
   })
 
   it('should render delete button', () => {

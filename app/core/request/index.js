@@ -25,6 +25,10 @@ export default function request(url, options = {}) {
     ...options
   }
 
+  if (options.body) {
+    options.body = JSON.stringify(options.body)
+  }
+
   return fetch(url, options)
     .then(checkStatus)
     .then(parseJSON)

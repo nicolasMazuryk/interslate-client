@@ -15,7 +15,7 @@ const TranslationCard = (props) => {
         <div className="level">
 
           <div className="level-left">
-            <div className="field has-addons">
+            <div className="field is-horizontal has-addons">
               <p className="control">
                 <input
                   className="input"
@@ -26,7 +26,7 @@ const TranslationCard = (props) => {
                 />
               </p>
               <p className="control">
-                <button name="saveKey" className="button is-success">
+                <button name="save-key" className="button is-success">
                   Save
                 </button>
               </p>
@@ -34,7 +34,7 @@ const TranslationCard = (props) => {
           </div>
 
           <div className="level-right">
-            <div className="field has-addons">
+            <div className="field is-horizontal has-addons">
               <p className="control">
                 <input
                   className="input"
@@ -45,7 +45,7 @@ const TranslationCard = (props) => {
                 />
               </p>
               <p className="control">
-                <button name="saveValue" className="button is-success">
+                <button name="save-value" className="button is-success">
                   Save
                 </button>
               </p>

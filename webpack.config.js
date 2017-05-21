@@ -72,8 +72,6 @@ const config = {
   ],
   devServer: {
     contentBase: path.resolve('public'),
-    compress: true,
-    stats: 'normal',
     port: 9090,
     proxy: {
       '/api/v1': 'http://localhost:8080'
