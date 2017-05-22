@@ -16,12 +16,25 @@ export default class TranslationField extends Component {
     this.onRemove = this.onRemove.bind(this)
     this.onChange = this.onChange.bind(this)
     this.getLanguageKey = this.getLanguageKey.bind(this)
+    this.getTranslation = this.getTranslation.bind(this)
+    this.setProvidedTranslation = this.setProvidedTranslation.bind(this)
   }
-
-  componentWillReceiveProps() {
-    this.setState({
-      language: this.getLanguageKey()
+  
+  setProvidedTranslation() {
+    this.setState(prev => {
+      return {
+        language: prev.language || this.getLanguageKey(),
+        translation: prev.translation || this.getTranslation()
+      }
     })
+  }
+  
+  componentWillReceiveProps() {
+    this.setProvidedTranslation()
+  }
+  
+  componentDidMount() {
+    this.setProvidedTranslation()
   }
 
   onChange(e) {
@@ -48,15 +61,19 @@ export default class TranslationField extends Component {
     if (language) {
       return language
     }
-    return languages[0] && languages[0].key
+    return languages[0] ? languages[0].key : ''
   }
-
+  
+  getTranslation() {
+    const { translation } = this.props.translation || {}
+    return translation || ''
+  }
+  
   render() {
     const {
-      languages,
-      translation
+      languages
     } = this.props
-    const {language} = this.state
+    const {language, translation} = this.state
 
     return (
       <div className="field has-addons">

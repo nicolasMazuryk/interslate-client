@@ -74,7 +74,7 @@ const config = {
     contentBase: path.resolve('public'),
     port: 9090,
     proxy: {
-      '/api/v1': 'http://localhost:8080'
+      '/api/v1': 'http://localhost:8082'
     }
   }
 }
