@@ -1,27 +1,42 @@
-import React from 'react'
+import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
+import omit from 'ramda/src/omit'
 
-const Input = (props) => {
-  const {
-    label,
-    ...other
-  } = props
+class Input extends PureComponent {
 
-  return (
-    <div className="field">
-      <label className="label">{label}</label>
-      <p className="control">
-        <input
-          className="input"
-          {...other}
-        />
-      </p>
-    </div>
-  )
+  componentDidMount() {
+    if (this.props.focus) {
+      this.input.focus()
+    }
+  }
+
+  render() {
+    const {
+      label,
+      className,
+    } = this.props
+
+    const inputProps = omit(['label', 'className', 'focus'], this.props)
+
+    return (
+      <div className="field">
+        <label className="label">{label}</label>
+        <p className="control">
+          <input
+            ref={(input) => this.input = input}
+            className={`input ${className}`}
+            {...inputProps}
+          />
+        </p>
+      </div>
+    )
+  }
 }
 
 Input.propTypes = {
-  label: PropTypes.string
+  label: PropTypes.string,
+  className: PropTypes.string,
+  focus: PropTypes.bool
 }
 
 export default Input

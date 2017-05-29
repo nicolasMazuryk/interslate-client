@@ -11,6 +11,14 @@ import {
   ADD_TRANSLATION_SUCCESS,
   ADD_TRANSLATION_FAILURE,
 
+  REMOVE_TRANSLATION_REQUEST,
+  REMOVE_TRANSLATION_SUCCESS,
+  REMOVE_TRANSLATION_FAILURE,
+
+  UPDATE_TRANSLATION_REQUEST,
+  UPDATE_TRANSLATION_SUCCESS,
+  UPDATE_TRANSLATION_FAILURE,
+
   OPEN_ADD_TRANSLATION_MODAL,
   CLOSE_ADD_TRANSLATION_MODAL,
 
@@ -20,6 +28,7 @@ import {
 const DEFAULT_STATE = {
   translationsAreLoading: false,
   adding: false,
+  removing: false,
   addTranslationModalIsOpened: false,
   languages: [],
   selectedLanguage: '',
@@ -43,11 +52,11 @@ const getTranslationsSuccess = (state, action) => {
   }
 }
 
-const getTranslationsFailure = (state) => {
+const getTranslationsFailure = (state, action) => {
   return {
     ...state,
     translationsAreLoading: false,
-    error: state.payload
+    error: action.payload
   }
 }
 
@@ -75,6 +84,63 @@ const addTranslationFailure = (state, action) => {
   }
 }
 
+const removeTranslationRequest = (state) => {
+  return {
+    ...state,
+    removing: true
+  }
+}
+
+const removeTranslationSuccess = (state, action) => {
+  const index = state.data.findIndex(({_id}) => _id === action.payload)
+  return {
+    ...state,
+    removing: false,
+    data: [
+      ...state.data.slice(0, index),
+      ...state.data.slice(index + 1)
+    ],
+    error: null
+  }
+}
+
+const removeTranslationFailure = (state, action) => {
+  return {
+    ...state,
+    removing: false,
+    error: action.payload
+  }
+}
+
+const updateTranslationRequest = (state) => {
+  return {
+    ...state,
+    updating: true
+  }
+}
+
+const updateTranslationSuccess = (state, action) => {
+  return {
+    ...state,
+    updating: false,
+    data: state.data.map((target) => {
+      if (target._id === action.payload._id) {
+        return {...target, ...action.payload.value}
+      }
+      return target
+    }),
+    error: null
+  }
+}
+
+const updateTranslationFailure = (state, action) => {
+  return {
+    ...state,
+    updating: false,
+    error: action.payload,
+  }
+}
+
 const openTranslationModal = (state) => {
   return {
     ...state,
@@ -97,6 +163,7 @@ export const selectLanguage = (state, action) => {
 }
 
 export const getLanguagesSuccess = (state, action) => {
+  console.log(action.payload)
   return {
     ...state,
     loading: false,
@@ -126,6 +193,14 @@ export default createReducer(DEFAULT_STATE, {
   [ADD_TRANSLATION_REQUEST]: addTranslationRequest,
   [ADD_TRANSLATION_SUCCESS]: addTranslationSuccess,
   [ADD_TRANSLATION_FAILURE]: addTranslationFailure,
+
+  [REMOVE_TRANSLATION_REQUEST]: removeTranslationRequest,
+  [REMOVE_TRANSLATION_SUCCESS]: removeTranslationSuccess,
+  [REMOVE_TRANSLATION_FAILURE]: removeTranslationFailure,
+
+  [UPDATE_TRANSLATION_REQUEST]: updateTranslationRequest,
+  [UPDATE_TRANSLATION_SUCCESS]: updateTranslationSuccess,
+  [UPDATE_TRANSLATION_FAILURE]: updateTranslationFailure,
 
   [OPEN_ADD_TRANSLATION_MODAL]: openTranslationModal,
   [CLOSE_ADD_TRANSLATION_MODAL]: closeTranslationModal,

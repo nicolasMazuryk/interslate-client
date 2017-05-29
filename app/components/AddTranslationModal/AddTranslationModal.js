@@ -1,22 +1,35 @@
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import Modal from 'common/Modal/Modal'
 import Input from 'common/Input/Input'
-import TranslationFieldContainer from './TranslationField/TranslationFieldContainer'
+import TranslationField from './TranslationField/TranslationField'
+import TranslationTable from './TranslationTable/TranslationTable'
 
-export default class AddTranslationModal extends Component {
+export default class AddTranslationModal extends PureComponent {
   constructor(props) {
     super(props)
 
     this.state = {
       key: '',
-      translations: []
+      translations: [],
+      availableLanguages: []
     }
 
     this.onSubmit = this.onSubmit.bind(this)
     this.onTranslationKeyChange = this.onTranslationKeyChange.bind(this)
     this.onTranslationRemove = this.onTranslationRemove.bind(this)
     this.onTranslationAdd = this.onTranslationAdd.bind(this)
+  }
+
+  componentWillReceiveProps({languages}) {
+    if (this.state.translations.length === 0) {
+      this.setState({availableLanguages: languages})
+    }
+  }
+
+  componentDidMount() {
+    const {languages} = this.props
+    this.setState({availableLanguages: languages})
   }
 
   onTranslationKeyChange(e) {
@@ -26,34 +39,55 @@ export default class AddTranslationModal extends Component {
   }
 
   onTranslationAdd(translation) {
-    this.setState(prev => {
+    const {languages} = this.props
+    const [selected] = languages.filter(({key}) => translation.language === key)
+    this.setState(({availableLanguages, translations}) => {
+      const index = availableLanguages.indexOf(selected)
       return {
-        translations: [...prev.translations, translation]
+        translations: [...translations, translation],
+        availableLanguages: [
+          ...availableLanguages.slice(0, index),
+          ...availableLanguages.slice(index + 1)
+        ]
       }
     })
   }
 
   onTranslationRemove(index) {
-    this.setState(prev => ({
-      translations: [
-        ...prev.translations.split(0, index),
-        ...prev.translations.split(index + 1)
-      ]
-    }))
+    const translation = this.state.translations[index]
+    const [language] = this.props.languages.filter(({key}) => key === translation.language)
+    this.setState(({translations, availableLanguages}) => {
+      return {
+        translations: [
+          ...translations.slice(0, index),
+          ...translations.slice(index + 1)
+        ],
+        availableLanguages: [...availableLanguages, language]
+      }
+    })
   }
 
   onSubmit(e) {
     e.preventDefault()
-    this.props.onSubmit(this.state)
+    const {key, translations} = this.state
+    this.props.onSubmit({key, values: translations})
+    this.setState({
+      key: '',
+      translations: [],
+      availableLanguages: this.props.languages
+    })
+    this.props.onClose()
   }
 
   render() {
-    const {key, translations} = this.state
-
+    const {
+      key,
+      translations,
+      availableLanguages
+    } = this.state
     const {
       opened,
       onClose,
-      languages
     } = this.props
 
     return (
@@ -72,12 +106,21 @@ export default class AddTranslationModal extends Component {
             value={key}
             onChange={this.onTranslationKeyChange}
           />
-          <TranslationFieldContainer
-            languages={languages}
-            translations={translations}
-            onAdd={this.onTranslationAdd}
-            onRemove={this.onTranslationRemove}
-          />
+          <div className="field">
+            <label className="label">Translations</label>
+          </div>
+          {translations.length > 0 &&
+            <TranslationTable
+              translations={translations}
+              onRemove={this.onTranslationRemove}
+            />
+          }
+          {availableLanguages.length > 0 &&
+            <TranslationField
+              languages={availableLanguages}
+              onAdd={this.onTranslationAdd}
+            />
+          }
         </form>
       </Modal>
     )

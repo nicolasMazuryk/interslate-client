@@ -14,14 +14,14 @@ export const getTranslations = (state) => (
 export const filterTranslationsByLanguage = createSelector(
   [getTranslations, getLanguage],
   (translations, selectedLanguage) => {
+    // debugger
     const filterTranslation = find(propEq('language', selectedLanguage))
     const getProps = pick(['values', 'key', '_id'])
     return translations
       .map(getProps)
       .map(({values, key, _id}) => {
-        const translation = filterTranslation(values)
-        return translation ? {_id, key, translation} : null
+        const value = filterTranslation(values)
+        return {_id, key, translation: (value || {}).translation}
       })
-      .filter(v => v)
   }
 )

@@ -5,8 +5,8 @@ import {
   applyMiddleware,
   combineReducers
 } from 'redux'
-import mainReducer from 'containers/main/reducer'
-import translationsReducer from 'containers/translations/reducer'
+import mainReducer from 'core/main/reducer'
+import translationsReducer from 'core/translations/reducer'
 import mainSaga from './saga'
 
 const sagaMiddleware = createSagaMiddleware()

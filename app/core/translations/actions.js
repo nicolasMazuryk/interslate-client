@@ -6,6 +6,14 @@ export const ADD_TRANSLATION_REQUEST = 'ADD_TRANSLATION_REQUEST'
 export const ADD_TRANSLATION_SUCCESS = 'ADD_TRANSLATION_SUCCESS'
 export const ADD_TRANSLATION_FAILURE = 'ADD_TRANSLATION_FAILURE'
 
+export const REMOVE_TRANSLATION_REQUEST = 'REMOVE_TRANSLATION_REQUEST'
+export const REMOVE_TRANSLATION_SUCCESS = 'REMOVE_TRANSLATION_SUCCESS'
+export const REMOVE_TRANSLATION_FAILURE = 'REMOVE_TRANSLATION_FAILURE'
+
+export const UPDATE_TRANSLATION_REQUEST = 'UPDATE_TRANSLATION_REQUEST'
+export const UPDATE_TRANSLATION_SUCCESS = 'UPDATE_TRANSLATION_SUCCESS'
+export const UPDATE_TRANSLATION_FAILURE = 'UPDATE_TRANSLATION_FAILURE'
+
 export const OPEN_ADD_TRANSLATION_MODAL = 'OPEN_ADD_TRANSLATION_MODAL'
 export const CLOSE_ADD_TRANSLATION_MODAL = 'CLOSE_ADD_TRANSLATION_MODAL'
 
@@ -53,6 +61,50 @@ export const addTranslationSuccess = (translation) => {
 export const addTranslationFailure = (error) => {
   return {
     type: ADD_TRANSLATION_FAILURE,
+    payload: error,
+    error: true
+  }
+}
+
+export const removeTranslationRequest = (_id) => {
+  return {
+    type: REMOVE_TRANSLATION_REQUEST,
+    payload: _id
+  }
+}
+
+export const removeTranslationSuccess = (_id) => {
+  return {
+    type: REMOVE_TRANSLATION_SUCCESS,
+    payload: _id
+  }
+}
+
+export const removeTranslationFailure = (error) => {
+  return {
+    type: REMOVE_TRANSLATION_FAILURE,
+    payload: error,
+    error: true
+  }
+}
+
+export const updateTranslationRequest = (_id, value) => {
+  return {
+    type: UPDATE_TRANSLATION_REQUEST,
+    payload: {_id, value}
+  }
+}
+
+export const updateTranslationSuccess = (_id, value) => {
+  return {
+    type: UPDATE_TRANSLATION_SUCCESS,
+    payload: {_id, value}
+  }
+}
+
+export const updateTranslationFailure = (error) => {
+  return {
+    type: UPDATE_TRANSLATION_FAILURE,
     payload: error,
     error: true
   }

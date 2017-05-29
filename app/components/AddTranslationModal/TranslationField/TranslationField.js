@@ -13,28 +13,27 @@ export default class TranslationField extends Component {
     }
 
     this.onAdd = this.onAdd.bind(this)
-    this.onRemove = this.onRemove.bind(this)
     this.onChange = this.onChange.bind(this)
     this.getLanguageKey = this.getLanguageKey.bind(this)
-    this.getTranslation = this.getTranslation.bind(this)
-    this.setProvidedTranslation = this.setProvidedTranslation.bind(this)
+    this.setProvidedLanguage = this.setProvidedLanguage.bind(this)
+  }
+
+  getLanguageKey({languages}) {
+    return languages[0] ? languages[0].key : ''
   }
   
-  setProvidedTranslation() {
-    this.setState(prev => {
-      return {
-        language: prev.language || this.getLanguageKey(),
-        translation: prev.translation || this.getTranslation()
-      }
+  setProvidedLanguage(props) {
+    this.setState({
+      language: this.getLanguageKey(props)
     })
   }
-  
-  componentWillReceiveProps() {
-    this.setProvidedTranslation()
+
+  componentWillReceiveProps(nextProps) {
+    this.setProvidedLanguage(nextProps)
   }
-  
+
   componentDidMount() {
-    this.setProvidedTranslation()
+    this.setProvidedLanguage(this.props)
   }
 
   onChange(e) {
@@ -49,26 +48,11 @@ export default class TranslationField extends Component {
   onAdd(e) {
     e.preventDefault()
     this.props.onAdd(this.state)
+    this.setState({
+      translation: ''
+    })
   }
 
-  onRemove(e) {
-    e.preventDefault()
-    this.props.onRemove(this.props.index)
-  }
-
-  getLanguageKey() {
-    const {languages, language} = this.props
-    if (language) {
-      return language
-    }
-    return languages[0] ? languages[0].key : ''
-  }
-  
-  getTranslation() {
-    const { translation } = this.props.translation || {}
-    return translation || ''
-  }
-  
   render() {
     const {
       languages
@@ -97,17 +81,6 @@ export default class TranslationField extends Component {
           />
         </p>
         <p className="control">
-          {translation ?
-            (
-              <button
-                name="remove"
-                onClick={this.onRemove}
-                className="button is-outlined is-danger"
-              >
-                Remove
-              </button>
-            ) :
-            (
               <button
                 name="add"
                 onClick={this.onAdd}
@@ -115,8 +88,6 @@ export default class TranslationField extends Component {
               >
                 Add
               </button>
-            )
-          }
         </p>
       </div>
     )
@@ -125,9 +96,6 @@ export default class TranslationField extends Component {
 
 TranslationField.propTypes = {
   languages: PropTypes.array,
-  language: PropTypes.string,
   translation: PropTypes.string,
-  index: PropTypes.number,
   onAdd: PropTypes.func,
-  onRemove: PropTypes.func
 }

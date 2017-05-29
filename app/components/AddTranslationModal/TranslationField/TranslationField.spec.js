@@ -1,57 +1,60 @@
 import React from 'react'
-import {shallow, mount} from 'enzyme'
+import {mount} from 'enzyme'
 import TranslationField from './TranslationField'
 import Select from 'common/Select/Select'
 import sinon from 'sinon'
 
 describe('<TranslationField />', () => {
 
-  let wrapper, translation, languages,
-    onAdd, onRemove, index
+  let wrapper, availableLanguages, onAdd
 
   before(() => {
-    index = 0
     onAdd = sinon.spy()
-    onRemove = sinon.spy()
-    translation = {
-      language: 'en',
-      translation: 'Test'
-    }
-    languages = [
+    availableLanguages = [
       {key: 'en', value: 'English'},
+      {key: 'ru', value: 'Russian'},
       {key: 'fr', value: 'France'}
     ]
     wrapper = mount(
       <TranslationField
-        translation={translation}
-        languages={languages}
-        index={index}
+        languages={availableLanguages}
         onAdd={onAdd}
-        onRemove={onRemove}
       />
     )
   })
 
-  it('should call onRemove prop when remove button is clicked', () => {
-    wrapper.find('button[name="remove"]').simulate('click', {
+  it('has defined language key', () => {
+    expect(wrapper.state('language')).to.equal(availableLanguages[0].key)
+  })
+
+  it('should call onAdd with its state', () => {
+    wrapper.find('button[name="add"]').simulate('click', {
       preventDefault: () => {}
     })
-    expect(onRemove.calledOnce).to.be.true
+    expect(onAdd.calledWith(wrapper.state())).to.be.true
+  })
+
+  it('should set translation to empty string', () => {
+    wrapper.setState({
+      language: 'ru',
+      translation: 'Тест'
+    })
+    wrapper.find('button[name="add"]').simulate('click', {
+      preventDefault: () => {}
+    })
+    expect(wrapper.state('translation')).to.equal('')
   })
   
   it('should change language when select option is changed', () => {
     const value = 'ru'
-    wrapper.find(Select).simulate('change', {
+    const event = {
       target: {
         getAttribute: () => 'language',
         value
       }
-    })
-    expect(wrapper.state('language')).to.equal(value)
-  })
-  
-  it('should set translation prop into translation input', () => {
-    expect(wrapper.find('input[name="translation"]').prop('value')).to.equal(translation.translation)
+    }
+    wrapper.find('select[name="language"]').simulate('change', event)
+    expect(wrapper.find(Select).prop('value')).to.equal(value)
   })
   
   it('should change translation when input value changes', () => {
@@ -65,24 +68,4 @@ describe('<TranslationField />', () => {
     expect(wrapper.state('translation')).to.equal(value)
   })
   
-  it('should have defined language key', () => {
-    expect(wrapper.state('language')).to.equal(translation.language)
-  })
-  
-  it('should pick first language key if translation prop is not provided', () => {
-    const languages = [
-      {key: 'fr', value: 'France'}
-    ]
-    const wrapper = mount(
-      <TranslationField
-        languages={languages}
-        index={index}
-        onAdd={onAdd}
-        onRemove={onRemove}
-      />
-    )
-    
-    expect(wrapper.state('language')).to.equal(languages[0].key)
-  })
-
 })

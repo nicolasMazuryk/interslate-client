@@ -9,7 +9,8 @@ export function checkStatus(response) {
 }
 
 export function parseJSON(response) {
-  return response.json()
+  if (response.status === 200)
+    return response.json()
 }
 
 export default function request(url, options = {}) {
