@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import Input from 'common/Input/Input'
+import omit from 'ramda/src/omit'
 
 export default function editable(Component) {
   class Editable extends PureComponent {
@@ -31,7 +32,8 @@ export default function editable(Component) {
 
     render() {
       const {isEditable, value} = this.state
-      const {propMapper, onSave, ...inputProps} = this.props
+      const {propMapper} = this.props
+      const inputProps = omit(['propMapper', 'onSave'], this.props)
       return (
         <div onClick={() => this.setState({isEditable: true})}>
           {isEditable ?

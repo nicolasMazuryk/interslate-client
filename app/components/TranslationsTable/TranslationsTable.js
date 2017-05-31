@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
-import EditableTranslation from './EditableTranslation/EditableTranslation'
-import EditableKey from './EditableKey/EditableKey'
+import TranslationsRow from './TranslationsRow/TranslationsRow'
 
 class TranslationsTable extends PureComponent {
 
@@ -9,10 +8,6 @@ class TranslationsTable extends PureComponent {
     super(props)
 
     this.makeTranslations = this.makeTranslations.bind(this)
-  }
-
-  componentWillReceiveProps(next) {
-    debugger
   }
 
   makeTranslations() {
@@ -23,29 +18,15 @@ class TranslationsTable extends PureComponent {
     } = this.props
 
     return translations.map(({key, translation, _id}) => {
-      debugger
-      return(
-        <tr key={_id}>
-          <td>
-            <EditableKey
-              value={key}
-              onSave={(key) => onTranslationUpdate(_id, {key})}
-              propMapper={({value, ...other}) => ({tKey: value, ...other})}
-            />
-          </td>
-          <td>
-            <EditableTranslation
-              value={translation || 'Edit ...'}
-              onSave={(translation) => onTranslationUpdate(_id, {translation})}
-              propMapper={(props, {value}) => {
-                return ({translation: value, ...props})
-              }}
-            />
-          </td>
-          <td>
-            <button onClick={() => onTranslationRemove(_id)} className="delete" />
-          </td>
-        </tr>
+      return (
+        <TranslationsRow
+          key={_id}
+          tKey={key}
+          translation={translation}
+          _id={_id}
+          onUpdate={onTranslationUpdate}
+          onRemove={onTranslationRemove}
+        />
       )
     })
   }

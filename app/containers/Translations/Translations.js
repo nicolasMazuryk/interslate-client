@@ -11,7 +11,7 @@ import {
   removeTranslationRequest,
   updateTranslationRequest
 } from 'core/translations/actions'
-import {filterTranslationsByLanguage} from 'core/translations/selectors'
+import {filterTranslationsByLanguage, getMappedLanguages} from 'core/translations/selectors'
 import AddTranslationModal from 'components/AddTranslationModal/AddTranslationModal'
 import TranslationsTable from 'components/TranslationsTable/TranslationsTable'
 import ActionBar from 'components/ActionBar/ActionBar'
@@ -24,7 +24,7 @@ const mapState = (state) => {
     addTranslationModalIsOpened: translations.addTranslationModalIsOpened,
     translationsAreLoading: translations.translationsAreLoading,
     selectedLanguage: translations.selectedLanguage,
-    languages: translations.languages
+    languages: getMappedLanguages(state)
   }
 }
 

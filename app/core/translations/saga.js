@@ -33,7 +33,7 @@ export function* getTranslations() {
 
 export function* getLanguages() {
   try {
-    const payload = yield call(request, '/api/v1/languages')
+    const {payload} = yield call(request, '/api/v1/languages')
     yield put(getLanguagesSuccess(payload))
   }
   catch (error) {

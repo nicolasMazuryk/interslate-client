@@ -7,14 +7,24 @@ export const getLanguage = (state) => (
   state.translations.selectedLanguage
 )
 
+export const getLanguages = (state) => (
+  state.translations.languages
+)
+
 export const getTranslations = (state) => (
   state.translations.data
+)
+
+export const getMappedLanguages = createSelector(
+  [getLanguages],
+  (languages) => {
+    return languages.map(({code, name}) => ({key: code, value: name}))
+  }
 )
 
 export const filterTranslationsByLanguage = createSelector(
   [getTranslations, getLanguage],
   (translations, selectedLanguage) => {
-    // debugger
     const filterTranslation = find(propEq('language', selectedLanguage))
     const getProps = pick(['values', 'key', '_id'])
     return translations
