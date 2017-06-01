@@ -163,7 +163,6 @@ export const selectLanguage = (state, action) => {
 }
 
 export const getLanguagesSuccess = (state, action) => {
-  console.log(action.payload)
   return {
     ...state,
     loading: false,

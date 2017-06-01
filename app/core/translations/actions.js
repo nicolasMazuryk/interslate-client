@@ -38,7 +38,7 @@ export const getTranslationsSuccess = (translations) => {
 
 export const getTranslationsFailure = (error) => {
   return {
-    type: GET_TRANSLATIONS_SUCCESS,
+    type: GET_TRANSLATIONS_FAILURE,
     payload: error,
     error: true
   }
