@@ -24,7 +24,7 @@ const config = {
   },
   output: {
     path: path.resolve('public'),
-    filename: '[name].[hash].js'
+    filename: '[name].[chunkhash].js'
   },
   devtool: 'source-map',
   resolve: {
@@ -63,7 +63,7 @@ const config = {
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      filename: 'vendor.[hash].js',
+      filename: 'vendor.[chunkhash].js',
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
@@ -72,6 +72,9 @@ const config = {
   ],
   devServer: {
     contentBase: path.resolve('public'),
+    historyApiFallback: {
+      index: 'index.html'
+    },
     port: 9090,
     proxy: {
       '/api/v1': 'http://localhost:8082'
