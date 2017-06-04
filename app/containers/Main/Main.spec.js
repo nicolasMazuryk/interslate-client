@@ -1,15 +1,21 @@
 import React from 'react'
-import Main from './Main'
+import {Main} from './Main'
 import {shallow} from 'enzyme'
 import Header from 'components/Header/Header'
 import {Switch, Route} from 'react-router-dom'
+import PrivateRoute from 'common/PrivateRoute/PrivateRoute'
 
 describe('<Main />', () => {
 
   let wrapper
 
   before(() => {
-    wrapper = shallow(<Main />)
+    wrapper = shallow(
+      <Main
+        isLoggedIn={false}
+        logout={() => {}}
+      />
+    )
   })
 
   it('should render header', () => {
@@ -20,8 +26,12 @@ describe('<Main />', () => {
     expect(wrapper.find(Switch).length).to.equal(1)
   })
 
-  it('should render at least one route', () => {
-    expect(wrapper.find(Route).length >= 1).to.be.true
+  it('should render a route', () => {
+    expect(wrapper.find(Route)).to.have.length(1)
+  })
+
+  it('should render a private route', () => {
+    expect(wrapper.find(PrivateRoute)).to.have.length(1)
   })
 
 })

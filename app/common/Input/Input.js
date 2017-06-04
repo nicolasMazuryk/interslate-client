@@ -13,7 +13,7 @@ class Input extends PureComponent {
   render() {
     const {
       label,
-      className,
+      className
     } = this.props
 
     const inputProps = omit(['label', 'className', 'focus'], this.props)
@@ -24,7 +24,7 @@ class Input extends PureComponent {
         <p className="control">
           <input
             ref={(input) => this.input = input}
-            className={`input ${className}`}
+            className={`input ${className ? className : ''}`}
             {...inputProps}
           />
         </p>

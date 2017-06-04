@@ -7,7 +7,7 @@ const Panel = ({children, align}) => {
   }
   return (
     <nav className="panel">
-      <div className="panel-block" style={style}>
+      <div className="panel-block" style={align ? style : {}}>
         {children}
       </div>
     </nav>

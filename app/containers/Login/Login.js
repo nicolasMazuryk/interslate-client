@@ -1,47 +1,50 @@
 import React, {PureComponent} from 'react'
-import Input from 'common/Input/Input'
+import LoginForm from 'components/LoginForm/LoginForm'
+import {connect} from 'react-redux'
+import {loginRequest} from 'core/auth/actions'
+import PropTypes from 'prop-types'
+
+const mapStateToProps = ({auth}) => {
+  return {
+    user: auth.user,
+    loading: auth.loading
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (credentials) => dispatch(loginRequest(credentials)),
+  }
+}
 
 export class Login extends PureComponent {
 
-  constructor(props) {
-    super(props)
+  componentWillReceiveProps(nextProps) {
+    const {
+      user,
+      history
+    } = nextProps
 
-    this.state = {
-      email: '',
-      password: ''
+    if (user) {
+      history.push('/')
     }
   }
 
   render() {
     const {
-      email,
-      password
-    } = this.state
+      login
+    } = this.props
+
+    const style = {
+      marginTop: '20px',
+      width: '400px'
+    }
     return (
       <div className="container">
-        <div className="box">
-          <div className="form">
-            <Input
-              label="Email"
-              name="email"
-              type="email"
-              focus={true}
-              value={email}
-              onChange={() => {}}
-            />
-            <Input
-              label="Password"
-              name="password"
-              type="password"
-              value={password}
-              onChange={() => {}}
-            />
-            <div className="field">
-              <div className="control">
-                <button name="enter" className="button is-primary">
-                  Enter
-                </button>
-              </div>
+        <div className="level">
+          <div className="level-item">
+            <div className="box" style={style}>
+              <LoginForm onSubmit={login} />
             </div>
           </div>
         </div>
@@ -50,4 +53,10 @@ export class Login extends PureComponent {
   }
 }
 
-export default Login
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  user: PropTypes.object,
+  history: PropTypes.object
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

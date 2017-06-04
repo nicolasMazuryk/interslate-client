@@ -6,13 +6,15 @@ import {
   combineReducers
 } from 'redux'
 import mainReducer from 'core/main/reducer'
+import authReducer from 'core/auth/reducer'
 import translationsReducer from 'core/translations/reducer'
 import mainSaga from './saga'
 
 const sagaMiddleware = createSagaMiddleware()
 const reducer = combineReducers({
   main: mainReducer,
-  translations: translationsReducer
+  translations: translationsReducer,
+  auth: authReducer
 })
 
 const store = createStore(

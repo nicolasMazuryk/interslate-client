@@ -63,7 +63,7 @@ const config = {
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      filename: 'vendor.[chunkhash].js',
+      filename: 'vendor.[hash].js',
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
@@ -72,14 +72,21 @@ const config = {
   ],
   devServer: {
     contentBase: path.resolve('public'),
-    historyApiFallback: {
-      index: 'index.html'
-    },
+    hot: true,
+    inline: true,
+    historyApiFallback: true,
     port: 9090,
     proxy: {
-      '/api/v1': 'http://localhost:8082'
+      '/api/v1': 'http://localhost:8082',
+      '/auth': 'http://localhost:8082'
     }
   }
+}
+
+if (!isProd) {
+  config.plugins.push(
+    new webpack.HotModuleReplacementPlugin()
+  )
 }
 
 if (isProd) {

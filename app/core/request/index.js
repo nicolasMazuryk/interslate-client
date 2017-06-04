@@ -26,6 +26,10 @@ export default function request(url, options = {}) {
     ...options
   }
 
+  if (options.token) {
+    options.headers['Authorization'] = `Bearer ${options.token}`
+  }
+
   if (options.body) {
     options.body = JSON.stringify(options.body)
   }
