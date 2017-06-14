@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "bulma": "0.4.1",
+    "js-cookie": "^2.1.4",
     "prop-types": "15.5.8",
     "ramda": "0.23.0",
     "react": "15.5.4",

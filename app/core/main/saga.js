@@ -1,13 +1,16 @@
 import {put, call, all, takeLatest} from 'redux-saga/effects'
 import request from 'core/request'
-import {setToken, getToken} from 'core/utils'
+import {setToken, getToken, removeGoogleCookie} from 'core/utils'
 import {
   LOGIN_REQUEST,
   LOGOUT_REQUEST,
+  GET_CURRENT_USER_REQUEST,
   loginSuccess,
   loginFailure,
   logoutSuccess,
-  logoutFailure
+  logoutFailure,
+  getCurrentUserSuccess,
+  getCurrentUserFailure
 } from './actions'
 
 function* login(action) {
@@ -37,9 +40,22 @@ function* logout() {
   }
 }
 
+function* getCurrentUser() {
+  try {
+    const token = getToken()
+    // const {payload} = yield call(request, '/auth/current', {token})
+    // yield call(removeGoogleCookie)
+    yield put(getCurrentUserSuccess(null))
+  }
+  catch (error) {
+    yield put(getCurrentUserFailure(error))
+  }
+}
+
 export default function* main() {
   yield all([
     takeLatest(LOGIN_REQUEST, login),
-    takeLatest(LOGOUT_REQUEST, logout)
+    takeLatest(LOGOUT_REQUEST, logout),
+    takeLatest(GET_CURRENT_USER_REQUEST, getCurrentUser)
   ])
 }

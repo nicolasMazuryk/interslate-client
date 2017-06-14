@@ -1,13 +1,13 @@
 import React, {PureComponent} from 'react'
 import LoginForm from 'components/LoginForm/LoginForm'
 import {connect} from 'react-redux'
-import {loginRequest} from 'core/auth/actions'
+import {loginRequest} from 'core/main/actions'
 import PropTypes from 'prop-types'
 
-const mapStateToProps = ({auth}) => {
+const mapStateToProps = ({main}) => {
   return {
-    user: auth.user,
-    loading: auth.loading
+    user: main.user,
+    loading: main.loading
   }
 }
 
@@ -45,6 +45,7 @@ export class Login extends PureComponent {
           <div className="level-item">
             <div className="box" style={style}>
               <LoginForm onSubmit={login} />
+              <a href="http://127.0.0.1:9090/auth/google">Google</a>
             </div>
           </div>
         </div>
