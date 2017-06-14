@@ -43,9 +43,9 @@ function* logout() {
 function* getCurrentUser() {
   try {
     const token = getToken()
-    // const {payload} = yield call(request, '/auth/current', {token})
-    // yield call(removeGoogleCookie)
-    yield put(getCurrentUserSuccess(null))
+    yield call(removeGoogleCookie)
+    const {payload} = yield call(request, '/auth/current', {token})
+    yield put(getCurrentUserSuccess(payload))
   }
   catch (error) {
     yield put(getCurrentUserFailure(error))

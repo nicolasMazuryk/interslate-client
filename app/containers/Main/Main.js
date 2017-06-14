@@ -36,26 +36,15 @@ export class Main extends PureComponent {
       isLoggedIn,
       loading
     } = this.props
-
-    return loading ?
-      (
-        <main>
-          <div className="level">
-            <div className="level-item">
-              <Loader/>
-            </div>
-          </div>
-        </main>
-      ) :
-      (
-        <main>
-          <Header isLoggedIn={isLoggedIn} logout={logout} />
-          <Switch>
-            <Route path="/login" component={Login} />
-            <Private exact path="/" isLoggedIn={isLoggedIn} component={Translations} />
-          </Switch>
-        </main>
-      )
+    return (
+      <main>
+        <Header isLoggedIn={isLoggedIn} logout={logout} />
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Private exact path="/" isLoggedIn={isLoggedIn} component={Translations} />
+        </Switch>
+      </main>
+    )
   }
   
 }
