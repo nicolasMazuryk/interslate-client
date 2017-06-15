@@ -1,6 +1,6 @@
 import {put, call, all, takeLatest} from 'redux-saga/effects'
 import request from 'core/request'
-import {setToken, getToken, removeGoogleCookie} from 'core/utils'
+import {setToken, getToken} from 'core/utils'
 import {
   LOGIN_REQUEST,
   LOGOUT_REQUEST,
@@ -43,7 +43,9 @@ function* logout() {
 function* getCurrentUser() {
   try {
     const token = getToken()
-    yield call(removeGoogleCookie)
+    if (!token) {
+      throw new Error('No token')
+    }
     const {payload} = yield call(request, '/auth/current', {token})
     yield put(getCurrentUserSuccess(payload))
   }

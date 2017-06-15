@@ -17,7 +17,7 @@ export default function request(url, options = {}) {
   const defaults = {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     }
   }
 
@@ -28,6 +28,7 @@ export default function request(url, options = {}) {
 
   if (options.token) {
     options.headers['Authorization'] = `Bearer ${options.token}`
+    delete options.token
   }
 
   if (options.body) {
