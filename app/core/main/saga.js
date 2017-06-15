@@ -5,12 +5,15 @@ import {
   LOGIN_REQUEST,
   LOGOUT_REQUEST,
   GET_CURRENT_USER_REQUEST,
+  REGISTER_REQUEST,
   loginSuccess,
   loginFailure,
   logoutSuccess,
   logoutFailure,
   getCurrentUserSuccess,
-  getCurrentUserFailure
+  getCurrentUserFailure,
+  registerSuccess,
+  registerFailure
 } from './actions'
 
 function* login(action) {
@@ -54,10 +57,25 @@ function* getCurrentUser() {
   }
 }
 
+function* register(action) {
+  try {
+    const options = {
+      method: 'POST',
+      body: action.payload
+    }
+    yield call(request, '/auth/register', options)
+    yield put(registerSuccess(action.payload))
+  }
+  catch (error) {
+    yield put(registerFailure(error))
+  }
+}
+
 export default function* main() {
   yield all([
     takeLatest(LOGIN_REQUEST, login),
     takeLatest(LOGOUT_REQUEST, logout),
-    takeLatest(GET_CURRENT_USER_REQUEST, getCurrentUser)
+    takeLatest(GET_CURRENT_USER_REQUEST, getCurrentUser),
+    takeLatest(REGISTER_REQUEST, register)
   ])
 }

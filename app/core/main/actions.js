@@ -10,6 +10,10 @@ export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
 export const LOGOUT_FAILURE = 'LOGOUT_FAILURE'
 
+export const REGISTER_REQUEST = 'REGISTER_REQUEST'
+export const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
+export const REGISTER_FAILURE = 'REGISTER_FAILURE'
+
 
 export const loginRequest = (credentials) => {
   return {
@@ -69,6 +73,28 @@ export const getCurrentUserSuccess = (user) => {
 export const getCurrentUserFailure = (error) => {
   return {
     type: GET_CURRENT_USER_FAILURE,
+    payload: error,
+    error: true
+  }
+}
+
+export const registerRequest = (credentials) => {
+  return {
+    type: REGISTER_REQUEST,
+    payload: credentials
+  }
+}
+
+export const registerSuccess = (newUser) => {
+  return {
+    type: REGISTER_SUCCESS,
+    payload: newUser
+  }
+}
+
+export const registerFailure = (error) => {
+  return {
+    type: REGISTER_FAILURE,
     payload: error,
     error: true
   }

@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import Input from 'common/Input/Input'
-import LoginButton from './LoginButton/LoginButton'
+import AuthButton from 'common/AuthButton/AuthButton'
 
 class LoginForm extends PureComponent {
 
@@ -58,7 +58,10 @@ class LoginForm extends PureComponent {
           value={password}
           onChange={this.onChange}
         />
-        <LoginButton onClick={this.onSubmit} />
+        <AuthButton
+          text="Login"
+          onClick={this.onSubmit}
+        />
       </form>
     )
   }

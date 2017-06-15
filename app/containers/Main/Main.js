@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import {Switch, Route} from 'react-router-dom'
 import Translations from 'containers/Translations/Translations'
-import Login from 'containers/Login/Login'
+import Auth from 'containers/Auth/Auth'
 import Header from 'components/Header/Header'
 import Private from 'common/PrivateRoute/PrivateRoute'
 import {withRouter} from 'react-router-dom'
@@ -40,7 +40,7 @@ export class Main extends PureComponent {
       <main>
         <Header isLoggedIn={isLoggedIn} logout={logout} />
         <Switch>
-          <Route path="/login" component={Login} />
+          <Route path="/enter" component={Auth} />
           <Private exact path="/" isLoggedIn={isLoggedIn} component={Translations} />
         </Switch>
       </main>
