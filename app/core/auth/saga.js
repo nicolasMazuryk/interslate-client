@@ -4,10 +4,13 @@ import {setToken, getToken} from 'core/utils'
 import {
   LOGIN_REQUEST,
   LOGOUT_REQUEST,
+  REGISTER_REQUEST,
   loginSuccess,
   loginFailure,
   logoutSuccess,
-  logoutFailure
+  logoutFailure,
+  registerSuccess,
+  registerFailure
 } from './actions'
 
 function* login(action) {
@@ -37,9 +40,24 @@ function* logout() {
   }
 }
 
+function* register(action) {
+  try {
+    const options = {
+      method: 'POST',
+      body: action.payload
+    }
+    yield call(request, '/auth/register', options)
+    yield put(registerSuccess(action.payload))
+  }
+  catch (error) {
+    yield put(registerFailure(error))
+  }
+}
+
 export default function* main() {
   yield all([
     takeLatest(LOGIN_REQUEST, login),
-    takeLatest(LOGOUT_REQUEST, logout)
+    takeLatest(LOGOUT_REQUEST, logout),
+    takeLatest(REGISTER_REQUEST, register)
   ])
 }

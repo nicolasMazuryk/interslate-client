@@ -2,7 +2,7 @@ import React from 'react'
 import editable from 'common/EditableHOC/EditableHOC'
 import PropTypes from 'prop-types'
 
-const Key = ({tKey}) => <span>{tKey}</span>
+export const Key = ({tKey}) => <span>{tKey}</span>
 
 Key.propTypes = {
   tKey: PropTypes.string

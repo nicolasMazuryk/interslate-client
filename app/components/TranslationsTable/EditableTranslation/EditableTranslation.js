@@ -2,7 +2,7 @@ import React from 'react'
 import editable from 'common/EditableHOC/EditableHOC'
 import PropTypes from 'prop-types'
 
-const Translation = ({translation}) => <span>{translation}</span>
+export const Translation = ({translation}) => <span>{translation}</span>
 
 Translation.propTypes = {
   translation: PropTypes.string

@@ -13,21 +13,26 @@ class Input extends PureComponent {
   render() {
     const {
       label,
-      className
+      className,
+      helpText
     } = this.props
 
-    const inputProps = omit(['label', 'className', 'focus'], this.props)
+    const inputProps = omit(
+      ['label', 'className', 'focus', 'helpText'],
+      this.props
+    )
 
     return (
       <div className="field">
         <label className="label">{label}</label>
-        <p className="control">
+        <div className="control">
           <input
             ref={(input) => this.input = input}
-            className={`input ${className ? className : ''}`}
+            className={`input${className ? ' ' + className : ''}${helpText ? ' is-danger' : ''}`}
             {...inputProps}
           />
-        </p>
+          <p className="help is-danger">{helpText}</p>
+        </div>
       </div>
     )
   }
@@ -36,6 +41,7 @@ class Input extends PureComponent {
 Input.propTypes = {
   label: PropTypes.string,
   className: PropTypes.string,
+  helpText: PropTypes.string,
   focus: PropTypes.bool
 }
 

@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 
 const AuthButton = (props) => {
   const {
-    onClick
+    text,
+    onClick,
   } = props
 
   return (
@@ -17,7 +18,7 @@ const AuthButton = (props) => {
             name="enter"
             className="button is-primary"
           >
-            Enter
+            {text}
           </button>
         </div>
       </div>
@@ -26,6 +27,7 @@ const AuthButton = (props) => {
 }
 
 AuthButton.propTypes = {
+  text: PropTypes.string,
   onClick: PropTypes.func.isRequired
 }
 
