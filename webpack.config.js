@@ -18,13 +18,15 @@ const config = {
     vendor: [
       'react', 'react-dom', 'redux',
       'react-redux', 'redux-saga',
-      'prop-types'
+      'whatwg-fetch', 'prop-types',
+      'babel-polyfill', 'reselect'
     ]
   },
   output: {
     path: path.resolve('public'),
-    filename: '[name].[hash].js'
+    filename: '[name].[chunkhash].js'
   },
+  devtool: 'source-map',
   resolve: {
     modules: ['node_modules', 'app']
   },
@@ -70,13 +72,21 @@ const config = {
   ],
   devServer: {
     contentBase: path.resolve('public'),
-    compress: true,
-    stats: 'normal',
+    hot: true,
+    inline: true,
+    historyApiFallback: true,
     port: 9090,
     proxy: {
-      '/api/v1': 'http://localhost:8080'
+      '/api/v1': 'http://localhost:8082',
+      '/auth': 'http://localhost:8082'
     }
   }
+}
+
+if (!isProd) {
+  config.plugins.push(
+    new webpack.HotModuleReplacementPlugin()
+  )
 }
 
 if (isProd) {
