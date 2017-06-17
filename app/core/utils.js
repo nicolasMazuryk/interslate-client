@@ -1,4 +1,5 @@
 import Cookie from 'js-cookie'
+
 export const createReducer = (initial, handler) => {
   return (state = initial, action) => {
     if (handler.hasOwnProperty(action.type)) {
@@ -8,13 +9,8 @@ export const createReducer = (initial, handler) => {
   }
 }
 
-export const setToken = (token) => localStorage.setItem('token', token)
-export const getToken = () => {
-  const googleToken = Cookie.get('token')
-  if (googleToken) {
-    return googleToken
-  }
-  return localStorage.getItem('token')
-}
-export const removeGoogleCookie = () => Cookie.remove('token')
+export const setLocalStorageItem = (name, value) => localStorage.setItem(name, value)
+export const getLocalStorageItem = (name) => localStorage.getItem(name)
+export const getCookie = (name) => Cookie.get(name)
+export const removeCookie = (name) => Cookie.remove(name)
 

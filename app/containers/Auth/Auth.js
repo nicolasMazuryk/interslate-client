@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react'
 import LoginForm from 'components/LoginForm/LoginForm'
 import RegisterForm from 'components/RegisterForm/RegisterForm'
 import {connect} from 'react-redux'
-import {loginRequest, registerRequest} from 'core/auth/actions'
+import {loginRequest, registerRequest} from 'core/main/actions'
 import PropTypes from 'prop-types'
 
 const mapStateToProps = ({main}) => {
