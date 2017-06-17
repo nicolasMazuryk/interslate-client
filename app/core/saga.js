@@ -1,8 +1,8 @@
 import {fork} from 'redux-saga/effects'
-import translations from 'core/translations/saga'
-import auth from 'core/auth/saga'
+import translationsSaga from 'core/translations/saga'
+import mainSaga from 'core/main/saga'
 
 export default function* main() {
-  yield fork(auth)
-  yield fork(translations)
+  yield fork(mainSaga)
+  yield fork(translationsSaga)
 }

@@ -7,28 +7,35 @@ import Header from 'components/Header/Header'
 import Private from 'common/PrivateRoute/PrivateRoute'
 import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {logoutRequest} from 'core/auth/actions'
+import {logoutRequest, getCurrentUserRequest} from 'core/main/actions'
+import Loader from 'common/Loader/Loader'
 
 const mapDispatch = (dispatch) => {
   return {
-    logout: () => dispatch(logoutRequest())
+    logout: () => dispatch(logoutRequest()),
+    getCurrentUser: () => dispatch(getCurrentUserRequest())
   }
 }
 
-const mapState = (state) => {
+const mapState = ({main}) => {
   return {
-    isLoggedIn: !!state.auth.user
+    loading: main.loading,
+    isLoggedIn: !!main.user
   }
 }
 
 export class Main extends PureComponent {
+  
+  componentDidMount() {
+    this.props.getCurrentUser()
+  }
 
   render() {
     const {
       logout,
-      isLoggedIn
+      isLoggedIn,
+      loading
     } = this.props
-
     return (
       <main>
         <Header isLoggedIn={isLoggedIn} logout={logout} />
@@ -44,7 +51,9 @@ export class Main extends PureComponent {
 
 Main.propTypes = {
   logout: PropTypes.func,
-  isLoggedIn: PropTypes.bool
+  isLoggedIn: PropTypes.bool,
+  loading: PropTypes.bool,
+  getCurrentUser: PropTypes.func
 }
 
 export default withRouter(connect(mapState, mapDispatch)(Main))

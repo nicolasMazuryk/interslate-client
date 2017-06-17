@@ -2,13 +2,13 @@ import React, {PureComponent} from 'react'
 import LoginForm from 'components/LoginForm/LoginForm'
 import RegisterForm from 'components/RegisterForm/RegisterForm'
 import {connect} from 'react-redux'
-import {loginRequest, registerRequest} from 'core/auth/actions'
+import {loginRequest, registerRequest} from 'core/main/actions'
 import PropTypes from 'prop-types'
 
-const mapStateToProps = ({auth}) => {
+const mapStateToProps = ({main}) => {
   return {
-    user: auth.user,
-    loading: auth.loading
+    user: main.user,
+    loading: main.loading
   }
 }
 
@@ -101,6 +101,7 @@ export class Auth extends PureComponent {
                 </ul>
               </div>
               {this.displayForm()}
+              <a href="http://127.0.0.1:9090/auth/google">Google</a>
             </div>
           </div>
         </div>
