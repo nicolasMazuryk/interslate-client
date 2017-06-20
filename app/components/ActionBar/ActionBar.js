@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Select from 'common/Select/Select'
 import Panel from 'common/Panel/Panel'
+import SearchFilter from 'components/SearchFilter/SearchFilter'
 
 export const handleEvent = (next) => (e) => {
   return next(e.target.value)
@@ -12,13 +13,20 @@ const ActionBar = (props) => {
     languages,
     onLanguageChange,
     selectedLanguage,
-    openAddTranslationModal
+    openAddTranslationModal,
+    searchFilterChange,
+    uploadTranslationsFile
   } = props
 
   return (
     <Panel align='end'>
       <div className="level">
         <div className="level-right">
+          <div className="level-item">
+            <SearchFilter
+              onChange={searchFilterChange}
+            />
+          </div>
           <div className="level-item">
             <Select
               options={languages}
@@ -38,6 +46,7 @@ const ActionBar = (props) => {
           </div>
           <div className="level-item">
             <button
+              onClick={uploadTranslationsFile}
               name="upload"
               className="button is-success"
             >
@@ -53,8 +62,10 @@ const ActionBar = (props) => {
 ActionBar.propTypes = {
   languages: PropTypes.array,
   selectedLanguage: PropTypes.string,
+  searchFilterChange: PropTypes.func,
   onLanguageChange: PropTypes.func,
-  openAddTranslationModal: PropTypes.func
+  openAddTranslationModal: PropTypes.func,
+  uploadTranslationsFile: PropTypes.func
 }
 
 export default ActionBar

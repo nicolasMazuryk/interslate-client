@@ -22,7 +22,8 @@ import {
   OPEN_ADD_TRANSLATION_MODAL,
   CLOSE_ADD_TRANSLATION_MODAL,
 
-  SELECT_LANGUAGE
+  SELECT_LANGUAGE,
+  SEARCH_FILTER_CHANGE
 } from './actions'
 
 const DEFAULT_STATE = {
@@ -32,6 +33,7 @@ const DEFAULT_STATE = {
   addTranslationModalIsOpened: false,
   languages: [],
   selectedLanguage: '',
+  searchFilterValue: '',
   data: [],
   error: null
 }
@@ -125,7 +127,11 @@ const updateTranslationSuccess = (state, action) => {
     updating: false,
     data: state.data.map((target) => {
       if (target._id === action.payload._id) {
-        return {...target, ...action.payload.value}
+        return {
+          ...target,
+          key: action.payload.key,
+          values: action.payload.values
+        }
       }
       return target
     }),
@@ -179,9 +185,14 @@ export const getLanguagesFailure = (state, action) => {
   }
 }
 
+export const searchFilterChange = (state, action) => {
+  return {
+    ...state,
+    searchFilterValue: action.payload
+  }
+}
 
 export default createReducer(DEFAULT_STATE, {
-
   [GET_TRANSLATIONS_REQUEST]: getTranslationsRequest,
   [GET_TRANSLATIONS_SUCCESS]: getTranslationsSuccess,
   [GET_TRANSLATIONS_FAILURE]: getTranslationsFailure,
@@ -204,6 +215,6 @@ export default createReducer(DEFAULT_STATE, {
   [OPEN_ADD_TRANSLATION_MODAL]: openTranslationModal,
   [CLOSE_ADD_TRANSLATION_MODAL]: closeTranslationModal,
 
-  [SELECT_LANGUAGE]: selectLanguage
-
+  [SELECT_LANGUAGE]: selectLanguage,
+  [SEARCH_FILTER_CHANGE]: searchFilterChange
 })

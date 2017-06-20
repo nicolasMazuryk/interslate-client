@@ -22,10 +22,14 @@ export const GET_LANGUAGES_SUCCESS = 'GET_LANGUAGES_SUCCESS'
 export const GET_LANGUAGES_FAILURE = 'GET_LANGUAGES_FAILURE'
 
 export const SELECT_LANGUAGE = 'SELECT_LANGUAGE'
+export const SEARCH_FILTER_CHANGE = 'SEARCH_FILTER_CHANGE'
 
-export const getTranslationsRequest = () => {
+export const getTranslationsRequest = (format) => {
   return {
-    type: GET_TRANSLATIONS_REQUEST
+    type: GET_TRANSLATIONS_REQUEST,
+    payload: {
+      format
+    }
   }
 }
 
@@ -95,10 +99,10 @@ export const updateTranslationRequest = (_id, value) => {
   }
 }
 
-export const updateTranslationSuccess = (_id, value) => {
+export const updateTranslationSuccess = (newTranslation) => {
   return {
     type: UPDATE_TRANSLATION_SUCCESS,
-    payload: {_id, value}
+    payload: newTranslation
   }
 }
 
@@ -147,6 +151,13 @@ export const selectLanguage = (key) => {
   return {
     type: SELECT_LANGUAGE,
     payload: key
+  }
+}
+
+export const searchFilterChange = (searchValue) => {
+  return {
+    type: SEARCH_FILTER_CHANGE,
+    payload: searchValue
   }
 }
 

@@ -22,10 +22,12 @@ import {
   updateTranslationFailure,
 } from './actions'
 
-export function* getTranslations() {
+export function* getTranslations(action) {
   try {
+    const {format} = action.payload
     const token = getLocalStorageItem('token')
-    const {payload} = yield call(request, '/api/v1/translations', {token})
+    const url = format ? `/api/v1/translations?format=${format}` : '/api/v1/translations'
+    const {payload} = yield call(request, url, {token})
     yield put(getTranslationsSuccess(payload))
   }
   catch (error) {
@@ -79,11 +81,11 @@ export function* updateTranslation(action) {
     const language = yield select(getLanguage)
     const options = {
       method: 'PATCH',
-      body: {language, translation: value.translation},
+      body: {language, ...value},
       token: getLocalStorageItem('token')
     }
-    yield call(request, `api/v1/translations/${_id}`, options)
-    yield put(updateTranslationSuccess(action.payload))
+    const {payload} = yield call(request, `api/v1/translations/${_id}`, options)
+    yield put(updateTranslationSuccess(payload))
   }
   catch (error) {
     yield put(updateTranslationFailure(error))

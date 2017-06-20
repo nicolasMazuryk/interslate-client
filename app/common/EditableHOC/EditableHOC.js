@@ -14,6 +14,7 @@ export default function editable(Component) {
       }
 
       this.onChange = this.onChange.bind(this)
+      this.getEditableInput = this.getEditableInput.bind(this)
       this.onBlur = this.onBlur.bind(this)
     }
 
@@ -30,22 +31,27 @@ export default function editable(Component) {
       })
     }
 
+    getEditableInput() {
+      const {value} = this.state
+      const inputProps = omit(['propMapper', 'onSave', 'value'], this.props)
+      return (
+        <Input
+          {...inputProps}
+          focus={true}
+          onBlur={this.onBlur}
+          onChange={this.onChange}
+          value={value}
+        />
+      )
+    }
+
     render() {
-      const {isEditable, value} = this.state
+      const {isEditable} = this.state
       const {propMapper} = this.props
-      const inputProps = omit(['propMapper', 'onSave'], this.props)
       return (
         <div onClick={() => this.setState({isEditable: true})}>
-          {isEditable ?
-            (
-              <Input
-                {...inputProps}
-                focus={true}
-                onBlur={this.onBlur}
-                onChange={this.onChange}
-                value={value}
-              />
-            )
+          {isEditable
+            ? this.getEditableInput()
             : <Component {...propMapper(this.props, this.state)} />
           }
         </div>
@@ -56,6 +62,7 @@ export default function editable(Component) {
   Editable.displayName = `Editable(${Component.displayName})`
 
   Editable.propTypes = {
+    placeholder: PropTypes.string,
     value: PropTypes.string,
     onSave: PropTypes.func,
     propMapper: PropTypes.func
