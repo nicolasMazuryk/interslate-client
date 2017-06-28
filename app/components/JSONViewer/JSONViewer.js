@@ -7,13 +7,14 @@ const JSONViewer = (props) => {
     overflow: 'scroll'
   }
   const json = JSON.stringify(props.json, null, 2)
+
   return (
     <div className="field">
       <p className="control">
         <textarea
           style={style}
           className="textarea"
-          defaultValue={json}
+          value={json}
           disabled
         />
       </p>
@@ -22,7 +23,7 @@ const JSONViewer = (props) => {
 }
 
 JSONViewer.propTypes = {
-  json: PropTypes.array
+  json: PropTypes.object
 }
 
 export default JSONViewer

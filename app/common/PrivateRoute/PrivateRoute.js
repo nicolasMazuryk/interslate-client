@@ -2,13 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Route, Redirect} from 'react-router-dom'
 
-const PrivateRoute = ({ component: Component, isLoggedIn, ...rest }) => {
+const PrivateRoute = ({ component: Component, user, ...rest }) => {
   const render = (props) => {
-    if(isLoggedIn) {
-      return <Component {...props} />
+    if (user) {
+      return <Component user={user} {...props} />
     }
     return <Redirect to={{pathname: '/enter', state: { from: props.location }}}/>
   }
+
   return (
     <Route {...rest} render={render}/>
   )
@@ -17,7 +18,7 @@ const PrivateRoute = ({ component: Component, isLoggedIn, ...rest }) => {
 PrivateRoute.propTypes = {
   component: PropTypes.func,
   location: PropTypes.object,
-  isLoggedIn: PropTypes.bool
+  user: PropTypes.object
 }
 
 export default PrivateRoute

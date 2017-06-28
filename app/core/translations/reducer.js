@@ -4,6 +4,10 @@ import {
   GET_TRANSLATIONS_SUCCESS,
   GET_TRANSLATIONS_FAILURE,
 
+  UPLOAD_TRANSLATIONS_REQUEST,
+  UPLOAD_TRANSLATIONS_SUCCESS,
+  UPLOAD_TRANSLATIONS_FAILURE,
+
   GET_LANGUAGES_SUCCESS,
   GET_LANGUAGES_FAILURE,
 
@@ -28,6 +32,7 @@ import {
 
 const DEFAULT_STATE = {
   translationsAreLoading: false,
+  translationsAreUploading: false,
   adding: false,
   removing: false,
   addTranslationModalIsOpened: false,
@@ -35,6 +40,7 @@ const DEFAULT_STATE = {
   selectedLanguage: '',
   searchFilterValue: '',
   data: [],
+  uploadData: {},
   error: null
 }
 
@@ -58,6 +64,30 @@ const getTranslationsFailure = (state, action) => {
   return {
     ...state,
     translationsAreLoading: false,
+    error: action.payload
+  }
+}
+
+const uploadTranslationsRequest = (state) => {
+  return {
+    ...state,
+    translationsAreUploading: true,
+  }
+}
+
+const uploadTranslationsSuccess = (state, action) => {
+  return {
+    ...state,
+    translationsAreUploading: false,
+    uploadData: action.payload,
+    error: null
+  }
+}
+
+const uploadTranslationsFailure = (state, action) => {
+  return {
+    ...state,
+    translationsAreUploading: false,
     error: action.payload
   }
 }
@@ -161,14 +191,14 @@ const closeTranslationModal = (state) => {
   }
 }
 
-export const selectLanguage = (state, action) => {
+const selectLanguage = (state, action) => {
   return {
     ...state,
     selectedLanguage: action.payload
   }
 }
 
-export const getLanguagesSuccess = (state, action) => {
+const getLanguagesSuccess = (state, action) => {
   return {
     ...state,
     loading: false,
@@ -177,7 +207,7 @@ export const getLanguagesSuccess = (state, action) => {
   }
 }
 
-export const getLanguagesFailure = (state, action) => {
+const getLanguagesFailure = (state, action) => {
   return {
     ...state,
     loading: false,
@@ -185,7 +215,7 @@ export const getLanguagesFailure = (state, action) => {
   }
 }
 
-export const searchFilterChange = (state, action) => {
+const searchFilterChange = (state, action) => {
   return {
     ...state,
     searchFilterValue: action.payload
@@ -196,6 +226,10 @@ export default createReducer(DEFAULT_STATE, {
   [GET_TRANSLATIONS_REQUEST]: getTranslationsRequest,
   [GET_TRANSLATIONS_SUCCESS]: getTranslationsSuccess,
   [GET_TRANSLATIONS_FAILURE]: getTranslationsFailure,
+
+  [UPLOAD_TRANSLATIONS_REQUEST]: uploadTranslationsRequest,
+  [UPLOAD_TRANSLATIONS_SUCCESS]: uploadTranslationsSuccess,
+  [UPLOAD_TRANSLATIONS_FAILURE]: uploadTranslationsFailure,
 
   [GET_LANGUAGES_SUCCESS]: getLanguagesSuccess,
   [GET_LANGUAGES_FAILURE]: getLanguagesFailure,

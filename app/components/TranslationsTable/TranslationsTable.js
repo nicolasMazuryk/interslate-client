@@ -18,7 +18,7 @@ class TranslationsTable extends PureComponent {
     } = this.props
 
     return translations.map(({key, values, _id}) => {
-      const translation = values[0].translation
+      const translation = (values[0] || {}).translation
       return (
         <TranslationsRow
           key={_id}

@@ -32,7 +32,9 @@ const TranslationsRow = (props) => {
         <EditableKey
           value={tKey}
           onSave={onKeyEdit}
-          propMapper={({value, ...other}) => ({tKey: value || placeholder, ...other})}
+          mapEditablePropsToComponent={({value, ...other}) => {
+            return {tKey: value || placeholder, ...other}
+          }}
         />
       </td>
       <td>
@@ -40,8 +42,8 @@ const TranslationsRow = (props) => {
           placeholder={placeholder}
           value={translation}
           onSave={onTranslationEdit}
-          propMapper={({value, ...other}) => {
-            return ({translation: value || placeholder, ...other})
+          mapEditablePropsToComponent={({value, ...other}) => {
+            return {translation: value || placeholder, ...other}
           }}
         />
       </td>

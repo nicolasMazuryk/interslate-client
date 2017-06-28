@@ -15,7 +15,7 @@ const ActionBar = (props) => {
     selectedLanguage,
     openAddTranslationModal,
     searchFilterChange,
-    uploadTranslationsFile
+    uploadToken
   } = props
 
   return (
@@ -45,13 +45,15 @@ const ActionBar = (props) => {
             </button>
           </div>
           <div className="level-item">
-            <button
-              onClick={uploadTranslationsFile}
+            <a
+              href={`api/v1/uploads/translations?format=file&token=${uploadToken}`}
+              rel="noopener noreferrer"
+              target="_blank"
               name="upload"
               className="button is-success"
             >
               Upload
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -65,7 +67,7 @@ ActionBar.propTypes = {
   searchFilterChange: PropTypes.func,
   onLanguageChange: PropTypes.func,
   openAddTranslationModal: PropTypes.func,
-  uploadTranslationsFile: PropTypes.func
+  uploadToken: PropTypes.string
 }
 
 export default ActionBar
