@@ -14,6 +14,8 @@ export default function editable(Component) {
       }
 
       this.onChange = this.onChange.bind(this)
+      this.enableEditable= this.enableEditable.bind(this)
+      this.getEditableInput = this.getEditableInput.bind(this)
       this.onBlur = this.onBlur.bind(this)
     }
 
@@ -26,39 +28,55 @@ export default function editable(Component) {
     onBlur() {
       this.props.onSave(this.state.value)
       this.setState({
-        isEditable: false
+        isEditable: false,
+        value: ''
       })
     }
 
-    render() {
-      const {isEditable, value} = this.state
-      const {propMapper} = this.props
-      const inputProps = omit(['propMapper', 'onSave'], this.props)
+    enableEditable() {
+      this.setState({isEditable: true})
+    }
+
+    getEditableInput() {
+      const {value} = this.state
+      const inputProps = omit([
+        'mapEditablePropsToComponent',
+        'onSave',
+        'value'
+      ], this.props)
       return (
-        <div onClick={() => this.setState({isEditable: true})}>
-          {isEditable ?
-            (
-              <Input
-                {...inputProps}
-                focus={true}
-                onBlur={this.onBlur}
-                onChange={this.onChange}
-                value={value}
-              />
-            )
-            : <Component {...propMapper(this.props, this.state)} />
+        <Input
+          {...inputProps}
+          focus={true}
+          onBlur={this.onBlur}
+          onChange={this.onChange}
+          value={value}
+        />
+      )
+    }
+
+    render() {
+      const {isEditable} = this.state
+      const {mapEditablePropsToComponent} = this.props
+      const componentProps = mapEditablePropsToComponent(this.props, this.state)
+      return (
+        <div onClick={this.enableEditable}>
+          {isEditable
+            ? this.getEditableInput()
+            : <Component {...componentProps} />
           }
         </div>
       )
     }
   }
 
-  Editable.displayName = `Editable(${Component.displayName})`
+  Editable.displayName = `Editable(${Component.displayName || 'Component'})`
 
   Editable.propTypes = {
+    placeholder: PropTypes.string,
     value: PropTypes.string,
-    onSave: PropTypes.func,
-    propMapper: PropTypes.func
+    onSave: PropTypes.func.isRequired,
+    mapEditablePropsToComponent: PropTypes.func.isRequired
   }
 
   return Editable

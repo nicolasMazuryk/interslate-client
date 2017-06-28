@@ -20,7 +20,7 @@ const mapDispatch = (dispatch) => {
 const mapState = ({main}) => {
   return {
     loading: main.loading,
-    isLoggedIn: !!main.user
+    user: main.user
   }
 }
 
@@ -33,16 +33,21 @@ export class Main extends PureComponent {
   render() {
     const {
       logout,
-      isLoggedIn,
-      loading
+      user,
+      loading,
     } = this.props
     return (
       <main>
-        <Header isLoggedIn={isLoggedIn} logout={logout} />
-        <Switch>
-          <Route path="/enter" component={Auth} />
-          <Private exact path="/" isLoggedIn={isLoggedIn} component={Translations} />
-        </Switch>
+        <Header logout={logout} />
+          <Switch>
+            <Route path="/enter" component={Auth} />
+            <Private
+              exact
+              path="/"
+              user={user}
+              component={Translations}
+            />
+          </Switch>
       </main>
     )
   }
@@ -51,9 +56,9 @@ export class Main extends PureComponent {
 
 Main.propTypes = {
   logout: PropTypes.func,
-  isLoggedIn: PropTypes.bool,
+  user: PropTypes.object,
   loading: PropTypes.bool,
-  getCurrentUser: PropTypes.func
+  getCurrentUser: PropTypes.func,
 }
 
 export default withRouter(connect(mapState, mapDispatch)(Main))

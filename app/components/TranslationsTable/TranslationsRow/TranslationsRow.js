@@ -11,9 +11,9 @@ const TranslationsRow = (props) => {
     onUpdate,
     onRemove
   } = props
-  
+
   const placeholder = 'Edit ...'
-  
+
   const onKeyEdit = (key) => {
     if (key !== tKey) {
       onUpdate(_id, {key})
@@ -22,25 +22,28 @@ const TranslationsRow = (props) => {
   
   const onTranslationEdit = (newTranslation) => {
     if (translation !== newTranslation && newTranslation !== placeholder) {
-      onUpdate(_id, {translation})
+      onUpdate(_id, {translation: newTranslation})
     }
   }
-  
+
   return (
     <tr key={_id}>
       <td>
         <EditableKey
           value={tKey}
           onSave={onKeyEdit}
-          propMapper={({value, ...other}) => ({tKey: value, ...other})}
+          mapEditablePropsToComponent={({value, ...other}) => {
+            return {tKey: value || placeholder, ...other}
+          }}
         />
       </td>
       <td>
         <EditableTranslation
-          value={translation || placeholder}
+          placeholder={placeholder}
+          value={translation}
           onSave={onTranslationEdit}
-          propMapper={(props, {value}) => {
-            return ({translation: value, ...props})
+          mapEditablePropsToComponent={({value, ...other}) => {
+            return {translation: value || placeholder, ...other}
           }}
         />
       </td>

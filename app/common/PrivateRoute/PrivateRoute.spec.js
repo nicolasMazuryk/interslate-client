@@ -5,7 +5,7 @@ import {MemoryRouter, Redirect} from 'react-router-dom'
 
 describe('<PrivateRoute />', () => {
 
-  let wrapper, isLoggedIn,
+  let wrapper, user,
     dummyProp, location
 
   function Test() {
@@ -17,12 +17,15 @@ describe('<PrivateRoute />', () => {
   })
 
   it('should return component with props passed in PrivateRoute', () => {
-    isLoggedIn = true
+    user = {
+      email: 'test',
+      uploadToken: 'token'
+    }
     wrapper = mount(
       <MemoryRouter>
         <PrivateRoute
           component={Test}
-          isLoggedIn={isLoggedIn}
+          user={user}
           dummyProp={dummyProp}
           location={location}
         />
@@ -32,12 +35,12 @@ describe('<PrivateRoute />', () => {
   })
 
   it('should return Redirect component', () => {
-    isLoggedIn = false
+    user = null
     wrapper = mount(
       <MemoryRouter>
         <PrivateRoute
           component={Test}
-          isLoggedIn={isLoggedIn}
+          user={user}
           dummyProp={dummyProp}
           location={location}
         />

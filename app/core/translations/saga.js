@@ -7,13 +7,16 @@ import {
   GET_LANGUAGES_REQUEST,
   ADD_TRANSLATION_REQUEST,
   REMOVE_TRANSLATION_REQUEST,
-  UPDATE_TRANSLATION_REQUEST
+  UPDATE_TRANSLATION_REQUEST,
+  UPLOAD_TRANSLATIONS_REQUEST
 } from './actions'
 import {
   getTranslationsSuccess,
   getTranslationsFailure,
   getLanguagesSuccess,
   getLanguagesFailure,
+  uploadTranslationsSuccess,
+  uploadTranslationsFailure,
   addTranslationSuccess,
   addTranslationFailure,
   removeTranslationSuccess,
@@ -41,6 +44,17 @@ export function* getLanguages() {
   }
   catch (error) {
     yield put(getLanguagesFailure(error))
+  }
+}
+
+export function* uploadTranslations() {
+  try {
+    const uploadToken = yield select((state) => state.main.user.uploadToken)
+    const {payload} = yield call(request, `/api/v1/uploads/translations?token=${uploadToken}`)
+    yield put(uploadTranslationsSuccess(payload))
+  }
+  catch (error) {
+    yield put(uploadTranslationsFailure(error))
   }
 }
 
@@ -79,11 +93,11 @@ export function* updateTranslation(action) {
     const language = yield select(getLanguage)
     const options = {
       method: 'PATCH',
-      body: {language, translation: value.translation},
+      body: {language, ...value},
       token: getLocalStorageItem('token')
     }
-    yield call(request, `api/v1/translations/${_id}`, options)
-    yield put(updateTranslationSuccess(action.payload))
+    const {payload} = yield call(request, `api/v1/translations/${_id}`, options)
+    yield put(updateTranslationSuccess(payload))
   }
   catch (error) {
     yield put(updateTranslationFailure(error))
@@ -94,6 +108,7 @@ export default function* main() {
   yield all([
     takeLatest(GET_TRANSLATIONS_REQUEST, getTranslations),
     takeLatest(GET_LANGUAGES_REQUEST, getLanguages),
+    takeLatest(UPLOAD_TRANSLATIONS_REQUEST, uploadTranslations),
     takeEvery(ADD_TRANSLATION_REQUEST, addTranslation),
     takeEvery(REMOVE_TRANSLATION_REQUEST, removeTranslation),
     takeEvery(UPDATE_TRANSLATION_REQUEST, updateTranslation)

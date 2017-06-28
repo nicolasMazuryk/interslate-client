@@ -1,7 +1,6 @@
 import React from 'react'
 import {Translations} from './Translations'
 import {shallow} from 'enzyme'
-import sinon from 'sinon'
 import ActionBar from 'components/ActionBar/ActionBar'
 import AddTranslationModal from 'components/AddTranslationModal/AddTranslationModal'
 import TranslationsTable from 'components/TranslationsTable/TranslationsTable'
@@ -9,12 +8,17 @@ import Loader from 'common/Loader/Loader'
 
 describe('<Translations />', () => {
 
-  let wrapper
+  let wrapper, user
 
   before(() => {
+    user = {
+      email: 'test@mail.com',
+      uploadToken: '12345'
+    }
     wrapper = shallow(
       <Translations
         translationsAreLoading={false}
+        user={user}
         translations={[]}
       />
     )
@@ -32,6 +36,7 @@ describe('<Translations />', () => {
     const wrapper = shallow(
       <Translations
         translationsAreLoading={true}
+        user={user}
         translations={[]}
       />
     )
