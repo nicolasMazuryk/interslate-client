@@ -4,7 +4,6 @@ import Header from './Header'
 import sinon from 'sinon'
 
 describe('<Header />', () => {
-
   let
     wrapper = null,
     logout = null
@@ -28,5 +27,4 @@ describe('<Header />', () => {
     wrapper.find('a.logout').simulate('click')
     expect(logout.calledOnce).to.be.true
   })
-
 })

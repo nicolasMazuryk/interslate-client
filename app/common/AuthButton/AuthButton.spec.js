@@ -4,7 +4,6 @@ import AuthButton from './AuthButton'
 import sinon from 'sinon'
 
 describe('<AuthButton />', () => {
-
   let wrapper, text, onClick
 
   before(() => {
@@ -26,5 +25,4 @@ describe('<AuthButton />', () => {
     wrapper.find('button').simulate('click')
     expect(onClick.calledOnce).to.be.true
   })
-
 })

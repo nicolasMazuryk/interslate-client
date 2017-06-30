@@ -5,7 +5,6 @@ import Select from 'common/Select/Select'
 import sinon from 'sinon'
 
 describe('<ActionBar />', () => {
-
   let
     wrapper, languages,
     openAddTranslationModal
@@ -44,5 +43,4 @@ describe('<ActionBar />', () => {
     wrapper.find('button[name="add-key"]').simulate('click')
     expect(openAddTranslationModal.calledOnce).to.be.true
   })
-
 })

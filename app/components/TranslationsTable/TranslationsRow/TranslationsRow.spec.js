@@ -6,7 +6,6 @@ import EditableKey from 'components/TranslationsTable/EditableKey/EditableKey'
 import EditableTranslation from 'components/TranslationsTable/EditableTranslation/EditableTranslation'
 
 describe('<TranslationsRow />', () => {
-
   let wrapper, _id, tKey,
     translation, onRemove,
     onUpdate
@@ -44,5 +43,4 @@ describe('<TranslationsRow />', () => {
     wrapper.find('button.delete').simulate('click')
     expect(onRemove.calledOnce).to.be.true
   })
-
 })

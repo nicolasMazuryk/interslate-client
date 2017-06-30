@@ -3,7 +3,6 @@ import {shallow} from 'enzyme'
 import Panel from 'common/Panel/Panel'
 
 describe('<Panel />', () => {
-
   let wrapper, style, child
 
   before(() => {
@@ -25,5 +24,4 @@ describe('<Panel />', () => {
   it('should render children inside panel-block', () => {
     expect(wrapper.find('.panel-block').containsMatchingElement(child)).to.be.true
   })
-
 })

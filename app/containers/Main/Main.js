@@ -8,7 +8,6 @@ import Private from 'common/PrivateRoute/PrivateRoute'
 import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {logoutRequest, getCurrentUserRequest} from 'core/main/actions'
-import Loader from 'common/Loader/Loader'
 
 const mapDispatch = (dispatch) => {
   return {
@@ -34,8 +33,8 @@ export class Main extends PureComponent {
     const {
       logout,
       user,
-      loading,
     } = this.props
+
     return (
       <main>
         <Header logout={logout} />

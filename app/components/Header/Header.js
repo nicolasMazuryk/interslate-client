@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const Header = ({ logout }) => {
+const Header = ({logout}) => {
   return (
     <nav className="nav has-shadow">
       <div className="nav-left">

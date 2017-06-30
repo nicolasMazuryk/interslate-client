@@ -3,7 +3,6 @@ import {shallow} from 'enzyme'
 import {Translation} from './EditableTranslation'
 
 describe('<EditableKey />', () => {
-
   it('should render provided translation', () => {
     const translation = 'test'
     const wrapper = shallow(
@@ -13,5 +12,4 @@ describe('<EditableKey />', () => {
     )
     expect(wrapper.text()).to.equal(translation)
   })
-
 })

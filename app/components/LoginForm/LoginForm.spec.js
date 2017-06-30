@@ -5,7 +5,6 @@ import AuthButton from 'common/AuthButton/AuthButton'
 import sinon from 'sinon'
 
 describe('<LoginForm />', () => {
-
   let wrapper, onSubmit
 
   before(() => {
@@ -57,5 +56,4 @@ describe('<LoginForm />', () => {
     wrapper.find('button').simulate('click')
     expect(onSubmit.calledWith(wrapper.state())).to.be.true
   })
-
 })

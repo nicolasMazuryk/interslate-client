@@ -5,7 +5,6 @@ import Modal from 'common/Modal/Modal'
 import sinon from 'sinon'
 
 describe('<AddTranslationModal />', () => {
-
   let
     wrapper, onSubmit,
     onClose, opened, languages
@@ -87,5 +86,4 @@ describe('<AddTranslationModal />', () => {
 
     expect(onSubmit.calledWith(({key, values: translations}))).to.be.true
   })
-
 })

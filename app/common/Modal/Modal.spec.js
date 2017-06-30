@@ -4,7 +4,6 @@ import Modal from 'common/Modal/Modal'
 import sinon from 'sinon'
 
 describe('<Modal />', () => {
-
   let wrapper, title, opened,
     onClose, onSubmit, child
 
@@ -56,5 +55,4 @@ describe('<Modal />', () => {
     wrapper.find('[name="close"]').simulate('click')
     expect(onSubmit.calledOnce).to.be.true
   })
-
 })

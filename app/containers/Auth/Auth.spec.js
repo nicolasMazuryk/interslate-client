@@ -6,7 +6,6 @@ import LoginForm from 'components/LoginForm/LoginForm'
 import RegisterForm from 'components/RegisterForm/RegisterForm'
 
 describe('<Auth />', () => {
-
   let wrapper, login, register,
     user, newUser, history, push
 
@@ -62,5 +61,4 @@ describe('<Auth />', () => {
     wrapper.setProps({newUser})
     expect(login.calledWith(newUser)).to.be.true
   })
-
 })
