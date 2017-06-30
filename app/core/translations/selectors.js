@@ -1,7 +1,11 @@
 import {createSelector} from 'reselect'
-import find from 'ramda/src/find'
 import propEq from 'ramda/src/propEq'
-import pick from 'ramda/src/pick'
+import transduce from 'ramda/src/transduce'
+import flip from 'ramda/src/flip'
+import append from 'ramda/src/append'
+import pipe from 'ramda/src/pipe'
+import filter from 'ramda/src/filter'
+import map from 'ramda/src/map'
 
 export const getLanguage = (state) => (
   state.translations.selectedLanguage
@@ -15,6 +19,10 @@ export const getTranslations = (state) => (
   state.translations.data
 )
 
+export const getSearchFilterValue = (state) => (
+  state.translations.searchFilterValue.toLowerCase()
+)
+
 export const getMappedLanguages = createSelector(
   [getLanguages],
   (languages) => {
@@ -22,16 +30,14 @@ export const getMappedLanguages = createSelector(
   }
 )
 
-export const filterTranslationsByLanguage = createSelector(
-  [getTranslations, getLanguage],
-  (translations, selectedLanguage) => {
-    const filterTranslation = find(propEq('language', selectedLanguage))
-    const getProps = pick(['values', 'key', '_id'])
-    return translations
-      .map(getProps)
-      .map(({values, key, _id}) => {
-        const value = filterTranslation(values)
-        return {_id, key, translation: (value || {}).translation}
-      })
+export const applyFilters = createSelector(
+  [getTranslations, getSearchFilterValue, getLanguage],
+  (translations, searchFilterValue, selectedLanguage) => {
+    const appendToArray = flip(append)
+    const transducer = pipe(
+      filter(({key}) => key.toLowerCase().includes(searchFilterValue)),
+      map((item) => ({...item, values: filter(propEq('language', selectedLanguage), item.values)}))
+    )
+    return transduce(transducer, appendToArray, [], translations)
   }
 )

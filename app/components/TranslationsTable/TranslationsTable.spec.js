@@ -12,9 +12,9 @@ describe('<TranslationsTable />', () => {
 
   before(() => {
     translations = [
-      {key: 'key1', value: 'value1', _id: '_id1'},
-      {key: 'key2', value: 'value2', _id: '_id2'},
-      {key: 'key3', value: 'value3', _id: '_id3'},
+      {key: 'key1', values: [{translation: 'value1'}], _id: '_id1'},
+      {key: 'key2', values: [{translation: 'value2'}], _id: '_id2'},
+      {key: 'key3', values: [{translation: 'value3'}], _id: '_id3'},
     ]
     onTranslationUpdate = sinon.spy()
     onTranslationRemove = sinon.spy()

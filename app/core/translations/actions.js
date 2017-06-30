@@ -2,6 +2,10 @@ export const GET_TRANSLATIONS_REQUEST = 'GET_TRANSLATIONS_REQUEST'
 export const GET_TRANSLATIONS_SUCCESS = 'GET_TRANSLATIONS_SUCCESS'
 export const GET_TRANSLATIONS_FAILURE = 'GET_TRANSLATIONS_FAILURE'
 
+export const UPLOAD_TRANSLATIONS_REQUEST = 'UPLOAD_TRANSLATIONS_REQUEST'
+export const UPLOAD_TRANSLATIONS_SUCCESS = 'UPLOAD_TRANSLATIONS_SUCCESS'
+export const UPLOAD_TRANSLATIONS_FAILURE = 'UPLOAD_TRANSLATIONS_FAILURE'
+
 export const ADD_TRANSLATION_REQUEST = 'ADD_TRANSLATION_REQUEST'
 export const ADD_TRANSLATION_SUCCESS = 'ADD_TRANSLATION_SUCCESS'
 export const ADD_TRANSLATION_FAILURE = 'ADD_TRANSLATION_FAILURE'
@@ -22,6 +26,7 @@ export const GET_LANGUAGES_SUCCESS = 'GET_LANGUAGES_SUCCESS'
 export const GET_LANGUAGES_FAILURE = 'GET_LANGUAGES_FAILURE'
 
 export const SELECT_LANGUAGE = 'SELECT_LANGUAGE'
+export const SEARCH_FILTER_CHANGE = 'SEARCH_FILTER_CHANGE'
 
 export const getTranslationsRequest = () => {
   return {
@@ -39,6 +44,27 @@ export const getTranslationsSuccess = (translations) => {
 export const getTranslationsFailure = (error) => {
   return {
     type: GET_TRANSLATIONS_FAILURE,
+    payload: error,
+    error: true
+  }
+}
+
+export const uploadTranslationsRequest = () => {
+  return {
+    type: UPLOAD_TRANSLATIONS_REQUEST
+  }
+}
+
+export const uploadTranslationsSuccess = (translations) => {
+  return {
+    type: UPLOAD_TRANSLATIONS_SUCCESS,
+    payload: translations
+  }
+}
+
+export const uploadTranslationsFailure = (error) => {
+  return {
+    type: UPLOAD_TRANSLATIONS_FAILURE,
     payload: error,
     error: true
   }
@@ -95,10 +121,10 @@ export const updateTranslationRequest = (_id, value) => {
   }
 }
 
-export const updateTranslationSuccess = (_id, value) => {
+export const updateTranslationSuccess = (newTranslation) => {
   return {
     type: UPDATE_TRANSLATION_SUCCESS,
-    payload: {_id, value}
+    payload: newTranslation
   }
 }
 
@@ -150,3 +176,9 @@ export const selectLanguage = (key) => {
   }
 }
 
+export const searchFilterChange = (searchValue) => {
+  return {
+    type: SEARCH_FILTER_CHANGE,
+    payload: searchValue
+  }
+}

@@ -9,18 +9,25 @@ import {
   selectLanguage,
   openAddTranslationModal,
   removeTranslationRequest,
-  updateTranslationRequest
+  updateTranslationRequest,
+  searchFilterChange,
+  uploadTranslationsRequest
 } from 'core/translations/actions'
-import {filterTranslationsByLanguage, getMappedLanguages} from 'core/translations/selectors'
+import {
+  applyFilters,
+  getMappedLanguages
+} from 'core/translations/selectors'
 import AddTranslationModal from 'components/AddTranslationModal/AddTranslationModal'
 import TranslationsTable from 'components/TranslationsTable/TranslationsTable'
 import ActionBar from 'components/ActionBar/ActionBar'
+import JSONViewer from 'components/JSONViewer/JSONViewer'
 import Loader from 'common/Loader/Loader'
 
 const mapState = (state) => {
   const {translations} = state
   return {
-    translations: filterTranslationsByLanguage(state),
+    translations: applyFilters(state),
+    uploadTranslationsData: translations.uploadData,
     addTranslationModalIsOpened: translations.addTranslationModalIsOpened,
     translationsAreLoading: translations.translationsAreLoading,
     selectedLanguage: translations.selectedLanguage,
@@ -37,7 +44,9 @@ const mapDispatch = (dispatch) => {
     getTranslations: () => dispatch(getTranslationsRequest()),
     openAddTranslationModal: () => dispatch(openAddTranslationModal()),
     closeAddTranslationModal: () => dispatch(closeAddTranslationModal()),
-    selectLanguage: (key) => dispatch(selectLanguage(key))
+    selectLanguage: (key) => dispatch(selectLanguage(key)),
+    searchFilterChange: (searchValue) => dispatch(searchFilterChange(searchValue)),
+    getUploadTranslations: () => dispatch(uploadTranslationsRequest())
   }
 }
 
@@ -46,11 +55,13 @@ export class Translations extends PureComponent {
   componentDidMount() {
     const {
       getLanguages,
-      getTranslations
+      getTranslations,
+      getUploadTranslations
     } = this.props
 
     getLanguages()
     getTranslations()
+    getUploadTranslations()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -79,6 +90,9 @@ export class Translations extends PureComponent {
       languages,
       selectLanguage,
       selectedLanguage,
+      searchFilterChange,
+      uploadTranslationsData,
+      user
     } = this.props
 
     return (
@@ -88,6 +102,8 @@ export class Translations extends PureComponent {
           onLanguageChange={selectLanguage}
           selectedLanguage={selectedLanguage}
           openAddTranslationModal={openAddTranslationModal}
+          searchFilterChange={searchFilterChange}
+          uploadToken={user.uploadToken}
         />
           {translationsAreLoading ?
             (
@@ -96,12 +112,15 @@ export class Translations extends PureComponent {
             (
               <div className="container">
                 <div className="columns">
-                  <div className="column is-three-quarters">
+                  <div className="column is-two-thirds">
                     <TranslationsTable
                       onTranslationRemove={removeTranslation}
                       onTranslationUpdate={updateTranslation}
                       translations={translations}
                     />
+                  </div>
+                  <div className="column is-one-third">
+                    <JSONViewer json={uploadTranslationsData} />
                   </div>
                 </div>
               </div>
@@ -131,6 +150,7 @@ const translationShape = PropTypes.shape({
 })
 
 Translations.propTypes = {
+  user: PropTypes.object,
   addTranslationModalIsOpened: PropTypes.bool,
   translationsAreLoading: PropTypes.bool,
   translations: PropTypes.arrayOf(translationShape),
@@ -144,6 +164,9 @@ Translations.propTypes = {
   getTranslations: PropTypes.func,
   closeAddTranslationModal: PropTypes.func,
   selectLanguage: PropTypes.func,
+  searchFilterChange: PropTypes.func,
+  getUploadTranslations: PropTypes.func,
+  uploadTranslationsData: PropTypes.object
 }
 
 export default connect(mapState, mapDispatch)(Translations)
