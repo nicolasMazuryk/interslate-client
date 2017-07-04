@@ -18,6 +18,8 @@ const ActionBar = (props) => {
     uploadToken
   } = props
 
+  const uploadLink = `api/v1/uploads/translations?format=file&token=${uploadToken}`
+
   return (
     <Panel align='end'>
       <div className="level">
@@ -46,7 +48,7 @@ const ActionBar = (props) => {
           </div>
           <div className="level-item">
             <a
-              href={`api/v1/uploads/translations?format=file&token=${uploadToken}`}
+              href={uploadLink}
               rel="noopener noreferrer"
               target="_blank"
               name="upload"

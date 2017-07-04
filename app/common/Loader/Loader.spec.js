@@ -3,7 +3,6 @@ import {shallow} from 'enzyme'
 import Loader from 'common/Loader/Loader'
 
 describe('<Loader />', () => {
-
   let wrapper, style
 
   before(() => {
@@ -25,5 +24,4 @@ describe('<Loader />', () => {
   it('should have proper style', () => {
     expect(wrapper.find('.loader').prop('style')).to.deep.equal(style)
   })
-
 })

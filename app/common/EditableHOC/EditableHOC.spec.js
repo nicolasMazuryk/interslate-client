@@ -4,7 +4,6 @@ import editable from './EditableHOC'
 import sinon from 'sinon'
 
 describe('<Editable(Component) />', () => {
-
   let Component, Editable,
     wrapper, text, onSave,
     placeholder, inputValue
@@ -48,5 +47,5 @@ describe('<Editable(Component) />', () => {
     wrapper.find('input').simulate('blur')
     expect(onSave.calledWith(inputValue)).to.be.true
   })
-
 })
+

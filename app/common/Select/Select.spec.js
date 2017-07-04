@@ -4,7 +4,6 @@ import Select from './Select'
 import sinon from 'sinon'
 
 describe('<Select />', () => {
-
   let wrapper, options, onChange
 
   before(() => {

@@ -3,7 +3,6 @@ import {shallow} from 'enzyme'
 import {Key} from './EditableKey'
 
 describe('<EditableKey />', () => {
-
   it('should render provided key', () => {
     const tKey = 'test'
     const wrapper = shallow(
@@ -13,5 +12,4 @@ describe('<EditableKey />', () => {
     )
     expect(wrapper.text()).to.equal(tKey)
   })
-
 })

@@ -6,7 +6,6 @@ import {Switch, Route} from 'react-router-dom'
 import PrivateRoute from 'common/PrivateRoute/PrivateRoute'
 
 describe('<Main />', () => {
-
   let wrapper
 
   before(() => {
@@ -30,8 +29,7 @@ describe('<Main />', () => {
     expect(wrapper.find(Route)).to.have.length(1)
   })
 
-  it('should render a private route', () => {
-    expect(wrapper.find(PrivateRoute)).to.have.length(1)
+  it('should render a private routes', () => {
+    expect(wrapper.find(PrivateRoute)).to.have.length(2)
   })
-
 })

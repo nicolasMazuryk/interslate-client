@@ -7,7 +7,6 @@ import TranslationsTable from 'components/TranslationsTable/TranslationsTable'
 import Loader from 'common/Loader/Loader'
 
 describe('<Translations />', () => {
-
   let wrapper, user
 
   before(() => {
@@ -46,5 +45,4 @@ describe('<Translations />', () => {
   it('should render translations table if translations are loaded', () => {
     expect(TranslationsTable).to.have.length(1)
   })
-
 })

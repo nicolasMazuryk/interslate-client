@@ -5,7 +5,6 @@ import TranslationsRow from './TranslationsRow/TranslationsRow'
 import sinon from 'sinon'
 
 describe('<TranslationsTable />', () => {
-
   let wrapper, translations,
     onTranslationRemove,
     onTranslationUpdate
@@ -47,5 +46,4 @@ describe('<TranslationsTable />', () => {
 
     expect(wrapper.find('tbody tr').first().text()).to.equal(noDataIsAvailableText)
   })
-
 })

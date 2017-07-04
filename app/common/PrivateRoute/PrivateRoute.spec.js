@@ -4,7 +4,6 @@ import PrivateRoute from './PrivateRoute'
 import {MemoryRouter, Redirect} from 'react-router-dom'
 
 describe('<PrivateRoute />', () => {
-
   let wrapper, user,
     dummyProp, location
 
@@ -55,5 +54,4 @@ describe('<PrivateRoute />', () => {
 
     expect(wrapper.find(Redirect).prop('to')).to.deep.equal(expected)
   })
-
 })

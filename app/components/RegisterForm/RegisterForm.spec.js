@@ -14,7 +14,6 @@ function getEvent(name, value) {
 }
 
 describe('<RegisterForm />', () => {
-
   let wrapper, onSubmit
 
   before(() => {
@@ -97,5 +96,4 @@ describe('<RegisterForm />', () => {
     const {email, password} = wrapper.state()
     expect(onSubmit.calledWith({email, password})).to.be.true
   })
-
 })

@@ -4,7 +4,6 @@ import sinon from 'sinon'
 import TranslationTable from './TranslationTable'
 
 describe('<TranslationTable />', () => {
-
   let wrapper, translations, onRemove
 
   before(() => {
@@ -43,5 +42,4 @@ describe('<TranslationTable />', () => {
 
     expect(onRemove.calledWith(index)).to.be.true
   })
-
 })

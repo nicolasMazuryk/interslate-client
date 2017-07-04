@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {Link} from 'react-router-dom'
 
-const Header = ({ logout }) => {
+const Header = ({logout, isLoggedIn}) => {
   return (
     <nav className="nav has-shadow">
       <div className="nav-left">
@@ -13,17 +14,29 @@ const Header = ({ logout }) => {
           />
         </a>
       </div>
-      <div className="nav-right nav-menu">
-        <a onClick={logout} className="nav-item logout">
-          Logout
-        </a>
+      <div style={{display: isLoggedIn ? 'flex' : 'none'}} className="nav-right nav-menu">
+        <div className="nav-item ">
+          <Link to="/translations">Translations</Link>
+        </div>
+        <div className="nav-item">
+          <Link to="/account">Account</Link>
+        </div>
+        <div className="nav-item">
+          <button
+            className="button logout"
+            onClick={logout}
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </nav>
   )
 }
 
 Header.propTypes = {
-  logout: PropTypes.func
+  logout: PropTypes.func,
+  isLoggedIn: PropTypes.bool
 }
 
 export default Header

@@ -12,7 +12,6 @@ const monkeyPatch = (obj, method, fn) => {
 }
 
 describe('<Input />', () => {
-
   let wrapper, value, focus,
     className, placeholder,
     label, name, onChange,
@@ -112,7 +111,4 @@ describe('<Input />', () => {
   it('should call focus', () => {
     expect(focus.calledOnce).to.be.true
   })
-
-
-
 })

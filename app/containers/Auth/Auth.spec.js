@@ -6,7 +6,6 @@ import LoginForm from 'components/LoginForm/LoginForm'
 import RegisterForm from 'components/RegisterForm/RegisterForm'
 
 describe('<Auth />', () => {
-
   let wrapper, login, register,
     user, newUser, history, push
 
@@ -39,7 +38,7 @@ describe('<Auth />', () => {
     expect(wrapper.find(RegisterForm)).to.have.length(1)
   })
 
-  it('should redirect to "/" if user is passed', () => {
+  it('should redirect to "/translations" if user is passed', () => {
     wrapper = mount(
       <Auth
         login={login}
@@ -48,7 +47,7 @@ describe('<Auth />', () => {
       />
     )
     wrapper.setProps({user})
-    expect(push.calledWith('/')).to.be.true
+    expect(push.calledWith('/translations')).to.be.true
   })
 
   it('should login newUser', () => {
@@ -62,5 +61,4 @@ describe('<Auth />', () => {
     wrapper.setProps({newUser})
     expect(login.calledWith(newUser)).to.be.true
   })
-
 })

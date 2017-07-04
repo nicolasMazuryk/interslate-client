@@ -45,7 +45,7 @@ export class Auth extends PureComponent {
     }
 
     if (user) {
-      return history.push('/')
+      return history.push('/translations')
     }
   }
 

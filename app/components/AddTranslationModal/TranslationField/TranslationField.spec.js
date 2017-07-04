@@ -5,7 +5,6 @@ import Select from 'common/Select/Select'
 import sinon from 'sinon'
 
 describe('<TranslationField />', () => {
-
   let wrapper, availableLanguages, onAdd
 
   before(() => {
@@ -67,5 +66,4 @@ describe('<TranslationField />', () => {
     })
     expect(wrapper.state('translation')).to.equal(value)
   })
-  
 })
