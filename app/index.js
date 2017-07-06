@@ -5,6 +5,7 @@ import store from 'core/store'
 import Main from 'containers/Main/Main'
 import {BrowserRouter} from 'react-router-dom'
 
+import 'prismjs/themes/prism-coy.css'
 import 'sass/index.sass'
 
 render(

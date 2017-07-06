@@ -1,22 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Prism from 'prismjs'
 
 const JSONViewer = (props) => {
   const style = {
     height: '70vh',
-    overflow: 'scroll'
+    overflow: 'scroll',
   }
-  const json = JSON.stringify(props.json, null, 2)
+  const json = Prism.highlight(JSON.stringify(props.json, null, 2), Prism.languages.javascript)
 
   return (
     <div className="field">
       <p className="control">
-        <textarea
-          style={style}
-          className="textarea"
-          value={json}
-          disabled
-        />
+        <pre style={style}>
+          <code dangerouslySetInnerHTML={{__html: json}} />
+        </pre>
       </p>
     </div>
   )
@@ -27,4 +25,3 @@ JSONViewer.propTypes = {
 }
 
 export default JSONViewer
-

@@ -47,7 +47,7 @@ const TranslationsRow = (props) => {
           }}
         />
       </td>
-      <td>
+      <td style={{textAlign: 'center'}}>
         <button onClick={() => onRemove(_id)} className="delete" />
       </td>
     </tr>
