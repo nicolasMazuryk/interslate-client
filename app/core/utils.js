@@ -17,6 +17,22 @@ export const throttle = (fn, delay) => {
   }
 }
 
+export const copyToClipboard = (htmlElement) => {
+  try {
+    htmlElement.select()
+    document.execCommand('copy')
+    if (document.selection) {
+      document.selection.empty()
+    }
+    else if (window.getSelection) {
+      window.getSelection().removeAllRanges()
+    }
+  }
+  catch (err) {
+    console.log(err) //eslint-disable-line
+  }
+}
+
 export const setLocalStorageItem = (name, value) => localStorage.setItem(name, value)
 export const getLocalStorageItem = (name) => localStorage.getItem(name)
 export const getCookie = (name) => Cookie.get(name)
