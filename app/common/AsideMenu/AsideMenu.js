@@ -1,32 +1,31 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {Link} from 'react-router-dom'
 
-const AsideMenu = ({items, activeItem}) => {
-
-  const createSubItems = (subItems, activeItem) => {
-    return subItems.map(({title, onClick}) => {
-      const isActive = title.split(' ').join('-').toLowerCase() === activeItem
+const AsideMenu = ({items, activeLink}) => {
+  const createSubItems = (subItems, activeLink) => {
+    return subItems.map(({title, url}) => {
       return (
         <li key={title}>
-          <a
-            className={`${isActive ? 'is-active' : ''}`}
-            onClick={onClick}
+          <Link
+            className={`${url === activeLink  ? 'is-active' : ''}`}
+            to={url}
           >
             {title}
-          </a>
+          </Link>
         </li>
       )
     })
   }
 
-  const createItems = (items, activeItem) => {
+  const createItems = (items) => {
     return items.map(({header, subItems}, i) => {
       return [
         <p key={header} className="menu-label">
           {header}
         </p>,
         <ul className="menu-list" key={i}>
-          {createSubItems(subItems, activeItem)}
+          {createSubItems(subItems, activeLink)}
         </ul>
       ]
     })
@@ -34,7 +33,7 @@ const AsideMenu = ({items, activeItem}) => {
 
   return (
     <aside className="menu">
-      {createItems(items, activeItem)}
+      {createItems(items)}
     </aside>
   )
 }
@@ -51,7 +50,7 @@ const itemShape = PropTypes.shape({
 
 AsideMenu.propTypes = {
   items: PropTypes.arrayOf(itemShape),
-  activeItem: PropTypes.string
+  activeLink: PropTypes.string
 }
 
 export default AsideMenu

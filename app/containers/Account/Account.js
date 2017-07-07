@@ -1,6 +1,10 @@
 import React, {PureComponent} from 'react'
+import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import AsideMenu from 'common/AsideMenu/AsideMenu'
+import {Route} from 'react-router-dom'
+import Profile from './Profile/Profile'
+import APIKey from './APIKey/APIKey'
 
 const mapState = () => {
   return {}
@@ -15,17 +19,19 @@ export class Account extends PureComponent {
   constructor(props) {
     super(props)
 
-    this.state = {
-      active: 'api-key'
-    }
-    this.menuItemClick = this.menuItemClick.bind(this)
     this.getMenuItems = this.getMenuItems.bind(this)
+    this.getActiveLink = this.getActiveLink.bind(this)
   }
-
-  menuItemClick(id) {
-    this.setState({
-      active: id
-    })
+  
+  componentWillMount() {
+    const {history, location} = this.props
+    if (location.pathname === '/account') {
+      history.push('/account/api-key')
+    }
+  }
+  
+  getActiveLink() {
+    return this.props.location.pathname
   }
 
   getMenuItems() {
@@ -33,9 +39,8 @@ export class Account extends PureComponent {
       {
         header: 'General',
         subItems: [
-          {
-            title: 'API Key', onClick: () => this.menuItemClick('api-key')},
-          {title: 'Settings', onClick: () => this.menuItemClick('settings')}
+          {title: 'API Key', url: '/account/api-key'},
+          {title: 'Profile', url: '/account/profile'}
         ]
       }
     ]
@@ -49,12 +54,13 @@ export class Account extends PureComponent {
             <div className="columns">
               <div className="column is-one-quarter">
                 <AsideMenu
-                  activeItem={this.state.active}
+                  activeLink={this.getActiveLink()}
                   items={this.getMenuItems()}
                 />
               </div>
               <div className="column is-three-quarters">
-                Not implemented
+                <Route path="/account/api-key" component={APIKey} />
+                <Route path="/account/profile" component={Profile} />
               </div>
             </div>
           </section>
@@ -62,6 +68,11 @@ export class Account extends PureComponent {
       </div>
     )
   }
+}
+
+Account.propTypes = {
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 }
 
 export default connect(mapState, mapDispatch)(Account)

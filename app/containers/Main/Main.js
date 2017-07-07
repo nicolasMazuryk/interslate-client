@@ -48,7 +48,6 @@ export class Main extends PureComponent {
               component={Translations}
             />
             <Private
-              exact
               path="/account"
               user={user}
               component={Account}

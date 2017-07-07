@@ -24,6 +24,7 @@ const config = {
   },
   output: {
     path: path.resolve('public'),
+    publicPath: '/',
     filename: '[name].[chunkhash].js'
   },
   devtool: 'source-map',
