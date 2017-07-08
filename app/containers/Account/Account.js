@@ -47,6 +47,12 @@ export class Account extends PureComponent {
   }
 
   render() {
+    const {
+      user,
+      generateUploadToken,
+      uploadTokenIsGenerating
+    } = this.props
+
     return (
       <div>
         <div className="container">
@@ -59,7 +65,13 @@ export class Account extends PureComponent {
                 />
               </div>
               <div className="column is-three-quarters">
-                <Route path="/account/api-key" component={APIKey} />
+                <Route path="/account/api-key" render={() => (
+                  <APIKey
+                    uploadTokenIsGenerating={uploadTokenIsGenerating}
+                    generateUploadToken={generateUploadToken}
+                    uploadToken={user.uploadToken}
+                  />
+                )} />
                 <Route path="/account/profile" component={Profile} />
               </div>
             </div>
@@ -72,7 +84,10 @@ export class Account extends PureComponent {
 
 Account.propTypes = {
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  user: PropTypes.object,
+  generateUploadToken: PropTypes.func,
+  uploadTokenIsGenerating: PropTypes.bool
 }
 
 export default connect(mapState, mapDispatch)(Account)

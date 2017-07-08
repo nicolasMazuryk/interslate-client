@@ -14,6 +14,9 @@ export const REGISTER_REQUEST = 'REGISTER_REQUEST'
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
 export const REGISTER_FAILURE = 'REGISTER_FAILURE'
 
+export const GENERATE_UPLOAD_TOKEN_REQUEST = 'GENERATE_UPLOAD_TOKEN_REQUEST'
+export const GENERATE_UPLOAD_TOKEN_SUCCESS = 'GENERATE_UPLOAD_TOKEN_SUCCESS'
+export const GENERATE_UPLOAD_TOKEN_FAILURE = 'GENERATE_UPLOAD_TOKEN_FAILURE'
 
 export const loginRequest = (credentials) => {
   return {
@@ -99,3 +102,18 @@ export const registerFailure = (error) => {
     error: true
   }
 }
+
+export const generateUploadTokenRequest = () => ({
+  type: GENERATE_UPLOAD_TOKEN_REQUEST
+})
+
+export const generateUploadTokenSuccess = (uploadToken) => ({
+  type: GENERATE_UPLOAD_TOKEN_SUCCESS,
+  payload: uploadToken
+})
+
+export const generateUploadTokenFailure = (error) => ({
+  type: GENERATE_UPLOAD_TOKEN_FAILURE,
+  error: true,
+  payload: error
+})

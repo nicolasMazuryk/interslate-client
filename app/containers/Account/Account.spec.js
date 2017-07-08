@@ -4,7 +4,6 @@ import {Account} from './Account'
 import sinon from 'sinon'
 import AsideMenu from 'common/AsideMenu/AsideMenu'
 import {Route, MemoryRouter} from 'react-router-dom'
-import APIKey from './APIKey/APIKey'
 import Profile from './Profile/Profile'
 
 describe('<Account />', () => {
@@ -42,11 +41,8 @@ describe('<Account />', () => {
   })
   
   it('should render route for api-key page', () => {
-    const expected = {
-      path: '/account/api-key',
-      component: APIKey
-    }
-    expect(wrapper.find(Route).get(0).props).to.deep.equal(expected)
+    const path = '/account/api-key'
+    expect(wrapper.find(Route).get(0).props.path).to.equal(path)
   })
   
   it('should render route for profile page', () => {

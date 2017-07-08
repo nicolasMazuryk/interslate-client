@@ -15,7 +15,7 @@ describe('<PrivateRoute />', () => {
     location = {}
   })
 
-  it('should return component with props passed in PrivateRoute', () => {
+  it('should return component with componentProps passed in PrivateRoute', () => {
     user = {
       email: 'test',
       uploadToken: 'token'
@@ -24,13 +24,13 @@ describe('<PrivateRoute />', () => {
       <MemoryRouter>
         <PrivateRoute
           component={Test}
-          user={user}
+          componentProps={{user}}
           dummyProp={dummyProp}
           location={location}
         />
       </MemoryRouter>
     )
-    expect(wrapper.find(Test).prop('dummyProp')).to.equal(dummyProp)
+    expect(wrapper.find(Test).prop('user')).to.deep.equal(user)
   })
 
   it('should return Redirect component', () => {
@@ -39,7 +39,7 @@ describe('<PrivateRoute />', () => {
       <MemoryRouter>
         <PrivateRoute
           component={Test}
-          user={user}
+          componentProps={{user}}
           dummyProp={dummyProp}
           location={location}
         />

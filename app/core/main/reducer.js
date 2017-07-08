@@ -11,11 +11,15 @@ import {
   GET_CURRENT_USER_FAILURE,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
-  REGISTER_FAILURE
+  REGISTER_FAILURE,
+  GENERATE_UPLOAD_TOKEN_REQUEST,
+  GENERATE_UPLOAD_TOKEN_SUCCESS,
+  GENERATE_UPLOAD_TOKEN_FAILURE
 } from './actions'
 
 const DEFAULT_STATE = {
   loading: false,
+  uploadTokenIsGenerating: false,
   user: null,
   newUser: null,
   error: null,
@@ -64,6 +68,25 @@ const setError = (state, action) => {
   }
 }
 
+const setUploadTokenGenerating = (state) => {
+  return {
+    ...state,
+    uploadTokenIsGenerating: true
+  }
+}
+
+const setUploadToken = (state, action) => {
+  return {
+    ...state,
+    uploadTokenIsGenerating: false,
+    user: {
+      ...(state.user || {}),
+      uploadToken: action.payload
+    }
+  }
+}
+
+
 export default createReducer(DEFAULT_STATE, {
   
   [LOGIN_REQUEST]: setLoading,
@@ -80,7 +103,11 @@ export default createReducer(DEFAULT_STATE, {
 
   [REGISTER_REQUEST]: setLoading,
   [REGISTER_SUCCESS]: setNewUser,
-  [REGISTER_FAILURE]: setError
-  
+  [REGISTER_FAILURE]: setError,
+
+  [GENERATE_UPLOAD_TOKEN_REQUEST]: setUploadTokenGenerating,
+  [GENERATE_UPLOAD_TOKEN_SUCCESS]: setUploadToken,
+  [GENERATE_UPLOAD_TOKEN_FAILURE]: setError
+
 })
 

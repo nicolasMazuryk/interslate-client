@@ -8,19 +8,25 @@ import Header from 'components/Header/Header'
 import Private from 'common/PrivateRoute/PrivateRoute'
 import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {logoutRequest, getCurrentUserRequest} from 'core/main/actions'
+import {
+  logoutRequest,
+  getCurrentUserRequest,
+  generateUploadTokenRequest
+} from 'core/main/actions'
 
 const mapDispatch = (dispatch) => {
   return {
     logout: () => dispatch(logoutRequest()),
-    getCurrentUser: () => dispatch(getCurrentUserRequest())
+    getCurrentUser: () => dispatch(getCurrentUserRequest()),
+    generateUploadToken: () => dispatch(generateUploadTokenRequest())
   }
 }
 
 const mapState = ({main}) => {
   return {
     loading: main.loading,
-    user: main.user
+    user: main.user,
+    uploadTokenIsGenerating: main.uploadTokenIsGenerating
   }
 }
 
@@ -34,6 +40,8 @@ export class Main extends PureComponent {
     const {
       logout,
       user,
+      generateUploadToken,
+      uploadTokenIsGenerating
     } = this.props
 
     return (
@@ -44,12 +52,16 @@ export class Main extends PureComponent {
             <Private
               exact
               path="/translations"
-              user={user}
+              componentProps={{user}}
               component={Translations}
             />
             <Private
               path="/account"
-              user={user}
+              componentProps={{
+                user,
+                generateUploadToken,
+                uploadTokenIsGenerating
+              }}
               component={Account}
             />
           </Switch>
@@ -63,7 +75,9 @@ Main.propTypes = {
   logout: PropTypes.func,
   user: PropTypes.object,
   loading: PropTypes.bool,
+  uploadTokenIsGenerating: PropTypes.bool,
   getCurrentUser: PropTypes.func,
+  generateUploadToken: PropTypes.func
 }
 
 export default withRouter(connect(mapState, mapDispatch)(Main))

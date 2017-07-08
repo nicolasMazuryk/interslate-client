@@ -1,20 +1,14 @@
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {generateAPIKeyRequest} from 'core/account/actions'
 import {copyToClipboard} from 'core/utils'
 
-const mapState = ({account}) => {
-  return {
-    apiKey: account.APIKey,
-    APIKeyIsGenerating: account.APIKeyIsGenerating
-  }
+const mapState = () => {
+  return {}
 }
 
-const mapDispatch = (dispatch) => {
-  return {
-    generateAPIKey: () => dispatch(generateAPIKeyRequest())
-  }
+const mapDispatch = () => {
+  return {}
 }
 
 export class APIKey extends PureComponent {
@@ -30,11 +24,11 @@ export class APIKey extends PureComponent {
   
   render() {
     const {
-      apiKey,
-      APIKeyIsGenerating,
-      generateAPIKey
+      uploadToken,
+      generateUploadToken,
+      uploadTokenIsGenerating
     } = this.props
-    
+
     return (
       <div>
         <div className="content">
@@ -45,10 +39,10 @@ export class APIKey extends PureComponent {
           </p>
         </div>
         <div className="field">
-          <p className={`control textarea-control${APIKeyIsGenerating && ' is-loading'}`}>
+          <p className={`control textarea-control${uploadTokenIsGenerating && ' is-loading'}`}>
             <textarea
               readOnly
-              value={apiKey}
+              value={uploadToken}
               ref={(element) => this.textArea = element}
               className="textarea"
               placeholder="API key"
@@ -58,7 +52,7 @@ export class APIKey extends PureComponent {
         <div className="field is-grouped">
           <p className="control">
             <button
-              onClick={generateAPIKey}
+              onClick={() => generateUploadToken()}
               className="button is-success generate-api-key"
             >
               Generate
@@ -76,9 +70,9 @@ export class APIKey extends PureComponent {
 }
 
 APIKey.propTypes = {
-  apiKey: PropTypes.string,
-  APIKeyIsGenerating: PropTypes.bool,
-  generateAPIKey: PropTypes.func,
+  uploadToken: PropTypes.string,
+  uploadTokenIsGenerating: PropTypes.bool,
+  generateUploadToken: PropTypes.func,
   copyToClipboard: PropTypes.func
 }
 
