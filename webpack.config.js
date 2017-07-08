@@ -78,7 +78,8 @@ const config = {
     port: 9090,
     proxy: {
       '/api/v1': 'http://localhost:8082',
-      '/auth': 'http://localhost:8082'
+      '/auth': 'http://localhost:8082',
+      '/uploads': 'http://localhost:8082'
     }
   }
 }

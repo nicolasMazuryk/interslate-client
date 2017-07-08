@@ -50,7 +50,7 @@ export function* getLanguages() {
 export function* uploadTranslations() {
   try {
     const uploadToken = yield select((state) => state.main.user.uploadToken)
-    const {payload} = yield call(request, `/api/v1/uploads/translations?token=${uploadToken}`)
+    const {payload} = yield call(request, `/uploads/translations?token=${uploadToken}`)
     yield put(uploadTranslationsSuccess(payload))
   }
   catch (error) {
