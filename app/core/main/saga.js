@@ -1,4 +1,4 @@
-import {put, call, all, takeLatest} from 'redux-saga/effects'
+import {put, call, all, select, takeLatest} from 'redux-saga/effects'
 import request from 'core/request'
 import {
   setLocalStorageItem,
@@ -11,6 +11,7 @@ import {
   LOGOUT_REQUEST,
   GET_CURRENT_USER_REQUEST,
   REGISTER_REQUEST,
+  GENERATE_UPLOAD_TOKEN_REQUEST,
   loginSuccess,
   loginFailure,
   logoutSuccess,
@@ -18,7 +19,9 @@ import {
   getCurrentUserSuccess,
   getCurrentUserFailure,
   registerSuccess,
-  registerFailure
+  registerFailure,
+  generateUploadTokenSuccess,
+  generateUploadTokenFailure
 } from './actions'
 
 const provideToken = () => {
@@ -86,11 +89,24 @@ function* register(action) {
   }
 }
 
+function* generateAPIKey() {
+  try {
+    const userId = yield select(state => state.main.user._id)
+    const token = yield call(getLocalStorageItem, 'token')
+    const {payload} = yield call(request, `/api/v1/users/${userId}/uploadToken`, {token})
+    yield put(generateUploadTokenSuccess(payload))
+  }
+  catch (error) {
+    yield put(generateUploadTokenFailure(error))
+  }
+}
+
 export default function* main() {
   yield all([
     takeLatest(LOGIN_REQUEST, login),
     takeLatest(LOGOUT_REQUEST, logout),
     takeLatest(GET_CURRENT_USER_REQUEST, getCurrentUser),
-    takeLatest(REGISTER_REQUEST, register)
+    takeLatest(REGISTER_REQUEST, register),
+    takeLatest(GENERATE_UPLOAD_TOKEN_REQUEST, generateAPIKey)
   ])
 }

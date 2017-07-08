@@ -4,31 +4,31 @@ import {mount} from 'enzyme'
 import sinon from 'sinon'
 
 describe('<APIKey />', () => {
-  let wrapper, key, generateAPIKey,
-    APIKeyIsGenerating, copyToClipboard
+  let wrapper, uploadToken, generateUploadToken,
+    uploadTokenIsGenerating, copyToClipboard
   
   before(() => {
-    key = 'test'
-    APIKeyIsGenerating = false
-    generateAPIKey = sinon.spy()
+    uploadToken = 'test'
+    uploadTokenIsGenerating = false
+    generateUploadToken = sinon.spy()
     copyToClipboard = sinon.spy()
     wrapper = mount(
       <APIKey
-        apiKey={key}
-        APIKeyIsGenerating={APIKeyIsGenerating}
-        generateAPIKey={generateAPIKey}
+        uploadToken={uploadToken}
+        uploadTokenIsGenerating={uploadTokenIsGenerating}
+        generateUploadToken={generateUploadToken}
         copyToClipboard={copyToClipboard}
       />
     )
   })
   
   it('should render textarea for api key', () => {
-    expect(wrapper.find('textarea').props().value).to.equal(key)
+    expect(wrapper.find('textarea').props().value).to.equal(uploadToken)
   })
   
   it('should render button for generating key', () => {
     wrapper.find('button.generate-api-key').simulate('click')
-    expect(generateAPIKey.calledOnce).to.be.true
+    expect(generateUploadToken.calledOnce).to.be.true
   })
   
   it('should render button for copying key to clipboard', () => {
@@ -38,7 +38,7 @@ describe('<APIKey />', () => {
   })
   
   it('should show loader in textarea if key is generating', () => {
-    wrapper.setProps({APIKeyIsGenerating: true})
+    wrapper.setProps({uploadTokenIsGenerating: true})
     expect(wrapper.find('.textarea-control').props().className).to.contain('is-loading')
   })
 })
