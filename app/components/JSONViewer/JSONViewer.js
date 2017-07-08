@@ -1,23 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Code from 'common/Code/Code'
 
 const JSONViewer = (props) => {
-  const style = {
-    height: '70vh',
-    overflow: 'scroll'
-  }
-  const json = JSON.stringify(props.json, null, 2)
-
   return (
     <div className="field">
-      <p className="control">
-        <textarea
-          style={style}
-          className="textarea"
-          value={json}
-          disabled
+      <div className="control">
+        <Code
+          data={props.json}
+          withHTML={false}
         />
-      </p>
+      </div>
     </div>
   )
 }
@@ -27,4 +20,3 @@ JSONViewer.propTypes = {
 }
 
 export default JSONViewer
-

@@ -54,6 +54,7 @@
   "dependencies": {
     "bulma": "^0.4.2",
     "js-cookie": "^2.1.4",
+    "prismjs": "^1.6.0",
     "prop-types": "15.5.8",
     "ramda": "0.23.0",
     "react": "15.5.4",

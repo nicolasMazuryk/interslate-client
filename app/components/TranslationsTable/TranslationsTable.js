@@ -36,21 +36,23 @@ class TranslationsTable extends PureComponent {
     const {translations} = this.props
 
     return (
-      <table className="table is-bordered">
-        <thead>
-        <tr>
-          <th>Key</th>
-          <th>Translation</th>
-          <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {translations.length > 0
-          ? this.makeTranslations()
-          : <tr><td style={{textAlign: 'center'}} colSpan={3}>No data is available</td></tr>
-        }
-        </tbody>
-      </table>
+      <div className="box">
+        <table className="table is-bordered">
+          <thead>
+          <tr>
+            <th style={{width: '30%'}}>Key</th>
+            <th style={{width: '60%'}}>Translation</th>
+            <th style={{width: '10%'}}>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          {translations.length > 0
+            ? this.makeTranslations()
+            : <tr><td style={{textAlign: 'center'}} colSpan={3}>No data is available</td></tr>
+          }
+          </tbody>
+        </table>
+      </div>
     )
   }
 
