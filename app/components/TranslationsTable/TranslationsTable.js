@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import TranslationsRow from './TranslationsRow/TranslationsRow'
+import Pagination from 'common/Pagination/Pagination'
 
 class TranslationsTable extends PureComponent {
 
@@ -52,6 +53,12 @@ class TranslationsTable extends PureComponent {
           }
           </tbody>
         </table>
+        <Pagination
+          shownCount={10}
+          totalCount={213}
+          loadItems={() => {}}
+          limitCountChange={() => {}}
+        />
       </div>
     )
   }

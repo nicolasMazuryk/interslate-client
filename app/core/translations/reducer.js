@@ -41,6 +41,11 @@ const DEFAULT_STATE = {
   searchFilterValue: '',
   data: [],
   uploadData: {},
+  pagination: {
+    limit: 10,
+    total: 0,
+    loaded: 0
+  },
   error: null
 }
 

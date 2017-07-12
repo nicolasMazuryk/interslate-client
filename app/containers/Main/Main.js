@@ -60,7 +60,7 @@ export class Main extends PureComponent {
               componentProps={{
                 user,
                 generateUploadToken,
-                uploadTokenIsGenerating
+                uploadTokenIsGenerating,
               }}
               component={Account}
             />

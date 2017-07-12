@@ -89,7 +89,7 @@ function* register(action) {
   }
 }
 
-function* generateAPIKey() {
+function*  generateAPIKey() {
   try {
     const userId = yield select(state => state.main.user._id)
     const token = yield call(getLocalStorageItem, 'token')
