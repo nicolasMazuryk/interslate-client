@@ -2,6 +2,8 @@ import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import TranslationsRow from './TranslationsRow/TranslationsRow'
 import Pagination from 'common/Pagination/Pagination'
+import Loader from 'common/Loader/Loader'
+import Fade from 'common/Fade/Fade'
 
 class TranslationsTable extends PureComponent {
 
@@ -34,10 +36,19 @@ class TranslationsTable extends PureComponent {
   }
 
   render() {
-    const {translations} = this.props
+    const {
+      translations,
+      pagination: {total, limit},
+      paginationLimitCountChange,
+      translationsAreLoading,
+      getTranslations
+    } = this.props
 
     return (
-      <div className="box">
+      <div style={{position: 'relative'}} className="box">
+        <Fade show={translationsAreLoading}>
+          <Loader/>
+        </Fade>
         <table className="table is-bordered">
           <thead>
           <tr>
@@ -51,13 +62,16 @@ class TranslationsTable extends PureComponent {
             ? this.makeTranslations()
             : <tr><td style={{textAlign: 'center'}} colSpan={3}>No data is available</td></tr>
           }
+          
           </tbody>
         </table>
         <Pagination
-          shownCount={10}
-          totalCount={213}
-          loadItems={() => {}}
-          limitCountChange={() => {}}
+          limitCount={limit}
+          totalCount={total}
+          shownCount={translations.length}
+          loading={translationsAreLoading}
+          loadItems={getTranslations}
+          limitCountChange={paginationLimitCountChange}
         />
       </div>
     )
@@ -71,8 +85,15 @@ TranslationsTable.propTypes = {
     value:PropTypes.string,
     _id: PropTypes.string
   })),
+  pagination: PropTypes.shape({
+    limit: PropTypes.number,
+    total: PropTypes.number
+  }),
+  translationsAreLoading: PropTypes.bool,
   onTranslationRemove: PropTypes.func,
-  onTranslationUpdate: PropTypes.func
+  onTranslationUpdate: PropTypes.func,
+  paginationLimitCountChange: PropTypes.func,
+  getTranslations: PropTypes.func
 }
 
 export default TranslationsTable

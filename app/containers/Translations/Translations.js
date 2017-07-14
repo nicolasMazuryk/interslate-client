@@ -11,7 +11,8 @@ import {
   removeTranslationRequest,
   updateTranslationRequest,
   searchFilterChange,
-  uploadTranslationsRequest
+  uploadTranslationsRequest,
+  paginationLimitCountChange
 } from 'core/translations/actions'
 import {
   applyFilters,
@@ -21,7 +22,6 @@ import AddTranslationModal from 'components/AddTranslationModal/AddTranslationMo
 import TranslationsTable from 'components/TranslationsTable/TranslationsTable'
 import ActionBar from 'components/ActionBar/ActionBar'
 import JSONViewer from 'components/JSONViewer/JSONViewer'
-import Loader from 'common/Loader/Loader'
 
 const mapState = (state) => {
   const {translations} = state
@@ -31,6 +31,7 @@ const mapState = (state) => {
     addTranslationModalIsOpened: translations.addTranslationModalIsOpened,
     translationsAreLoading: translations.translationsAreLoading,
     selectedLanguage: translations.selectedLanguage,
+    pagination: translations.pagination,
     languages: getMappedLanguages(state)
   }
 }
@@ -46,7 +47,8 @@ const mapDispatch = (dispatch) => {
     closeAddTranslationModal: () => dispatch(closeAddTranslationModal()),
     selectLanguage: (key) => dispatch(selectLanguage(key)),
     searchFilterChange: (searchValue) => dispatch(searchFilterChange(searchValue)),
-    getUploadTranslations: () => dispatch(uploadTranslationsRequest())
+    getUploadTranslations: () => dispatch(uploadTranslationsRequest()),
+    paginationLimitCountChange: (limit) => dispatch(paginationLimitCountChange(limit))
   }
 }
 
@@ -92,6 +94,9 @@ export class Translations extends PureComponent {
       selectedLanguage,
       searchFilterChange,
       uploadTranslationsData,
+      pagination,
+      paginationLimitCountChange,
+      getTranslations,
       user
     } = this.props
 
@@ -105,27 +110,24 @@ export class Translations extends PureComponent {
           searchFilterChange={searchFilterChange}
           uploadToken={user.uploadToken}
         />
-          {translationsAreLoading ?
-            (
-              <div className="container"><Loader /></div>
-            ) :
-            (
-              <div className="container">
-                <div className="columns">
-                  <div className="column is-two-thirds">
-                    <TranslationsTable
-                      onTranslationRemove={removeTranslation}
-                      onTranslationUpdate={updateTranslation}
-                      translations={translations}
-                    />
-                  </div>
-                  <div className="column is-one-third">
-                    <JSONViewer json={uploadTranslationsData} />
-                  </div>
-                </div>
-              </div>
-            )
-          }
+        <div className="container">
+          <div className="columns">
+            <div className="column is-two-thirds">
+              <TranslationsTable
+                onTranslationRemove={removeTranslation}
+                onTranslationUpdate={updateTranslation}
+                translations={translations}
+                pagination={pagination}
+                paginationLimitCountChange={paginationLimitCountChange}
+                getTranslations={getTranslations}
+                translationsAreLoading={translationsAreLoading}
+              />
+            </div>
+            <div className="column is-one-third">
+              <JSONViewer json={uploadTranslationsData} />
+            </div>
+          </div>
+        </div>
         <AddTranslationModal
           opened={addTranslationModalIsOpened}
           onClose={closeAddTranslationModal}
@@ -156,6 +158,8 @@ Translations.propTypes = {
   translations: PropTypes.arrayOf(translationShape),
   languages: PropTypes.arrayOf(languageShape),
   selectedLanguage: PropTypes.string,
+  uploadTranslationsData: PropTypes.object,
+  pagination: PropTypes.object,
   openAddTranslationModal: PropTypes.func,
   addTranslation: PropTypes.func,
   removeTranslation: PropTypes.func,
@@ -166,7 +170,7 @@ Translations.propTypes = {
   selectLanguage: PropTypes.func,
   searchFilterChange: PropTypes.func,
   getUploadTranslations: PropTypes.func,
-  uploadTranslationsData: PropTypes.object
+  paginationLimitCountChange: PropTypes.func
 }
 
 export default connect(mapState, mapDispatch)(Translations)

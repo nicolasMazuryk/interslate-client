@@ -6,8 +6,15 @@ const Pagination = (props) => {
     shownCount,
     totalCount,
     limitCountChange,
-    loadItems
+    loadItems,
+    loading
   } = props
+  
+  const onLimitCountChange = (event) => {
+    const {value} = event.target
+    limitCountChange(+value)
+  }
+  
   return (
     <div className="level">
       <div className="level-left">
@@ -21,11 +28,11 @@ const Pagination = (props) => {
         <div className="level-item">
           <p className="control">
           <span className="select">
-            <select>
-              <option>10</option>
-              <option>50</option>
-              <option>100</option>
-              <option>All</option>
+            <select onChange={onLimitCountChange}>
+              <option value={10}>10</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+              <option value={0}>All</option>
             </select>
           </span>
           </p>
@@ -34,7 +41,8 @@ const Pagination = (props) => {
           <p className="control">
             <button
               onClick={loadItems}
-              className="button"
+              disabled={shownCount === totalCount}
+              className={`button ${loading && 'is-loading'}`}
             >
               Load more
             </button>
@@ -48,6 +56,7 @@ const Pagination = (props) => {
 Pagination.propTypes = {
   shownCount: PropTypes.number,
   totalCount: PropTypes.number,
+  loading: PropTypes.bool,
   limitCountChange: PropTypes.func,
   loadItems: PropTypes.func.isRequired
 }

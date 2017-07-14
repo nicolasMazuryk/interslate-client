@@ -27,7 +27,8 @@ import {
   CLOSE_ADD_TRANSLATION_MODAL,
 
   SELECT_LANGUAGE,
-  SEARCH_FILTER_CHANGE
+  SEARCH_FILTER_CHANGE,
+  PAGINATION_LIMIT_COUNT_CHANGE
 } from './actions'
 
 const DEFAULT_STATE = {
@@ -44,7 +45,7 @@ const DEFAULT_STATE = {
   pagination: {
     limit: 10,
     total: 0,
-    loaded: 0
+    skip: 0
   },
   error: null
 }
@@ -57,11 +58,17 @@ const getTranslationsRequest = (state) => {
 }
 
 const getTranslationsSuccess = (state, action) => {
+  const {meta, translations} = action.payload
   return {
     ...state,
     translationsAreLoading: false,
-    data: action.payload,
-    error: null
+    data: translations,
+    error: null,
+    pagination: {
+      ...state.pagination,
+      total: meta.total,
+      skip: translations.length
+    }
   }
 }
 
@@ -227,6 +234,16 @@ const searchFilterChange = (state, action) => {
   }
 }
 
+const paginationLimitCountChange = (state, action) => {
+  return {
+    ...state,
+    pagination: {
+      ...state.pagination,
+      limit: action.payload
+    }
+  }
+}
+
 export default createReducer(DEFAULT_STATE, {
   [GET_TRANSLATIONS_REQUEST]: getTranslationsRequest,
   [GET_TRANSLATIONS_SUCCESS]: getTranslationsSuccess,
@@ -255,5 +272,6 @@ export default createReducer(DEFAULT_STATE, {
   [CLOSE_ADD_TRANSLATION_MODAL]: closeTranslationModal,
 
   [SELECT_LANGUAGE]: selectLanguage,
-  [SEARCH_FILTER_CHANGE]: searchFilterChange
+  [SEARCH_FILTER_CHANGE]: searchFilterChange,
+  [PAGINATION_LIMIT_COUNT_CHANGE]: paginationLimitCountChange
 })

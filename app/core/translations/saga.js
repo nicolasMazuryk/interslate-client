@@ -28,8 +28,10 @@ import {
 export function* getTranslations() {
   try {
     const token = getLocalStorageItem('token')
-    const {payload} = yield call(request, '/api/v1/translations', {token})
-    yield put(getTranslationsSuccess(payload))
+    const {limit, skip} = yield select(state => state.translations.pagination)
+    const query = `limit=${limit}&skip=${skip}`
+    const {meta, payload} = yield call(request, `/api/v1/translations?${query}`, {token})
+    yield put(getTranslationsSuccess({meta, translations: payload}))
   }
   catch (error) {
     yield put(getTranslationsFailure(error))
