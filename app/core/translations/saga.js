@@ -1,7 +1,7 @@
 import {call, select, put, all, takeLatest, takeEvery} from 'redux-saga/effects'
 import request from 'core/request'
 import {getLanguage} from './selectors'
-import {getLocalStorageItem} from 'core/utils'
+import {getLocalStorageItem, convertArrayDataForStore} from 'core/utils'
 import {
   GET_TRANSLATIONS_REQUEST,
   GET_LANGUAGES_REQUEST,
@@ -31,7 +31,8 @@ export function* getTranslations() {
     const {limit, skip} = yield select(state => state.translations.pagination)
     const query = `limit=${limit}&skip=${skip}`
     const {meta, payload} = yield call(request, `/api/v1/translations?${query}`, {token})
-    yield put(getTranslationsSuccess({meta, translations: payload}))
+    const translations = convertArrayDataForStore('_id', payload)
+    yield put(getTranslationsSuccess({meta, translations}))
   }
   catch (error) {
     yield put(getTranslationsFailure(error))

@@ -40,11 +40,10 @@ const DEFAULT_STATE = {
   languages: [],
   selectedLanguage: '',
   searchFilterValue: '',
-  data: [],
+  data: {},
   uploadData: {},
   pagination: {
     limit: 10,
-    total: 0,
     skip: 0
   },
   error: null
@@ -59,15 +58,20 @@ const getTranslationsRequest = (state) => {
 
 const getTranslationsSuccess = (state, action) => {
   const {meta, translations} = action.payload
+  const translationsLength = Object.keys(translations).length
+
   return {
     ...state,
     translationsAreLoading: false,
-    data: translations,
+    data: {
+      ...state.data,
+      ...translations
+    },
     error: null,
     pagination: {
       ...state.pagination,
       total: meta.total,
-      skip: translations.length
+      skip: translationsLength
     }
   }
 }
@@ -136,15 +140,16 @@ const removeTranslationRequest = (state) => {
 }
 
 const removeTranslationSuccess = (state, action) => {
-  const index = state.data.findIndex(({_id}) => _id === action.payload)
+  const newData = Object.keys(state.data).reduce((acc, _id) => {
+    if (_id !== action.payload) {
+      return {...acc, [_id]: state.data[_id]}
+    }
+    return acc
+  }, {})
+
   return {
     ...state,
-    removing: false,
-    data: [
-      ...state.data.slice(0, index),
-      ...state.data.slice(index + 1)
-    ],
-    error: null
+    data: newData
   }
 }
 
@@ -167,16 +172,10 @@ const updateTranslationSuccess = (state, action) => {
   return {
     ...state,
     updating: false,
-    data: state.data.map((target) => {
-      if (target._id === action.payload._id) {
-        return {
-          ...target,
-          key: action.payload.key,
-          values: action.payload.values
-        }
-      }
-      return target
-    }),
+    data: {
+      ...state.data,
+      [action.payload._id]: action.payload
+    },
     error: null
   }
 }

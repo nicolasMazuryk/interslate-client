@@ -20,7 +20,8 @@ class TranslationsTable extends PureComponent {
       onTranslationUpdate
     } = this.props
 
-    return translations.map(({key, values, _id}) => {
+    return Object.keys(translations).map((_id) => {
+      const {key, values} = translations[_id]
       const translation = (values[0] || {}).translation
       return (
         <TranslationsRow
@@ -44,6 +45,8 @@ class TranslationsTable extends PureComponent {
       getTranslations
     } = this.props
 
+    const translationsLength = Object.keys(translations).length
+
     return (
       <div style={{position: 'relative'}} className="box">
         <Fade show={translationsAreLoading}>
@@ -58,17 +61,16 @@ class TranslationsTable extends PureComponent {
           </tr>
           </thead>
           <tbody>
-          {translations.length > 0
+          {translationsLength > 0
             ? this.makeTranslations()
             : <tr><td style={{textAlign: 'center'}} colSpan={3}>No data is available</td></tr>
           }
-          
           </tbody>
         </table>
         <Pagination
           limitCount={limit}
           totalCount={total}
-          shownCount={translations.length}
+          shownCount={translationsLength}
           loading={translationsAreLoading}
           loadItems={getTranslations}
           limitCountChange={paginationLimitCountChange}
@@ -80,11 +82,7 @@ class TranslationsTable extends PureComponent {
 }
 
 TranslationsTable.propTypes = {
-  translations: PropTypes.arrayOf(PropTypes.shape({
-    key: PropTypes.string,
-    value:PropTypes.string,
-    _id: PropTypes.string
-  })),
+  translations: PropTypes.object,
   pagination: PropTypes.shape({
     limit: PropTypes.number,
     total: PropTypes.number

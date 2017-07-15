@@ -145,17 +145,11 @@ const languageShape = PropTypes.shape({
   value: PropTypes.string
 })
 
-const translationShape = PropTypes.shape({
-  key: PropTypes.string,
-  translations: PropTypes.array,
-  _id: PropTypes.string
-})
-
 Translations.propTypes = {
   user: PropTypes.object,
   addTranslationModalIsOpened: PropTypes.bool,
   translationsAreLoading: PropTypes.bool,
-  translations: PropTypes.arrayOf(translationShape),
+  translations: PropTypes.object,
   languages: PropTypes.arrayOf(languageShape),
   selectedLanguage: PropTypes.string,
   uploadTranslationsData: PropTypes.object,
