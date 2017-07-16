@@ -3,18 +3,21 @@ import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 
 const Header = ({logout, isLoggedIn}) => {
+  const logoLinkPath = isLoggedIn ? '/translations' : '/'
+  const rightMenuStyle = {display: isLoggedIn ? 'flex' : 'none'}
+
   return (
     <nav className="nav has-shadow">
       <div className="nav-left">
-        <a className="nav-item">
+        <Link to={logoLinkPath} className="nav-item logotype-link">
           <img
             className="logotype"
             src="http://bulma.io/images/bulma-logo.png"
             alt="Interslate logo"
           />
-        </a>
+        </Link>
       </div>
-      <div style={{display: isLoggedIn ? 'flex' : 'none'}} className="nav-right nav-menu">
+      <div style={rightMenuStyle} className="nav-right nav-menu">
         <div className="nav-item ">
           <Link to="/translations">Translations</Link>
         </div>
