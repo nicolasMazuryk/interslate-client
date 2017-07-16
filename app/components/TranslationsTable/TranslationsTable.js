@@ -2,6 +2,8 @@ import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import TranslationsRow from './TranslationsRow/TranslationsRow'
 import Pagination from 'common/Pagination/Pagination'
+import Loader from 'common/Loader/Loader'
+import Fade from 'common/Fade/Fade'
 
 class TranslationsTable extends PureComponent {
 
@@ -18,7 +20,8 @@ class TranslationsTable extends PureComponent {
       onTranslationUpdate
     } = this.props
 
-    return translations.map(({key, values, _id}) => {
+    return Object.keys(translations).map((_id) => {
+      const {key, values} = translations[_id]
       const translation = (values[0] || {}).translation
       return (
         <TranslationsRow
@@ -34,10 +37,21 @@ class TranslationsTable extends PureComponent {
   }
 
   render() {
-    const {translations} = this.props
+    const {
+      translations,
+      pagination: {total, limit},
+      paginationLimitCountChange,
+      translationsAreLoading,
+      getTranslations
+    } = this.props
+
+    const translationsLength = Object.keys(translations).length
 
     return (
-      <div className="box">
+      <div style={{position: 'relative'}} className="box">
+        <Fade show={translationsAreLoading}>
+          <Loader/>
+        </Fade>
         <table className="table is-bordered">
           <thead>
           <tr>
@@ -47,17 +61,19 @@ class TranslationsTable extends PureComponent {
           </tr>
           </thead>
           <tbody>
-          {translations.length > 0
+          {translationsLength > 0
             ? this.makeTranslations()
             : <tr><td style={{textAlign: 'center'}} colSpan={3}>No data is available</td></tr>
           }
           </tbody>
         </table>
         <Pagination
-          shownCount={10}
-          totalCount={213}
-          loadItems={() => {}}
-          limitCountChange={() => {}}
+          limitCount={limit}
+          totalCount={total}
+          shownCount={translationsLength}
+          loading={translationsAreLoading}
+          loadItems={getTranslations}
+          limitCountChange={paginationLimitCountChange}
         />
       </div>
     )
@@ -66,13 +82,16 @@ class TranslationsTable extends PureComponent {
 }
 
 TranslationsTable.propTypes = {
-  translations: PropTypes.arrayOf(PropTypes.shape({
-    key: PropTypes.string,
-    value:PropTypes.string,
-    _id: PropTypes.string
-  })),
+  translations: PropTypes.object,
+  pagination: PropTypes.shape({
+    limit: PropTypes.number,
+    total: PropTypes.number
+  }),
+  translationsAreLoading: PropTypes.bool,
   onTranslationRemove: PropTypes.func,
-  onTranslationUpdate: PropTypes.func
+  onTranslationUpdate: PropTypes.func,
+  paginationLimitCountChange: PropTypes.func,
+  getTranslations: PropTypes.func
 }
 
 export default TranslationsTable

@@ -4,7 +4,7 @@ import {shallow} from 'enzyme'
 import ActionBar from 'components/ActionBar/ActionBar'
 import AddTranslationModal from 'components/AddTranslationModal/AddTranslationModal'
 import TranslationsTable from 'components/TranslationsTable/TranslationsTable'
-import Loader from 'common/Loader/Loader'
+import JSONViewer from 'components/JSONViewer/JSONViewer'
 
 describe('<Translations />', () => {
   let wrapper, user
@@ -18,7 +18,7 @@ describe('<Translations />', () => {
       <Translations
         translationsAreLoading={false}
         user={user}
-        translations={[]}
+        translations={{}}
       />
     )
   })
@@ -31,18 +31,11 @@ describe('<Translations />', () => {
     expect(wrapper.find(AddTranslationModal)).to.have.length(1)
   })
 
-  it('should render loader if translations are loading', () => {
-    const wrapper = shallow(
-      <Translations
-        translationsAreLoading={true}
-        user={user}
-        translations={[]}
-      />
-    )
-    expect(wrapper.find(Loader)).to.have.length(1)
+  it('should render translations table if translations are loaded', () => {
+    expect(wrapper.find(TranslationsTable)).to.have.length(1)
   })
 
-  it('should render translations table if translations are loaded', () => {
-    expect(TranslationsTable).to.have.length(1)
+  it('should render JSON viewer', () => {
+    expect(wrapper.find(JSONViewer)).to.have.length(1)
   })
 })

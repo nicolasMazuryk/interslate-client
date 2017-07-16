@@ -33,6 +33,15 @@ export const copyToClipboard = (htmlElement) => {
   }
 }
 
+export const convertArrayDataForStore = (field, data) => {
+  return data.reduce((acc, item) => {
+    return {
+      ...acc,
+      [item[field]]: item
+    }
+  }, {})
+}
+
 export const setLocalStorageItem = (name, value) => localStorage.setItem(name, value)
 export const getLocalStorageItem = (name) => localStorage.getItem(name)
 export const getCookie = (name) => Cookie.get(name)
