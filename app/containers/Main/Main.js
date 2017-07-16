@@ -5,7 +5,8 @@ import Translations from 'containers/Translations/Translations'
 import Account from 'containers/Account/Account'
 import Auth from 'containers/Auth/Auth'
 import Header from 'components/Header/Header'
-import Private from 'common/PrivateRoute/PrivateRoute'
+import PrivateRoute from 'common/PrivateRoute/PrivateRoute'
+import IndexRoute from 'common/IndexRoute/IndexRoute'
 import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {
@@ -43,19 +44,21 @@ export class Main extends PureComponent {
       generateUploadToken,
       uploadTokenIsGenerating
     } = this.props
+    const isLoggedIn = !!user
 
     return (
       <main>
-        <Header isLoggedIn={!!user} logout={logout} />
+        <Header isLoggedIn={isLoggedIn} logout={logout} />
           <Switch>
             <Route path="/enter" component={Auth} />
-            <Private
+            <IndexRoute exact path="/" isLoggedIn={isLoggedIn}/>
+            <PrivateRoute
               exact
               path="/translations"
               componentProps={{user}}
               component={Translations}
             />
-            <Private
+            <PrivateRoute
               path="/account"
               componentProps={{
                 user,

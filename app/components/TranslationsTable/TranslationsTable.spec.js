@@ -12,7 +12,8 @@ describe('<TranslationsTable />', () => {
     pagination,
     translationsAreLoading,
     onTranslationRemove,
-    onTranslationUpdate
+    onTranslationUpdate,
+    getTranslations
 
   before(() => {
     pagination = {
@@ -27,11 +28,13 @@ describe('<TranslationsTable />', () => {
     }
     onTranslationUpdate = sinon.spy()
     onTranslationRemove = sinon.spy()
+    getTranslations = sinon.spy()
     wrapper = mount(
       <TranslationsTable
         pagination={pagination}
         translationsAreLoading={translationsAreLoading}
         translations={translations}
+        getTranslations={getTranslations}
         onTranslationUpdate={onTranslationUpdate}
         onTranslationRemove={onTranslationRemove}
       />
@@ -60,6 +63,7 @@ describe('<TranslationsTable />', () => {
       <TranslationsTable
         pagination={pagination}
         translations={{}}
+        getTranslations={getTranslations}
         onTranslationUpdate={onTranslationUpdate}
         onTranslationRemove={onTranslationRemove}
       />
