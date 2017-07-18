@@ -52,7 +52,14 @@ describe('<LoginForm />', () => {
     expect(wrapper.state('password')).to.equal(value)
   })
 
+  it('should not call onSubmit callback if email pattern is invalid', () => {
+    wrapper.setState({email: 'testmailcom'})
+    wrapper.find('button').simulate('click')
+    expect(onSubmit.calledOnce).to.be.false
+  })
+
   it('should call onSubmit callback when auth button is clicked', () => {
+    wrapper.setState({email: 'test@mail.com'})
     wrapper.find('button').simulate('click')
     expect(onSubmit.calledWith(wrapper.state())).to.be.true
   })

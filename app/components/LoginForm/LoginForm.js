@@ -94,7 +94,7 @@ class LoginForm extends PureComponent {
           onChange={this.onChange}
         />
         <AuthButton
-          text="Login"
+          text="Continue"
           onClick={this.onSubmit}
         />
       </form>

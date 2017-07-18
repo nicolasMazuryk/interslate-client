@@ -87,7 +87,7 @@ class LoginForm extends PureComponent {
     } = this.state
 
     return (
-      <form>
+      <form style={{width: '100%'}}>
         <Input
           required
           label="Email"
@@ -117,7 +117,7 @@ class LoginForm extends PureComponent {
           onChange={this.onChange}
         />
         <AuthButton
-          text="Register"
+          text="Continue"
           onClick={this.onSubmit}
         />
       </form>
