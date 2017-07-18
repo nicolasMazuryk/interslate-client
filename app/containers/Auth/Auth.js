@@ -100,8 +100,27 @@ export class Auth extends PureComponent {
                   </li>
                 </ul>
               </div>
-              {this.displayForm()}
-              <a href="http://127.0.0.1:9090/auth/google">Google</a>
+              <div className="level">
+                <div className="level-item">
+                  {this.displayForm()}
+                </div>
+              </div>
+              <div className="level">
+                <div className="level-item">
+                  ---- or ----
+                </div>
+              </div>
+              <div className="level">
+                <div className="level-item">
+                  <a
+                    style={{backgroundColor: '#ea4335', width: '100%'}}
+                    className="button is-danger"
+                    href="http://127.0.0.1:9090/auth/google"
+                  >
+                    Enter with Google
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -8,19 +8,17 @@ const AuthButton = (props) => {
   } = props
 
   return (
-    <div className="level">
-      <div className="level-left" />
-      <div className="level-right">
-        <div className="level-item">
-          <button
-            type="submit"
-            onClick={onClick}
-            name="enter"
-            className="button is-primary"
-          >
-            {text}
-          </button>
-        </div>
+    <div style={{paddingTop: '4%'}} className="level">
+      <div className="level-item">
+        <button
+          style={{width: '100%'}}
+          type="submit"
+          onClick={onClick}
+          name="enter"
+          className="button is-primary"
+        >
+          {text}
+        </button>
       </div>
     </div>
   )
