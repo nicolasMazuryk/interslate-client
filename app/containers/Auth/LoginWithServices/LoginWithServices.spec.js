@@ -1,6 +1,6 @@
 import React from 'react'
 import {mount} from 'enzyme'
-import LoginWithServices from 'components/LoginWithServices/LoginWithServices'
+import LoginWithServices from 'containers/Auth/LoginWithServices/LoginWithServices'
 
 describe('<LoginWithServices />', () => {
   let wrapper, text

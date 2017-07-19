@@ -31,7 +31,11 @@ class LoginForm extends PureComponent {
     const field = target.getAttribute('name')
 
     this.setState({
-      [field]: value.trim()
+      [field]: value.trim(),
+      validation: {
+        ...this.state.validation,
+        [field]: ''
+      }
     })
   }
 
@@ -51,7 +55,7 @@ class LoginForm extends PureComponent {
       result.password = 'Invalid password. Minimum 2 symbols.'
     }
     if (confirmPassword !== password) {
-      result.confirmPassword = 'Invalid confirmation password. Passwords don\'t match.'
+      result.confirmPassword = 'Invalid password confirmation. Passwords don\'t match.'
     }
 
     const isValid = Object.keys(result).length === 0

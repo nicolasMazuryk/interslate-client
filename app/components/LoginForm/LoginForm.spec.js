@@ -52,10 +52,36 @@ describe('<LoginForm />', () => {
     expect(wrapper.state('password')).to.equal(value)
   })
 
+  it('should validate email', () => {
+    const invalidEmail = 'email#invalid.com'
+    const event = {
+      target: {
+        getAttribute: () => 'email',
+        value: invalidEmail
+      }
+    }
+    wrapper.find({type: 'email', name: 'email'}).simulate('change', event)
+    wrapper.find('button').simulate('click')
+    const validation = wrapper.state('validation')
+    expect(validation.email).to.equal('Invalid email pattern. Example: mymail@gmail.com.')
+  })
+
   it('should not call onSubmit callback if email pattern is invalid', () => {
     wrapper.setState({email: 'testmailcom'})
     wrapper.find('button').simulate('click')
     expect(onSubmit.calledOnce).to.be.false
+  })
+
+  it('should reset validation text on change', () => {
+    const event = {
+      target: {
+        getAttribute: () => 'email',
+        value: 'em'
+      }
+    }
+    wrapper.setState({validation: {email: 'Invalid email pattern. Example: mymail@gmail.com.'}})
+    wrapper.find({type: 'email', name: 'email'}).simulate('change', event)
+    expect(wrapper.state('validation').email).to.equal('')
   })
 
   it('should call onSubmit callback when auth button is clicked', () => {

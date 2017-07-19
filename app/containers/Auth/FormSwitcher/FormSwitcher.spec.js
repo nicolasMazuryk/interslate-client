@@ -1,6 +1,6 @@
 import React from 'react'
 import {mount} from 'enzyme'
-import FormSwitcher from 'components/FormSwitcher/FormSwitcher'
+import FormSwitcher from 'containers/Auth/FormSwitcher/FormSwitcher'
 import sinon from 'sinon'
 
 describe('<FormSwitcher />', () => {

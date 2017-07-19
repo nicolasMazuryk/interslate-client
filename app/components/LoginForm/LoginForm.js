@@ -28,7 +28,7 @@ class LoginForm extends PureComponent {
     const field = target.getAttribute('name')
 
     this.setState({
-      [field]: value,
+      [field]: value.trim(),
       validation: {
         ...this.state.validation,
         [field]: ''

@@ -1,6 +1,6 @@
 import React from 'react'
 import {mount} from 'enzyme'
-import FormDivider from 'components/FormDivider/FormDivider'
+import FormDivider from 'containers/Auth/FormDivider/FormDivider'
 
 describe('<FormDivider />', () => {
   let wrapper, text
