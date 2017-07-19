@@ -62,6 +62,12 @@ describe('<RegisterForm />', () => {
     expect(wrapper.state('password')).to.equal(value)
   })
 
+  it('should reset validation text on change', () => {
+    wrapper.setState({validation: {email: 'Invalid email pattern. Example: mymail@gmail.com.'}})
+    wrapper.find({type: 'email', name: 'email'}).simulate('change', getEvent('email', 'em'))
+    expect(wrapper.state('validation').email).to.equal('')
+  })
+
   it('should validate all the fields', () => {
     const invalidEmail = 'invalid'
     const passwordWithOneSymbol = '0'
@@ -74,16 +80,29 @@ describe('<RegisterForm />', () => {
     const expected = {
       email: 'Invalid email pattern. Example: mymail@gmail.com.',
       password: 'Invalid password. Minimum 2 symbols.',
-      confirmPassword: 'Invalid confirmation password. Passwords don\'t match.'
+      confirmPassword: 'Invalid password confirmation. Passwords don\'t match.'
     }
     expect(validation).to.deep.equal(expected)
   })
 
   it('should not call onSubmit callback if at least one of the fields is not valid', () => {
-
+    const validation = {
+      email: 'Invalid email pattern. Example: mymail@gmail.com.',
+      password: '',
+      confirmPassword: ''
+    }
+    wrapper.setState({validation})
+    wrapper.find('button').simulate('click')
+    expect(onSubmit.calledOnce).to.be.false
   })
 
   it('should not call onSubmit if fields are not valid', () => {
+    const validation = {
+      email: 'Invalid email pattern. Example: mymail@gmail.com.',
+      password: 'Invalid password. Minimum 2 symbols.',
+      confirmPassword: 'Invalid password confirmation. Passwords don\'t match.'
+    }
+    wrapper.setState({validation})
     wrapper.find('button').simulate('click')
     expect(onSubmit.calledOnce).to.be.false
   })

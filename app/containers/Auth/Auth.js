@@ -1,14 +1,23 @@
 import React, {PureComponent} from 'react'
 import LoginForm from 'components/LoginForm/LoginForm'
 import RegisterForm from 'components/RegisterForm/RegisterForm'
+import FormDivider from 'containers/Auth/FormDivider/FormDivider'
+import LoginWithServices from 'containers/Auth/LoginWithServices/LoginWithServices'
+import FormSwitcher from 'containers/Auth/FormSwitcher/FormSwitcher'
 import {connect} from 'react-redux'
 import {loginRequest, registerRequest} from 'core/main/actions'
 import PropTypes from 'prop-types'
 
-const mapStateToProps = ({main}) => {
+const style = {
+  marginTop: '20px',
+  width: '400px'
+}
+
+const mapStateToProps = (state) => {
+  const {main} = state
   return {
     user: main.user,
-    loading: main.loading
+    loading: main.loading,
   }
 }
 
@@ -76,35 +85,29 @@ export class Auth extends PureComponent {
       formType,
     } = this.state
 
-    const style = {
-      marginTop: '20px',
-      width: '400px'
-    }
     return (
-      <div className="container">
+      <div className="container is-fluid">
         <div className="level">
           <div className="level-item">
             <div className="box" style={style}>
-              <div className="tabs is-centered">
-                <ul>
-                  <li
-                    onClick={() => this.changeFormType('login')}
-                    className={formType === 'login' && 'is-active'}
-                  >
-                    <a>Login</a>
-                  </li>
-                  <li
-                    onClick={() => this.changeFormType('register')}
-                    className={formType === 'register' && 'is-active'}>
-                    <a>Register</a>
-                  </li>
-                </ul>
+              <h1 className="title">
+                {formType === 'register' ? 'Register' : 'Login'}
+              </h1>
+              <hr/>
+              <div className="level">
+                <div className="level-item">
+                  {this.displayForm()}
+                </div>
               </div>
-              {this.displayForm()}
-              <a href="http://127.0.0.1:9090/auth/google">Google</a>
+              <FormDivider text="or" />
+              <LoginWithServices />
             </div>
           </div>
         </div>
+        <FormSwitcher
+          changeType={this.changeFormType}
+          type={formType}
+        />
       </div>
     )
   }

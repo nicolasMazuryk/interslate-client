@@ -10,11 +10,15 @@ class LoginForm extends PureComponent {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      validation: {
+        email: ''
+      }
     }
 
     this.onChange = this.onChange.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
+    this.validate = this.validate.bind(this)
   }
 
   onChange(e) {
@@ -24,28 +28,59 @@ class LoginForm extends PureComponent {
     const field = target.getAttribute('name')
 
     this.setState({
-      [field]: value
+      [field]: value.trim(),
+      validation: {
+        ...this.state.validation,
+        [field]: ''
+      }
     })
+  }
+  
+  validate() {
+    const {
+      email,
+    } = this.state
+    const result = {}
+    const emailPattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/
+    
+    if (!emailPattern.test(email)) {
+      result.email = 'Invalid email pattern. Example: mymail@gmail.com.'
+    }
+    
+    const isValid = Object.keys(result).length === 0
+    
+    return [isValid, result]
   }
 
   onSubmit(e) {
     e.preventDefault()
+    const [isValid, validationResult] = this.validate()
+    
+    const {validation} = this.state
+  
+    if (!isValid) {
+      return this.setState({
+        validation: {...validation, ...validationResult}
+      })
+    }
     this.props.onSubmit(this.state)
   }
 
   render() {
     const {
       email,
-      password
+      password,
+      validation
     } = this.state
 
     return (
-      <form>
+      <form style={{width: '100%'}}>
         <Input
           required
           label="Email"
           name="email"
           type="email"
+          helpText={validation.email}
           focus={true}
           value={email}
           onChange={this.onChange}
@@ -59,7 +94,7 @@ class LoginForm extends PureComponent {
           onChange={this.onChange}
         />
         <AuthButton
-          text="Login"
+          text="Continue"
           onClick={this.onSubmit}
         />
       </form>
