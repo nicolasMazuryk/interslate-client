@@ -24,7 +24,7 @@ const store = createStore(
 )
 
 store.subscribe(
-  throttle(() => syncState(store.getState()), 1000)
+  throttle(() => syncState(store.getState()), 200)
 )
 
 sagaMiddleware.run(mainSaga)
