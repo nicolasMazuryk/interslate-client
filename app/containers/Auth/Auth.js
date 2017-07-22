@@ -18,6 +18,7 @@ const mapStateToProps = (state) => {
   return {
     user: main.user,
     loading: main.loading,
+    newUser: main.newUser
   }
 }
 
