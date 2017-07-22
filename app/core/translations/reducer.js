@@ -119,7 +119,10 @@ const addTranslationSuccess = (state, action) => {
   return {
     ...state,
     adding: false,
-    data: [action.payload, ...state.data],
+    data: {
+      ...state.data,
+      [action.payload._id]: action.payload
+    },
     error: null
   }
 }
