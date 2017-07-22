@@ -29,7 +29,7 @@ export const applyFilters = createSelector(
   [getTranslations, getSearchFilterValue, getLanguage],
   (translations, searchFilterValue, selectedLanguage) => {
     return Object.keys(translations).reduce((acc, _id) => {
-      const translation = translations[_id]
+      const translation = {...translations[_id]}
       const {key} = translation
       if (key.toLowerCase().includes(searchFilterValue)) {
         translation.values = filter(propEq('language', selectedLanguage), translation.values)
