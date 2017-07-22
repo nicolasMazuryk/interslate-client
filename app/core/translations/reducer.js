@@ -44,7 +44,8 @@ const DEFAULT_STATE = {
   uploadData: {},
   pagination: {
     limit: 10,
-    skip: 0
+    skip: 0,
+    total: 0
   },
   error: null
 }
@@ -119,7 +120,14 @@ const addTranslationSuccess = (state, action) => {
   return {
     ...state,
     adding: false,
-    data: [action.payload, ...state.data],
+    data: {
+      ...state.data,
+      [action.payload._id]: action.payload
+    },
+    pagination: {
+      ...state.pagination,
+      total: state.pagination.total + 1
+    },
     error: null
   }
 }
@@ -149,7 +157,11 @@ const removeTranslationSuccess = (state, action) => {
 
   return {
     ...state,
-    data: newData
+    data: newData,
+    pagination: {
+      ...state.pagination,
+      total: state.pagination.total - 1
+    }
   }
 }
 
