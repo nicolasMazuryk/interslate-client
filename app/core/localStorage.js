@@ -2,9 +2,11 @@ import {setLocalStorageItem, getLocalStorageItem} from './utils'
 
 export const syncState = (state) => {
   try {
+    if (!state.main.user) {
+      return setLocalStorageItem('state', '')
+    }
     const serialized = JSON.stringify(state)
     setLocalStorageItem('state', serialized)
-    return serialized
   }
   catch (error) {
     console.log(error) //eslint-disable-line

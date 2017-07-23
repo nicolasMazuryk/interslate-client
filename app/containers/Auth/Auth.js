@@ -7,10 +7,11 @@ import FormSwitcher from 'containers/Auth/FormSwitcher/FormSwitcher'
 import {connect} from 'react-redux'
 import {loginRequest, registerRequest} from 'core/main/actions'
 import PropTypes from 'prop-types'
+import Loader from 'common/Loader/Loader'
 
 const style = {
   marginTop: '20px',
-  width: '400px'
+  width: '400px',
 }
 
 const mapStateToProps = (state) => {
@@ -88,27 +89,36 @@ export class Auth extends PureComponent {
 
     return (
       <div className="container is-fluid">
-        <div className="level">
-          <div className="level-item">
-            <div className="box" style={style}>
-              <h1 className="title">
-                {formType === 'register' ? 'Register' : 'Login'}
-              </h1>
-              <hr/>
-              <div className="level">
+        {this.props.loading ?
+          (
+            <Loader style={{marginTop: '2rem'}} />
+          ) :
+          (
+            <div>
+              <div className="level auth-form">
                 <div className="level-item">
-                  {this.displayForm()}
+                  <div className="box" style={style}>
+                    <h1 className="title">
+                      {formType === 'register' ? 'Register' : 'Login'}
+                    </h1>
+                    <hr/>
+                    <div className="level">
+                      <div className="level-item">
+                        {this.displayForm()}
+                      </div>
+                    </div>
+                    <FormDivider text="or" />
+                    <LoginWithServices />
+                  </div>
                 </div>
               </div>
-              <FormDivider text="or" />
-              <LoginWithServices />
+              <FormSwitcher
+                changeType={this.changeFormType}
+                type={formType}
+              />
             </div>
-          </div>
-        </div>
-        <FormSwitcher
-          changeType={this.changeFormType}
-          type={formType}
-        />
+          )
+        }
       </div>
     )
   }
@@ -119,7 +129,8 @@ Auth.propTypes = {
   register: PropTypes.func.isRequired,
   user: PropTypes.object,
   newUser: PropTypes.object,
-  history: PropTypes.object
+  history: PropTypes.object,
+  loading: PropTypes.bool
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth)
