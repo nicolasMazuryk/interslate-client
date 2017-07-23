@@ -40,6 +40,7 @@ export class Main extends PureComponent {
   render() {
     const {
       logout,
+      loading,
       user,
       generateUploadToken,
       uploadTokenIsGenerating
@@ -50,7 +51,7 @@ export class Main extends PureComponent {
       <main>
         <Header isLoggedIn={isLoggedIn} logout={logout} />
           <Switch>
-            <Route path="/enter" component={Auth} />
+            <Route loading={loading} path="/enter" component={Auth} />
             <IndexRoute exact path="/" isLoggedIn={isLoggedIn}/>
             <PrivateRoute
               exact
