@@ -9,12 +9,22 @@ import {
   GET_CURRENT_USER_REQUEST,
   GET_CURRENT_USER_SUCCESS,
   GET_CURRENT_USER_FAILURE,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_FAILURE,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAILURE,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
   GENERATE_UPLOAD_TOKEN_REQUEST,
   GENERATE_UPLOAD_TOKEN_SUCCESS,
-  GENERATE_UPLOAD_TOKEN_FAILURE
+  GENERATE_UPLOAD_TOKEN_FAILURE,
+  OPEN_DELETE_ACCOUNT_MODAL,
+  CLOSE_DELETE_ACCOUNT_MODAL,
+  CHANGE_PASSWORD_REQUEST,
+  CHANGE_PASSWORD_FAILURE
 } from './actions'
 
 const DEFAULT_STATE = {
@@ -23,6 +33,7 @@ const DEFAULT_STATE = {
   user: null,
   newUser: null,
   error: null,
+  deleteAccountModalOpened: false
 }
 
 const setLoading = (state) => {
@@ -86,6 +97,20 @@ const setUploadToken = (state, action) => {
   }
 }
 
+const openDeleteAccountModal = (state) => {
+  return {
+    ...state,
+    deleteAccountModalOpened: true
+  }
+}
+
+const closeDeleteAccountModal = (state) => {
+  return {
+    ...state,
+    deleteAccountModalOpened: false
+  }
+}
+
 
 export default createReducer(DEFAULT_STATE, {
   
@@ -101,13 +126,27 @@ export default createReducer(DEFAULT_STATE, {
   [GET_CURRENT_USER_SUCCESS]: setUser,
   [GET_CURRENT_USER_FAILURE]: setError,
 
+  [UPDATE_USER_REQUEST]: setLoading,
+  [UPDATE_USER_SUCCESS]: setUser,
+  [UPDATE_USER_FAILURE]: setError,
+
+  [DELETE_USER_REQUEST]: setLoading,
+  [DELETE_USER_SUCCESS]: removeUser,
+  [DELETE_USER_FAILURE]: setError,
+
   [REGISTER_REQUEST]: setLoading,
   [REGISTER_SUCCESS]: setNewUser,
   [REGISTER_FAILURE]: setError,
 
   [GENERATE_UPLOAD_TOKEN_REQUEST]: setUploadTokenGenerating,
   [GENERATE_UPLOAD_TOKEN_SUCCESS]: setUploadToken,
-  [GENERATE_UPLOAD_TOKEN_FAILURE]: setError
+  [GENERATE_UPLOAD_TOKEN_FAILURE]: setError,
+
+  [OPEN_DELETE_ACCOUNT_MODAL]: openDeleteAccountModal,
+  [CLOSE_DELETE_ACCOUNT_MODAL]: closeDeleteAccountModal,
+
+  [CHANGE_PASSWORD_REQUEST]: setLoading,
+  [CHANGE_PASSWORD_FAILURE]: setError,
 
 })
 

@@ -49,8 +49,14 @@ export class Account extends PureComponent {
   render() {
     const {
       user,
+      updateUser,
+      deleteUser,
       generateUploadToken,
-      uploadTokenIsGenerating
+      uploadTokenIsGenerating,
+      openDeleteAccountModal,
+      closeDeleteAccountModal,
+      deleteAccountModalOpened,
+      changeUserPassword
     } = this.props
 
     return (
@@ -72,7 +78,17 @@ export class Account extends PureComponent {
                     uploadToken={user.uploadToken}
                   />
                 )} />
-                <Route path="/account/profile" component={Profile} />
+                <Route path="/account/profile" render={() => (
+                  <Profile
+                      user={user}
+                      updateUser={updateUser}
+                      deleteUser={deleteUser}
+                      openDeleteAccountModal={openDeleteAccountModal}
+                      closeDeleteAccountModal={closeDeleteAccountModal}
+                      deleteAccountModalOpened={deleteAccountModalOpened}
+                      changeUserPassword={changeUserPassword}
+                  />
+                )} />
               </div>
             </div>
           </section>
@@ -87,7 +103,13 @@ Account.propTypes = {
   history: PropTypes.object.isRequired,
   user: PropTypes.object,
   generateUploadToken: PropTypes.func,
-  uploadTokenIsGenerating: PropTypes.bool
+  uploadTokenIsGenerating: PropTypes.bool,
+  updateUser: PropTypes.func,
+  deleteUser: PropTypes.func,
+  openDeleteAccountModal: PropTypes.func,
+  closeDeleteAccountModal: PropTypes.func,
+  deleteAccountModalOpened: PropTypes.bool,
+  changeUserPassword: PropTypes.func
 }
 
 export default connect(mapState, mapDispatch)(Account)

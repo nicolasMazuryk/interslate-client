@@ -11,14 +11,24 @@ import {connect} from 'react-redux'
 import {
   logoutRequest,
   getCurrentUserRequest,
-  generateUploadTokenRequest
+  updateUserRequest,
+  deleteUserRequest,
+  openDeleteAccountModal,
+  closeDeleteAccountModal,
+  generateUploadTokenRequest,
+  changePasswordRequest
 } from 'core/main/actions'
 
 const mapDispatch = (dispatch) => {
   return {
     logout: () => dispatch(logoutRequest()),
     getCurrentUser: () => dispatch(getCurrentUserRequest()),
-    generateUploadToken: () => dispatch(generateUploadTokenRequest())
+    updateUser: (user) => dispatch(updateUserRequest(user)),
+    deleteUser: () => dispatch(deleteUserRequest()),
+    openDeleteAccountModal: () => dispatch(openDeleteAccountModal()),
+    closeDeleteAccountModal: () => dispatch(closeDeleteAccountModal()),
+    generateUploadToken: () => dispatch(generateUploadTokenRequest()),
+    changeUserPassword: (password) => dispatch(changePasswordRequest(password))
   }
 }
 
@@ -26,7 +36,8 @@ const mapState = ({main}) => {
   return {
     loading: main.loading,
     user: main.user,
-    uploadTokenIsGenerating: main.uploadTokenIsGenerating
+    uploadTokenIsGenerating: main.uploadTokenIsGenerating,
+    deleteAccountModalOpened: main.deleteAccountModalOpened
   }
 }
 
@@ -40,8 +51,14 @@ export class Main extends PureComponent {
     const {
       logout,
       user,
+      updateUser,
+      deleteUser,
       generateUploadToken,
-      uploadTokenIsGenerating
+      uploadTokenIsGenerating,
+      openDeleteAccountModal,
+      closeDeleteAccountModal,
+      deleteAccountModalOpened,
+      changeUserPassword
     } = this.props
 
     return (
@@ -59,8 +76,14 @@ export class Main extends PureComponent {
               path="/account"
               componentProps={{
                 user,
+                updateUser,
+                deleteUser,
                 generateUploadToken,
-                uploadTokenIsGenerating
+                uploadTokenIsGenerating,
+                openDeleteAccountModal,
+                closeDeleteAccountModal,
+                deleteAccountModalOpened,
+                changeUserPassword
               }}
               component={Account}
             />
@@ -77,7 +100,14 @@ Main.propTypes = {
   loading: PropTypes.bool,
   uploadTokenIsGenerating: PropTypes.bool,
   getCurrentUser: PropTypes.func,
-  generateUploadToken: PropTypes.func
+  updateUser: PropTypes.func,
+  generateUploadToken: PropTypes.func,
+  deleteUser: PropTypes.func,
+  openDeleteAccountModal: PropTypes.func,
+  closeDeleteAccountModal: PropTypes.func,
+  deleteAccountModalOpened: PropTypes.bool,
+  changeUserPassword: PropTypes.func
+
 }
 
 export default withRouter(connect(mapState, mapDispatch)(Main))

@@ -4,7 +4,6 @@ import {Account} from './Account'
 import sinon from 'sinon'
 import AsideMenu from 'common/AsideMenu/AsideMenu'
 import {Route, MemoryRouter} from 'react-router-dom'
-import Profile from './Profile/Profile'
 
 describe('<Account />', () => {
   let wrapper, location,
@@ -46,10 +45,7 @@ describe('<Account />', () => {
   })
   
   it('should render route for profile page', () => {
-    const expected = {
-      path: '/account/profile',
-      component: Profile
-    }
-    expect(wrapper.find(Route).get(1).props).to.deep.equal(expected)
+    const path = '/account/profile'
+    expect(wrapper.find(Route).get(1).props.path).to.equal(path)
   })
 })

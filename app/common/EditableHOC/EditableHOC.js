@@ -28,8 +28,7 @@ export default function editable(Component) {
     onBlur() {
       this.props.onSave(this.state.value)
       this.setState({
-        isEditable: false,
-        value: ''
+        isEditable: false
       })
     }
 
