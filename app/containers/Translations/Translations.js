@@ -22,6 +22,7 @@ import AddTranslationModal from 'components/AddTranslationModal/AddTranslationMo
 import TranslationsTable from 'components/TranslationsTable/TranslationsTable'
 import ActionBar from 'components/ActionBar/ActionBar'
 import JSONViewer from 'components/JSONViewer/JSONViewer'
+import {throttle} from 'core/utils'
 
 const mapState = (state) => {
   const {translations} = state
@@ -54,28 +55,40 @@ const mapDispatch = (dispatch) => {
 
 export class Translations extends PureComponent {
 
+  constructor(props) {
+    super(props)
+
+    this.delayGetUploadTranslations = throttle(this.delayGetUploadTranslations.bind(this), 500)
+  }
+
   componentDidMount() {
     const {
       getLanguages,
       getTranslations,
-      getUploadTranslations
     } = this.props
 
     getLanguages()
     getTranslations()
-    getUploadTranslations()
+  }
+
+  delayGetUploadTranslations() {
+    this.props.getUploadTranslations()
   }
 
   componentWillReceiveProps(nextProps) {
     const {
       languages,
       selectedLanguage,
-      selectLanguage
+      selectLanguage,
     } = nextProps
 
     if (!selectedLanguage && languages.length) {
       const first = languages[0].key
       selectLanguage(first)
+    }
+
+    if (this.props.translations !== nextProps.translations) {
+      this.delayGetUploadTranslations()
     }
   }
 
@@ -145,21 +158,27 @@ const languageShape = PropTypes.shape({
   value: PropTypes.string
 })
 
+const paginationShape = PropTypes.shape({
+  total: PropTypes.number,
+  skip: PropTypes.number,
+  limit: PropTypes.number
+})
+
 Translations.propTypes = {
-  user: PropTypes.object,
+  user: PropTypes.object.isRequired,
   addTranslationModalIsOpened: PropTypes.bool,
   translationsAreLoading: PropTypes.bool,
-  translations: PropTypes.object,
-  languages: PropTypes.arrayOf(languageShape),
+  translations: PropTypes.object.isRequired,
+  languages: PropTypes.arrayOf(languageShape).isRequired,
   selectedLanguage: PropTypes.string,
-  uploadTranslationsData: PropTypes.object,
-  pagination: PropTypes.object,
+  uploadTranslationsData: PropTypes.object.isRequired,
+  pagination: paginationShape.isRequired,
   openAddTranslationModal: PropTypes.func,
   addTranslation: PropTypes.func,
   removeTranslation: PropTypes.func,
   updateTranslation: PropTypes.func,
-  getLanguages: PropTypes.func,
-  getTranslations: PropTypes.func,
+  getLanguages: PropTypes.func.isRequired,
+  getTranslations: PropTypes.func.isRequired,
   closeAddTranslationModal: PropTypes.func,
   selectLanguage: PropTypes.func,
   searchFilterChange: PropTypes.func,
