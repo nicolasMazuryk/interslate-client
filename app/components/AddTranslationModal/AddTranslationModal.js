@@ -19,6 +19,7 @@ export default class AddTranslationModal extends PureComponent {
     this.onTranslationKeyChange = this.onTranslationKeyChange.bind(this)
     this.onTranslationRemove = this.onTranslationRemove.bind(this)
     this.onTranslationAdd = this.onTranslationAdd.bind(this)
+    this.closeModal = this.closeModal.bind(this)
   }
 
   componentWillReceiveProps({languages}) {
@@ -76,6 +77,15 @@ export default class AddTranslationModal extends PureComponent {
       translations: [],
       availableLanguages: this.props.languages
     })
+    this.closeModal()
+  }
+
+  closeModal() {
+    this.setState({
+      key: '',
+      translations: [],
+      availableLanguages: []
+    })
     this.props.onClose()
   }
 
@@ -87,7 +97,7 @@ export default class AddTranslationModal extends PureComponent {
     } = this.state
     const {
       opened,
-      onClose,
+      languages,
     } = this.props
 
     return (
@@ -95,12 +105,14 @@ export default class AddTranslationModal extends PureComponent {
         title='Add Translation'
         opened={opened}
         onSubmit={this.onSubmit}
-        onClose={onClose}
+        submitIsDisabled={key.trim().length === 0}
+        onClose={this.closeModal}
       >
         <form>
           <Input
             type="text"
-            placeholder="example: PAGES.HOME"
+            placeholder="Your key ..."
+            helpText="Type a key to your translations"
             name="key"
             label="Key"
             value={key}
@@ -109,16 +121,17 @@ export default class AddTranslationModal extends PureComponent {
           <div className="field">
             <label className="label">Translations</label>
           </div>
-          {translations.length > 0 &&
-            <TranslationTable
-              translations={translations}
-              onRemove={this.onTranslationRemove}
-            />
-          }
           {availableLanguages.length > 0 &&
             <TranslationField
               languages={availableLanguages}
               onAdd={this.onTranslationAdd}
+            />
+          }
+          {translations.length > 0 &&
+            <TranslationTable
+              translations={translations}
+              languages={languages}
+              onRemove={this.onTranslationRemove}
             />
           }
         </form>

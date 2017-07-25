@@ -98,6 +98,7 @@ class LoginForm extends PureComponent {
           name="email"
           type="email"
           helpText={validation.email}
+          withError={!!validation.email}
           focus={true}
           value={email}
           onChange={this.onChange}
@@ -108,6 +109,7 @@ class LoginForm extends PureComponent {
           name="password"
           type="password"
           helpText={validation.password}
+          withError={!!validation.password}
           value={password}
           onChange={this.onChange}
         />
@@ -117,6 +119,7 @@ class LoginForm extends PureComponent {
           name="confirmPassword"
           type="password"
           helpText={validation.confirmPassword}
+          withError={!!validation.confirmPassword}
           value={confirmPassword}
           onChange={this.onChange}
         />

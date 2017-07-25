@@ -5,11 +5,13 @@ import sinon from 'sinon'
 
 describe('<Modal />', () => {
   let wrapper, title, opened,
-    onClose, onSubmit, child
+    onClose, onSubmit, child,
+    submitIsDisabled
 
   before(() => {
     title = 'Title'
     opened = true
+    submitIsDisabled = false
     onSubmit = sinon.spy()
     onClose = sinon.spy()
     child = <div className="modal-child" />
@@ -18,6 +20,7 @@ describe('<Modal />', () => {
         title={title}
         opened={opened}
         onClose={onClose}
+        submitIsDisabled={submitIsDisabled}
         onSubmit={onSubmit}
       >
         {child}
@@ -54,5 +57,10 @@ describe('<Modal />', () => {
   it('should call onClose when close button is clicked', () => {
     wrapper.find('[name="close"]').simulate('click')
     expect(onSubmit.calledOnce).to.be.true
+  })
+
+  it('should disable submit button', () => {
+    wrapper.setProps({submitIsDisabled: true})
+    expect(wrapper.find('[name="save"]').prop('disabled')).to.be.true
   })
 })

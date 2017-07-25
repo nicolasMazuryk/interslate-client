@@ -4,15 +4,20 @@ import sinon from 'sinon'
 import TranslationTable from './TranslationTable'
 
 describe('<TranslationTable />', () => {
-  let wrapper, translations, onRemove
+  let wrapper,
+    translations,
+    onRemove,
+    languages
 
   before(() => {
     onRemove = sinon.spy()
+    languages = [{key: 'ru', value: 'Russian'}]
     translations = [
       {language: 'ru', translation: 'Тест'}
     ]
     wrapper = shallow(
       <TranslationTable
+        languages={languages}
         translations={translations}
         onRemove={onRemove}
       />
@@ -25,7 +30,7 @@ describe('<TranslationTable />', () => {
 
   it('should render rows with provided translations', () => {
     const row = wrapper.find('tbody tr').first()
-    const expected = ['ru', 'Тест']
+    const expected = ['Russian (ru)', 'Тест']
     const actual = [
       row.find('td').at(0).text(),
       row.find('td').at(1).text()

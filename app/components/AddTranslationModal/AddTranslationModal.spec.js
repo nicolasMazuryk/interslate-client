@@ -86,4 +86,35 @@ describe('<AddTranslationModal />', () => {
 
     expect(onSubmit.calledWith(({key, values: translations}))).to.be.true
   })
+
+  it('should clear state after submit', () => {
+    wrapper.setState({key: 'test', translations: [{language: 'ru', translation: 'тест'}]})
+    const event = {preventDefault: () => {}}
+    wrapper.instance().onSubmit(event)
+    expect(wrapper.state()).to.deep.equal({
+      key: '',
+      translations: [],
+      availableLanguages: []
+    })
+  })
+
+  it('should reset state on footer close', () => {
+    wrapper.setState({key: 'test', translations: [{language: 'ru', translation: 'тест'}]})
+    wrapper.find('button[name="close"]').simulate('click')
+    expect(wrapper.state()).to.deep.equal({
+      key: '',
+      translations: [],
+      availableLanguages: []
+    })
+  })
+
+  it('should reset state on head close', () => {
+    wrapper.setState({key: 'test', translations: [{language: 'ru', translation: 'тест'}]})
+    wrapper.find('.modal-card-head button.delete').simulate('click')
+    expect(wrapper.state()).to.deep.equal({
+      key: '',
+      translations: [],
+      availableLanguages: []
+    })
+  })
 })

@@ -15,7 +15,7 @@ describe('<Input />', () => {
   let wrapper, value, focus,
     className, placeholder,
     label, name, onChange,
-    helpText
+    helpText, withError
 
   before(() => {
     focus = sinon.spy()
@@ -25,6 +25,7 @@ describe('<Input />', () => {
     className = 'is-small'
     label = 'label'
     helpText = 'test'
+    withError = false
     onChange = sinon.spy()
     monkeyPatch(Input.prototype, 'componentDidMount', function () {
       this.input.focus = focus
@@ -37,6 +38,7 @@ describe('<Input />', () => {
         name={name}
         focus={true}
         value={value}
+        withError={withError}
         onChange={onChange}
       />
     )
@@ -67,13 +69,14 @@ describe('<Input />', () => {
     expect(wrapper.find('label').text()).to.equal(label)
   })
 
-  it('should add class is-danger if helpText is passed', () => {
+  it('should add class is-danger to input', () => {
     wrapper = mount(
       <Input
         label={label}
         className={className}
         placeholder={placeholder}
         helpText={helpText}
+        withError={true}
         name={name}
         value={value}
         onChange={onChange}
@@ -83,13 +86,24 @@ describe('<Input />', () => {
     expect(wrapper.find('input').prop('className')).to.equal(expected)
   })
 
+  it('should add class is-danger to input', () => {
+    wrapper.setState({withError: true})
+    const expected = 'help is-danger'
+    expect(wrapper.find('.help').prop('className')).to.equal(expected)
+  })
+
   it('should call onChange', () => {
     wrapper.find('input').simulate('change')
     expect(onChange.calledOnce).to.be.true
   })
 
   it('should insert help text', () => {
-    expect(wrapper.find('.help.is-danger').text()).to.equal(helpText)
+    expect(wrapper.find('.help').text()).to.equal(helpText)
+  })
+
+  it('should display danger input', () => {
+    wrapper.setState({withError: true})
+    expect(wrapper.find('.input.is-danger')).to.have.length(1)
   })
 
   it('should not call focus', () => {

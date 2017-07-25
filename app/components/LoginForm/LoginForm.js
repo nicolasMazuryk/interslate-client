@@ -81,6 +81,7 @@ class LoginForm extends PureComponent {
           name="email"
           type="email"
           helpText={validation.email}
+          withError={!!validation.email}
           focus={true}
           value={email}
           onChange={this.onChange}

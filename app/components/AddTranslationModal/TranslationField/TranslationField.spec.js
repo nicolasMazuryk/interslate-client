@@ -27,10 +27,12 @@ describe('<TranslationField />', () => {
   })
 
   it('should call onAdd with its state', () => {
+    wrapper.setState({translation: 'test'})
+    const state = wrapper.state()
     wrapper.find('button[name="add"]').simulate('click', {
       preventDefault: () => {}
     })
-    expect(onAdd.calledWith(wrapper.state())).to.be.true
+    expect(onAdd.calledWith(state)).to.be.true
   })
 
   it('should set translation to empty string', () => {
