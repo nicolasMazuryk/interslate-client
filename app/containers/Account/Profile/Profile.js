@@ -1,50 +1,10 @@
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
-import editable from 'common/EditableHOC/EditableHOC'
-import Modal from 'common/Modal/Modal'
 import Input from 'common/Input/Input'
-
-const EditableEmail = editable(({email}) => <span>{email}</span>)
-
-EditableEmail.propTypes = {
-  email: PropTypes.string
-}
-
-class DeleteAccountModal extends PureComponent {
-  constructor(props) {
-    super(props)
-  }
-
-  render() {
-    const {
-      closeDeleteAccountModal,
-      deleteAccountModalOpened,
-      deleteUser
-    } = this.props
-
-    return (
-			<Modal
-				title={'Delete Account'}
-				opened={deleteAccountModalOpened}
-				onSubmit={deleteUser}
-				onClose={closeDeleteAccountModal}
-			>
-				<div>
-					Do you really want to delete your account?
-				</div>
-			</Modal>
-    )
-  }
-}
-
-DeleteAccountModal.propTypes = {
-  deleteUser: PropTypes.func,
-  closeDeleteAccountModal: PropTypes.func,
-  deleteAccountModalOpened: PropTypes.bool,
-}
+import EditableEmail from './EditableEmail/EditableEmail'
+import DeleteAccountModal from './DeleteAccountModal/DeleteAccountModal'
 
 class Profile extends PureComponent {
-
   constructor(props) {
     super(props)
 

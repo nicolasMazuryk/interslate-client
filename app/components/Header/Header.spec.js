@@ -13,13 +13,32 @@ describe('<Header />', () => {
     logout = sinon.spy()
     wrapper = mount(
       <MemoryRouter>
-        <Header isLoggedIn={true} logout={logout} />
+        <Header
+          isLoggedIn={true}
+          logout={logout}
+        />
       </MemoryRouter>
     )
   })
 
   it('should render logotype image', () => {
     expect(wrapper.find('img.logotype').length).to.equal(1)
+  })
+
+  it('should redirect to /translations when logo is clicked', () => {
+    expect(wrapper.find('.logotype-link').prop('href')).to.equal('/translations')
+  })
+
+  it('should redirect to / when logo is clicked', () => {
+    const wrapper = mount(
+      <MemoryRouter>
+        <Header
+          isLoggedIn={false}
+          logout={logout}
+        />
+      </MemoryRouter>
+    )
+    expect(wrapper.find('.logotype-link').prop('href')).to.equal('/')
   })
 
   it('should render link to /translations', () => {

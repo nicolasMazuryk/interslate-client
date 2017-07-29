@@ -27,7 +27,8 @@ import {
   CLOSE_ADD_TRANSLATION_MODAL,
 
   SELECT_LANGUAGE,
-  SEARCH_FILTER_CHANGE
+  SEARCH_FILTER_CHANGE,
+  PAGINATION_LIMIT_COUNT_CHANGE
 } from './actions'
 
 const DEFAULT_STATE = {
@@ -39,8 +40,13 @@ const DEFAULT_STATE = {
   languages: [],
   selectedLanguage: '',
   searchFilterValue: '',
-  data: [],
+  data: {},
   uploadData: {},
+  pagination: {
+    limit: 10,
+    skip: 0,
+    total: 0
+  },
   error: null
 }
 
@@ -52,11 +58,22 @@ const getTranslationsRequest = (state) => {
 }
 
 const getTranslationsSuccess = (state, action) => {
+  const {meta, translations} = action.payload
+  const translationsLength = Object.keys(translations).length
+
   return {
     ...state,
     translationsAreLoading: false,
-    data: action.payload,
-    error: null
+    data: {
+      ...state.data,
+      ...translations
+    },
+    error: null,
+    pagination: {
+      ...state.pagination,
+      total: meta.total,
+      skip: translationsLength
+    }
   }
 }
 
@@ -103,7 +120,14 @@ const addTranslationSuccess = (state, action) => {
   return {
     ...state,
     adding: false,
-    data: [action.payload, ...state.data],
+    data: {
+      ...state.data,
+      [action.payload._id]: action.payload
+    },
+    pagination: {
+      ...state.pagination,
+      total: state.pagination.total + 1
+    },
     error: null
   }
 }
@@ -124,15 +148,20 @@ const removeTranslationRequest = (state) => {
 }
 
 const removeTranslationSuccess = (state, action) => {
-  const index = state.data.findIndex(({_id}) => _id === action.payload)
+  const newData = Object.keys(state.data).reduce((acc, _id) => {
+    if (_id !== action.payload) {
+      return {...acc, [_id]: state.data[_id]}
+    }
+    return acc
+  }, {})
+
   return {
     ...state,
-    removing: false,
-    data: [
-      ...state.data.slice(0, index),
-      ...state.data.slice(index + 1)
-    ],
-    error: null
+    data: newData,
+    pagination: {
+      ...state.pagination,
+      total: state.pagination.total - 1
+    }
   }
 }
 
@@ -155,16 +184,10 @@ const updateTranslationSuccess = (state, action) => {
   return {
     ...state,
     updating: false,
-    data: state.data.map((target) => {
-      if (target._id === action.payload._id) {
-        return {
-          ...target,
-          key: action.payload.key,
-          values: action.payload.values
-        }
-      }
-      return target
-    }),
+    data: {
+      ...state.data,
+      [action.payload._id]: action.payload
+    },
     error: null
   }
 }
@@ -222,6 +245,16 @@ const searchFilterChange = (state, action) => {
   }
 }
 
+const paginationLimitCountChange = (state, action) => {
+  return {
+    ...state,
+    pagination: {
+      ...state.pagination,
+      limit: action.payload
+    }
+  }
+}
+
 export default createReducer(DEFAULT_STATE, {
   [GET_TRANSLATIONS_REQUEST]: getTranslationsRequest,
   [GET_TRANSLATIONS_SUCCESS]: getTranslationsSuccess,
@@ -250,5 +283,6 @@ export default createReducer(DEFAULT_STATE, {
   [CLOSE_ADD_TRANSLATION_MODAL]: closeTranslationModal,
 
   [SELECT_LANGUAGE]: selectLanguage,
-  [SEARCH_FILTER_CHANGE]: searchFilterChange
+  [SEARCH_FILTER_CHANGE]: searchFilterChange,
+  [PAGINATION_LIMIT_COUNT_CHANGE]: paginationLimitCountChange
 })

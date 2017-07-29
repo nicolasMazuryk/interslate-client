@@ -6,12 +6,27 @@ import {Route} from 'react-router-dom'
 import Profile from './Profile/Profile'
 import APIKey from './APIKey/APIKey'
 
-const mapState = () => {
-  return {}
+import {
+  openDeleteAccountModal,
+  closeDeleteAccountModal,
+  generateUploadTokenRequest,
+  changePasswordRequest,
+} from 'core/account/actions'
+
+const mapState = ({account}) => {
+  return {
+    uploadTokenIsGenerating: account.uploadTokenIsGenerating,
+    deleteAccountModalOpened: account.deleteAccountModalOpened
+  }
 }
 
-const mapDispatch = () => {
-  return {}
+const mapDispatch = (dispatch) => {
+  return {
+    openDeleteAccountModal: () => dispatch(openDeleteAccountModal()),
+    closeDeleteAccountModal: () => dispatch(closeDeleteAccountModal()),
+    generateUploadToken: () => dispatch(generateUploadTokenRequest()),
+    changeUserPassword: (password) => dispatch(changePasswordRequest(password))
+  }
 }
 
 export class Account extends PureComponent {

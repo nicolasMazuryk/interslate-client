@@ -5,7 +5,8 @@ import Translations from 'containers/Translations/Translations'
 import Account from 'containers/Account/Account'
 import Auth from 'containers/Auth/Auth'
 import Header from 'components/Header/Header'
-import Private from 'common/PrivateRoute/PrivateRoute'
+import PrivateRoute from 'common/PrivateRoute/PrivateRoute'
+import IndexRoute from 'common/IndexRoute/IndexRoute'
 import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {
@@ -13,10 +14,6 @@ import {
   getCurrentUserRequest,
   updateUserRequest,
   deleteUserRequest,
-  openDeleteAccountModal,
-  closeDeleteAccountModal,
-  generateUploadTokenRequest,
-  changePasswordRequest
 } from 'core/main/actions'
 
 const mapDispatch = (dispatch) => {
@@ -25,10 +22,6 @@ const mapDispatch = (dispatch) => {
     getCurrentUser: () => dispatch(getCurrentUserRequest()),
     updateUser: (user) => dispatch(updateUserRequest(user)),
     deleteUser: () => dispatch(deleteUserRequest()),
-    openDeleteAccountModal: () => dispatch(openDeleteAccountModal()),
-    closeDeleteAccountModal: () => dispatch(closeDeleteAccountModal()),
-    generateUploadToken: () => dispatch(generateUploadTokenRequest()),
-    changeUserPassword: (password) => dispatch(changePasswordRequest(password))
   }
 }
 
@@ -36,8 +29,6 @@ const mapState = ({main}) => {
   return {
     loading: main.loading,
     user: main.user,
-    uploadTokenIsGenerating: main.uploadTokenIsGenerating,
-    deleteAccountModalOpened: main.deleteAccountModalOpened
   }
 }
 
@@ -50,40 +41,31 @@ export class Main extends PureComponent {
   render() {
     const {
       logout,
+      loading,
       user,
       updateUser,
       deleteUser,
-      generateUploadToken,
-      uploadTokenIsGenerating,
-      openDeleteAccountModal,
-      closeDeleteAccountModal,
-      deleteAccountModalOpened,
-      changeUserPassword
     } = this.props
+    const isLoggedIn = !!user
 
     return (
       <main>
-        <Header isLoggedIn={!!user} logout={logout} />
+        <Header isLoggedIn={isLoggedIn} logout={logout} />
           <Switch>
-            <Route path="/enter" component={Auth} />
-            <Private
+            <Route loading={loading} path="/enter" component={Auth} />
+            <IndexRoute exact path="/" isLoggedIn={isLoggedIn}/>
+            <PrivateRoute
               exact
               path="/translations"
               componentProps={{user}}
               component={Translations}
             />
-            <Private
+            <PrivateRoute
               path="/account"
               componentProps={{
                 user,
                 updateUser,
                 deleteUser,
-                generateUploadToken,
-                uploadTokenIsGenerating,
-                openDeleteAccountModal,
-                closeDeleteAccountModal,
-                deleteAccountModalOpened,
-                changeUserPassword
               }}
               component={Account}
             />
@@ -96,18 +78,11 @@ export class Main extends PureComponent {
 
 Main.propTypes = {
   logout: PropTypes.func,
-  user: PropTypes.object,
   loading: PropTypes.bool,
-  uploadTokenIsGenerating: PropTypes.bool,
+  user: PropTypes.object,
   getCurrentUser: PropTypes.func,
   updateUser: PropTypes.func,
-  generateUploadToken: PropTypes.func,
   deleteUser: PropTypes.func,
-  openDeleteAccountModal: PropTypes.func,
-  closeDeleteAccountModal: PropTypes.func,
-  deleteAccountModalOpened: PropTypes.bool,
-  changeUserPassword: PropTypes.func
-
 }
 
 export default withRouter(connect(mapState, mapDispatch)(Main))

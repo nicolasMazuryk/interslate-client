@@ -4,13 +4,16 @@ import {Auth} from './Auth'
 import sinon from 'sinon'
 import LoginForm from 'components/LoginForm/LoginForm'
 import RegisterForm from 'components/RegisterForm/RegisterForm'
+import Loader from 'common/Loader/Loader'
 
 describe('<Auth />', () => {
   let wrapper, login, register,
-    user, newUser, history, push
+    user, newUser, history, push,
+    loading
 
   before(() => {
     push = sinon.spy()
+    loading = false
     user = {
       email: 'test'
     }
@@ -25,6 +28,7 @@ describe('<Auth />', () => {
         login={login}
         register={register}
         history={history}
+        loading={loading}
       />
     )
   })
@@ -44,6 +48,7 @@ describe('<Auth />', () => {
         login={login}
         register={register}
         history={history}
+        loading={loading}
       />
     )
     wrapper.setProps({user})
@@ -56,9 +61,20 @@ describe('<Auth />', () => {
         login={login}
         register={register}
         history={history}
+        loading={loading}
       />
     )
     wrapper.setProps({newUser})
     expect(login.calledWith(newUser)).to.be.true
+  })
+
+  it('should show loader', () => {
+    wrapper.setProps({loading: true})
+    expect(wrapper.find(Loader)).to.have.length(1)
+  })
+
+  it('should not show auth form', () => {
+    wrapper.setProps({loading: true})
+    expect(wrapper.find('.auth-form')).to.have.length(0)
   })
 })

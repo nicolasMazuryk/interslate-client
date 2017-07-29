@@ -1,14 +1,25 @@
 import React, {PureComponent} from 'react'
 import LoginForm from 'components/LoginForm/LoginForm'
 import RegisterForm from 'components/RegisterForm/RegisterForm'
+import FormDivider from 'containers/Auth/FormDivider/FormDivider'
+import LoginWithServices from 'containers/Auth/LoginWithServices/LoginWithServices'
+import FormSwitcher from 'containers/Auth/FormSwitcher/FormSwitcher'
 import {connect} from 'react-redux'
 import {loginRequest, registerRequest} from 'core/main/actions'
 import PropTypes from 'prop-types'
+import Loader from 'common/Loader/Loader'
 
-const mapStateToProps = ({main}) => {
+const style = {
+  marginTop: '20px',
+  width: '400px',
+}
+
+const mapStateToProps = (state) => {
+  const {main} = state
   return {
     user: main.user,
-    loading: main.loading
+    loading: main.loading,
+    newUser: main.newUser
   }
 }
 
@@ -76,35 +87,38 @@ export class Auth extends PureComponent {
       formType,
     } = this.state
 
-    const style = {
-      marginTop: '20px',
-      width: '400px'
-    }
     return (
-      <div className="container">
-        <div className="level">
-          <div className="level-item">
-            <div className="box" style={style}>
-              <div className="tabs is-centered">
-                <ul>
-                  <li
-                    onClick={() => this.changeFormType('login')}
-                    className={formType === 'login' && 'is-active'}
-                  >
-                    <a>Login</a>
-                  </li>
-                  <li
-                    onClick={() => this.changeFormType('register')}
-                    className={formType === 'register' && 'is-active'}>
-                    <a>Register</a>
-                  </li>
-                </ul>
+      <div className="container is-fluid">
+        {this.props.loading ?
+          (
+            <Loader style={{marginTop: '2rem'}} />
+          ) :
+          (
+            <div>
+              <div className="level auth-form">
+                <div className="level-item">
+                  <div className="box" style={style}>
+                    <h1 className="title">
+                      {formType === 'register' ? 'Register' : 'Login'}
+                    </h1>
+                    <hr/>
+                    <div className="level">
+                      <div className="level-item">
+                        {this.displayForm()}
+                      </div>
+                    </div>
+                    <FormDivider text="or" />
+                    <LoginWithServices />
+                  </div>
+                </div>
               </div>
-              {this.displayForm()}
-              <a href="http://127.0.0.1:9090/auth/google">Google</a>
+              <FormSwitcher
+                changeType={this.changeFormType}
+                type={formType}
+              />
             </div>
-          </div>
-        </div>
+          )
+        }
       </div>
     )
   }
@@ -115,7 +129,8 @@ Auth.propTypes = {
   register: PropTypes.func.isRequired,
   user: PropTypes.object,
   newUser: PropTypes.object,
-  history: PropTypes.object
+  history: PropTypes.object,
+  loading: PropTypes.bool
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth)
