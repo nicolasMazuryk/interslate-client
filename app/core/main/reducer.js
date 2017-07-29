@@ -9,6 +9,9 @@ import {
   GET_CURRENT_USER_REQUEST,
   GET_CURRENT_USER_SUCCESS,
   GET_CURRENT_USER_FAILURE,
+  RECOVER_REQUEST,
+  RECOVER_SUCCESS,
+  RECOVER_FAILURE,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
@@ -29,6 +32,13 @@ const setLoading = (state) => {
   return {
     ...state,
     loading: true
+  }
+}
+
+const unsetLoading = (state) => {
+  return {
+    ...state,
+    loading: false
   }
 }
 
@@ -100,6 +110,10 @@ export default createReducer(DEFAULT_STATE, {
   [GET_CURRENT_USER_REQUEST]: setLoading,
   [GET_CURRENT_USER_SUCCESS]: setUser,
   [GET_CURRENT_USER_FAILURE]: setError,
+
+  [RECOVER_REQUEST]: setLoading,
+  [RECOVER_SUCCESS]: unsetLoading,
+  [RECOVER_FAILURE]: setError,
 
   [REGISTER_REQUEST]: setLoading,
   [REGISTER_SUCCESS]: setNewUser,

@@ -14,6 +14,10 @@ export const REGISTER_REQUEST = 'REGISTER_REQUEST'
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
 export const REGISTER_FAILURE = 'REGISTER_FAILURE'
 
+export const RECOVER_REQUEST = 'RECOVER_REQUEST'
+export const RECOVER_SUCCESS = 'RECOVER_SUCCESS'
+export const RECOVER_FAILURE = 'RECOVER_FAILURE'
+
 export const GENERATE_UPLOAD_TOKEN_REQUEST = 'GENERATE_UPLOAD_TOKEN_REQUEST'
 export const GENERATE_UPLOAD_TOKEN_SUCCESS = 'GENERATE_UPLOAD_TOKEN_SUCCESS'
 export const GENERATE_UPLOAD_TOKEN_FAILURE = 'GENERATE_UPLOAD_TOKEN_FAILURE'
@@ -98,6 +102,27 @@ export const registerSuccess = (newUser) => {
 export const registerFailure = (error) => {
   return {
     type: REGISTER_FAILURE,
+    payload: error,
+    error: true
+  }
+}
+
+export const recoverRequest = (email) => {
+  return {
+    type: RECOVER_REQUEST,
+    payload: email
+  }
+}
+
+export const recoverSuccess = () => {
+  return {
+    type: RECOVER_SUCCESS
+  }
+}
+
+export const recoverFailure = (error) => {
+  return {
+    type: RECOVER_FAILURE,
     payload: error,
     error: true
   }
