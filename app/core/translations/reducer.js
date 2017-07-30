@@ -38,6 +38,7 @@ const DEFAULT_STATE = {
   removing: false,
   addTranslationModalIsOpened: false,
   languages: [],
+  recentlySelectedLanguages: [],
   selectedLanguage: '',
   searchFilterValue: '',
   data: {},
@@ -217,16 +218,24 @@ const closeTranslationModal = (state) => {
 const selectLanguage = (state, action) => {
   return {
     ...state,
-    selectedLanguage: action.payload
+    selectedLanguage: action.payload,
+    languages: state.languages.filter(({code}) => code !== action.payload),
+    recentlySelectedLanguages: [
+      ...state.languages.filter(({code}) => code === action.payload),
+      ...state.recentlySelectedLanguages.slice(0, 2)
+    ]
   }
 }
 
 const getLanguagesSuccess = (state, action) => {
+  const [recent = {}] = state.recentlySelectedLanguages
+  const [first = {}] = action.payload
   return {
     ...state,
     loading: false,
     error: null,
     languages: action.payload,
+    selectedLanguage: recent.code || first.code
   }
 }
 

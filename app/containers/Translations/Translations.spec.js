@@ -60,11 +60,6 @@ describe('<Translations />', () => {
     expect(getLanguages.calledOnce).to.be.true
   })
 
-  it('should select first language', () => {
-    wrapper.setProps({selectedLanguage: ''})
-    expect(selectLanguage.calledWith(languages[0].key)).to.be.true
-  })
-
   it('should not select first language', () => {
     selectLanguage.reset()
     wrapper.setProps({selectedLanguage: '', languages: []})

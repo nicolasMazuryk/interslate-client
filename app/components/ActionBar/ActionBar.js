@@ -11,6 +11,7 @@ export const handleEvent = (next) => (e) => {
 const ActionBar = (props) => {
   const {
     languages,
+    recentlySelectedLanguages,
     onLanguageChange,
     selectedLanguage,
     openAddTranslationModal,
@@ -31,6 +32,7 @@ const ActionBar = (props) => {
           </div>
           <div className="level-item">
             <Select
+              recentOptions={recentlySelectedLanguages}
               options={languages}
               value={selectedLanguage}
               onChange={handleEvent(onLanguageChange)}
@@ -65,6 +67,7 @@ const ActionBar = (props) => {
 
 ActionBar.propTypes = {
   languages: PropTypes.array,
+  recentlySelectedLanguages: PropTypes.array,
   selectedLanguage: PropTypes.string,
   searchFilterChange: PropTypes.func,
   onLanguageChange: PropTypes.func,
