@@ -119,19 +119,22 @@ class Profile extends PureComponent {
           />
 
           <div className="block is-pulled-left">
-            <a className="button is-success"
-               onClick={this.onSubmitPassword}
+            <button
+              name="changePassword"
+              className="button is-success"
+              onClick={this.onSubmitPassword}
             >
               Change password
-            </a>
+            </button>
           </div>
 
 					<div className="block is-pulled-right">
-						<a className="button is-danger"
-               onClick={openDeleteAccountModal}
+						<button
+              className="button is-danger"
+              onClick={openDeleteAccountModal}
 						>
 							Delete Account
-						</a>
+						</button>
 					</div>
 					<DeleteAccountModal
 						deleteUser={deleteUser}
