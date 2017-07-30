@@ -14,13 +14,17 @@ class Input extends PureComponent {
     const {
       label,
       className,
-      helpText
+      helpText,
+      withError
     } = this.props
 
-    const inputProps = omit(
-      ['label', 'className', 'focus', 'helpText'],
-      this.props
-    )
+    const inputProps = omit([
+      'label',
+      'className',
+      'focus',
+      'withError',
+      'helpText'
+    ], this.props)
 
     return (
       <div className="field">
@@ -28,10 +32,10 @@ class Input extends PureComponent {
         <div className="control">
           <input
             ref={(input) => this.input = input}
-            className={`input${className ? ' ' + className : ''}${helpText ? ' is-danger' : ''}`}
+            className={`input${className ? ' ' + className : ''}${withError ? ' is-danger' : ''}`}
             {...inputProps}
           />
-          <p className="help is-danger">{helpText}</p>
+          <p className={`help${withError ? ' is-danger' : ''}`}>{helpText}</p>
         </div>
       </div>
     )
@@ -42,7 +46,12 @@ Input.propTypes = {
   label: PropTypes.string,
   className: PropTypes.string,
   helpText: PropTypes.string,
-  focus: PropTypes.bool
+  focus: PropTypes.bool,
+  withError: PropTypes.bool,
+}
+
+Input.defaultProps = {
+  withError: false
 }
 
 export default Input

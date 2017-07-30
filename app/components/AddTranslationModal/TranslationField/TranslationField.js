@@ -9,7 +9,7 @@ export default class TranslationField extends Component {
 
     this.state = {
       translation: '',
-      language: ''
+      language: '',
     }
 
     this.onAdd = this.onAdd.bind(this)
@@ -61,7 +61,7 @@ export default class TranslationField extends Component {
 
     return (
       <div className="field has-addons">
-        <p className="control">
+        <div className="control">
           <Select
             label="Language"
             name="language"
@@ -69,26 +69,28 @@ export default class TranslationField extends Component {
             value={language}
             onChange={this.onChange}
           />
-        </p>
-        <p className="control is-expanded">
+        </div>
+        <div className="control is-expanded">
           <input
             className="input"
             type="text"
-            placeholder="example: Home"
+            placeholder="Your translation ..."
             name="translation"
             value={translation}
             onChange={this.onChange}
           />
-        </p>
-        <p className="control">
-              <button
-                name="add"
-                onClick={this.onAdd}
-                className="button is-outlined"
-              >
-                Add
-              </button>
-        </p>
+          <p className="help">Type a translation for selected language</p>
+        </div>
+        <div className="control">
+          <button
+            name="add"
+            onClick={this.onAdd}
+            className="button is-outlined"
+            disabled={translation.trim().length === 0}
+          >
+            Add
+          </button>
+        </div>
       </div>
     )
   }

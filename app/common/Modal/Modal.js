@@ -7,6 +7,7 @@ const Modal = (props) => {
     opened,
     onClose,
     onSubmit,
+    submitIsDisabled,
     children
   } = props
 
@@ -33,6 +34,7 @@ const Modal = (props) => {
             type="submit"
             className="button is-success"
             name="save"
+            disabled={submitIsDisabled}
             onClick={onSubmit}
           >
             Save
@@ -48,6 +50,7 @@ Modal.propTypes = {
   title: PropTypes.string,
   onClose: PropTypes.func,
   onSubmit: PropTypes.func,
+  submitIsDisabled: PropTypes.bool,
   children: PropTypes.object
 }
 

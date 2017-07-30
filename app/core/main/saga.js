@@ -12,6 +12,7 @@ import {
   GET_CURRENT_USER_REQUEST,
   UPDATE_USER_REQUEST,
   DELETE_USER_REQUEST,
+  RECOVER_REQUEST,
   REGISTER_REQUEST,
   loginSuccess,
   loginFailure,
@@ -19,6 +20,8 @@ import {
   logoutFailure,
   getCurrentUserSuccess,
   getCurrentUserFailure,
+  recoverSuccess,
+  recoverFailure,
   updateUserSuccess,
   updateUserFailure,
   deleteUserSuccess,
@@ -94,6 +97,20 @@ function* getCurrentUser() {
   }
 }
 
+function* recover(action) {
+  try {
+    const options = {
+      method: 'POST',
+      body: action.payload
+    }
+    yield call(request, '/auth/recover', options)
+    yield put(recoverSuccess())
+  }
+  catch (error) {
+    yield put(recoverFailure(error))
+  }
+}
+
 function* updateUser(action) {
   try {
     const options = {
@@ -134,6 +151,7 @@ export default function* main() {
     takeLatest(GET_CURRENT_USER_REQUEST, getCurrentUser),
     takeLatest(UPDATE_USER_REQUEST, updateUser),
     takeLatest(DELETE_USER_REQUEST, deleteUser),
+    takeLatest(RECOVER_REQUEST, recover),
     takeLatest(REGISTER_REQUEST, register),
   ])
 }

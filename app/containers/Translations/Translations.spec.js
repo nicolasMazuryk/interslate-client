@@ -1,26 +1,74 @@
 import React from 'react'
 import {Translations} from './Translations'
-import {shallow} from 'enzyme'
+import {mount} from 'enzyme'
 import ActionBar from 'components/ActionBar/ActionBar'
 import AddTranslationModal from 'components/AddTranslationModal/AddTranslationModal'
 import TranslationsTable from 'components/TranslationsTable/TranslationsTable'
 import JSONViewer from 'components/JSONViewer/JSONViewer'
+import sinon from 'sinon'
 
 describe('<Translations />', () => {
-  let wrapper, user
+  let wrapper, user, languages, pagination,
+    selectedLanguage, selectLanguage,
+    translations, uploadTranslationsData,
+    getLanguages, getTranslations,
+    getUploadTranslations
 
   before(() => {
     user = {
       email: 'test@mail.com',
       uploadToken: '12345'
     }
-    wrapper = shallow(
+    languages = [
+      {key: 'ru', value: 'Russian'},
+      {key: 'en', value: 'English'},
+      {key: 'fr', value: 'French'}
+    ]
+    translations = {}
+    uploadTranslationsData = {}
+    pagination = {
+      limit: 0,
+      skip: 0,
+      total: 10
+    }
+    selectedLanguage = 'ru'
+    selectLanguage = sinon.spy()
+    getLanguages = sinon.spy()
+    getUploadTranslations = sinon.spy()
+    getTranslations = sinon.spy()
+    wrapper = mount(
       <Translations
-        translationsAreLoading={false}
+        languages={languages}
+        translations={translations}
+        uploadTranslationsData={uploadTranslationsData}
+        getUploadTranslations={getUploadTranslations}
+        selectedLanguage={selectedLanguage}
+        selectLanguage={selectLanguage}
+        getLanguages={getLanguages}
+        getTranslations={getTranslations}
         user={user}
-        translations={{}}
+        pagination={pagination}
       />
     )
+  })
+
+  it('should get languages', () => {
+    expect(getLanguages.calledOnce).to.be.true
+  })
+
+  it('should get translations', () => {
+    expect(getLanguages.calledOnce).to.be.true
+  })
+
+  it('should select first language', () => {
+    wrapper.setProps({selectedLanguage: ''})
+    expect(selectLanguage.calledWith(languages[0].key)).to.be.true
+  })
+
+  it('should not select first language', () => {
+    selectLanguage.reset()
+    wrapper.setProps({selectedLanguage: '', languages: []})
+    expect(selectLanguage.notCalled).to.be.true
   })
 
   it('should render action bar', () => {

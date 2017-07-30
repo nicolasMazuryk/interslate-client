@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import Input from 'common/Input/Input'
 import AuthButton from 'common/AuthButton/AuthButton'
+import {Link} from 'react-router-dom'
 
 class LoginForm extends PureComponent {
 
@@ -81,6 +82,7 @@ class LoginForm extends PureComponent {
           name="email"
           type="email"
           helpText={validation.email}
+          withError={!!validation.email}
           focus={true}
           value={email}
           onChange={this.onChange}
@@ -93,6 +95,14 @@ class LoginForm extends PureComponent {
           value={password}
           onChange={this.onChange}
         />
+        <div className="has-text-right">
+          <Link
+            className="button is-link is-small"
+            to="/enter/recover"
+          >
+            Forgot password?
+          </Link>
+        </div>
         <AuthButton
           text="Continue"
           onClick={this.onSubmit}
