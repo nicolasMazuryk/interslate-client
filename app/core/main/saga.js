@@ -10,6 +10,7 @@ import {
   LOGIN_REQUEST,
   LOGOUT_REQUEST,
   GET_CURRENT_USER_REQUEST,
+  RECOVER_REQUEST,
   REGISTER_REQUEST,
   GENERATE_UPLOAD_TOKEN_REQUEST,
   loginSuccess,
@@ -18,6 +19,8 @@ import {
   logoutFailure,
   getCurrentUserSuccess,
   getCurrentUserFailure,
+  recoverSuccess,
+  recoverFailure,
   registerSuccess,
   registerFailure,
   generateUploadTokenSuccess,
@@ -75,6 +78,20 @@ function* getCurrentUser() {
   }
 }
 
+function* recover(action) {
+  try {
+    const options = {
+      method: 'POST',
+      body: action.payload
+    }
+    yield call(request, '/auth/recover', options)
+    yield put(recoverSuccess())
+  }
+  catch (error) {
+    yield put(recoverFailure(error))
+  }
+}
+
 function* register(action) {
   try {
     const options = {
@@ -106,6 +123,7 @@ export default function* main() {
     takeLatest(LOGIN_REQUEST, login),
     takeLatest(LOGOUT_REQUEST, logout),
     takeLatest(GET_CURRENT_USER_REQUEST, getCurrentUser),
+    takeLatest(RECOVER_REQUEST, recover),
     takeLatest(REGISTER_REQUEST, register),
     takeLatest(GENERATE_UPLOAD_TOKEN_REQUEST, generateAPIKey)
   ])

@@ -2,16 +2,14 @@ import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import Input from 'common/Input/Input'
 import AuthButton from 'common/AuthButton/AuthButton'
-import {Link} from 'react-router-dom'
 
-class LoginForm extends PureComponent {
+class RecoverForm extends PureComponent {
 
   constructor(props) {
     super(props)
 
     this.state = {
       email: '',
-      password: '',
       validation: {
         email: ''
       }
@@ -36,29 +34,29 @@ class LoginForm extends PureComponent {
       }
     })
   }
-  
+
   validate() {
     const {
       email,
     } = this.state
     const result = {}
     const emailPattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/
-    
+
     if (!emailPattern.test(email)) {
       result.email = 'Invalid email pattern. Example: mymail@gmail.com.'
     }
-    
+
     const isValid = Object.keys(result).length === 0
-    
+
     return [isValid, result]
   }
 
   onSubmit(e) {
     e.preventDefault()
     const [isValid, validationResult] = this.validate()
-    
+
     const {validation} = this.state
-  
+
     if (!isValid) {
       return this.setState({
         validation: {...validation, ...validationResult}
@@ -70,7 +68,6 @@ class LoginForm extends PureComponent {
   render() {
     const {
       email,
-      password,
       validation
     } = this.state
 
@@ -87,24 +84,8 @@ class LoginForm extends PureComponent {
           value={email}
           onChange={this.onChange}
         />
-        <Input
-          required
-          label="Password"
-          name="password"
-          type="password"
-          value={password}
-          onChange={this.onChange}
-        />
-        <div className="has-text-right">
-          <Link
-            className="button is-link is-small"
-            to="/enter/recover"
-          >
-            Forgot password?
-          </Link>
-        </div>
         <AuthButton
-          text="Continue"
+          text="Send"
           onClick={this.onSubmit}
         />
       </form>
@@ -113,8 +94,8 @@ class LoginForm extends PureComponent {
 
 }
 
-LoginForm.propTypes = {
+RecoverForm.propTypes = {
   onSubmit: PropTypes.func
 }
 
-export default LoginForm
+export default RecoverForm
