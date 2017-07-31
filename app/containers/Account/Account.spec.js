@@ -13,7 +13,7 @@ describe('<Account />', () => {
   before(() => {
     push = sinon.spy()
     location = {
-      pathname: '/account'
+      pathname: '/account/api-key'
     }
     history = {push}
     wrapper = mount(
@@ -25,14 +25,56 @@ describe('<Account />', () => {
       </MemoryRouter>
     )
   })
-  
-  it('should redirect to /api-key page', () => {
+
+  it('should redirect to /api-key page on mount', () => {
+    const push = sinon.spy()
+    const location = {
+      pathname: '/account'
+    }
+    const history = {push}
+    mount(
+      <MemoryRouter>
+        <Account
+          history={history}
+          location={location}
+        />
+      </MemoryRouter>
+    )
     expect(push.calledWith('/account/api-key')).to.be.true
   })
-  
+
+  it('should redirect to /api-key page on props update', () => {
+    const push = sinon.spy()
+    const location = {
+      pathname: '/account'
+    }
+    const history = {push}
+    mount(
+      <MemoryRouter>
+        <Account
+          history={history}
+          location={location}
+        />
+      </MemoryRouter>
+    )
+    expect(push.calledWith('/account/api-key')).to.be.true
+  })
+
+
   it('should not redirect to /api-key page', () => {
-    push.reset()
-    wrapper.setProps({location: {pathname: '/account/profile'}})
+    const push = sinon.spy()
+    const location = {
+      pathname: '/account/profile'
+    }
+    const history = {push}
+    mount(
+      <MemoryRouter>
+        <Account
+          history={history}
+          location={location}
+        />
+      </MemoryRouter>
+    )
     expect(push.notCalled).to.be.true
   })
   
