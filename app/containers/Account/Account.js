@@ -95,7 +95,7 @@ export class Account extends PureComponent {
                 )} />
                 <Route path="/account/profile" render={() => (
                   <Profile
-                      user={user}
+                      email={user.email}
                       updateUser={updateUser}
                       deleteUser={deleteUser}
                       openDeleteAccountModal={openDeleteAccountModal}

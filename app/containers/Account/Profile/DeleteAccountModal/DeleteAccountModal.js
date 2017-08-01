@@ -3,10 +3,6 @@ import PropTypes from 'prop-types'
 import Modal from 'common/Modal/Modal'
 
 class DeleteAccountModal extends PureComponent {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
     const {
       closeDeleteAccountModal,

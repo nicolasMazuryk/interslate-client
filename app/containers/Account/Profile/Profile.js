@@ -14,15 +14,8 @@ class Profile extends PureComponent {
       confirmPassword: {errorMessage: '', value: ''},
     }
 
-    this.onSaveEmail = this.onSaveEmail.bind(this)
     this.onChangePassword = this.onChangePassword.bind(this)
     this.onSubmitPassword = this.onSubmitPassword.bind(this)
-  }
-
-  onSaveEmail(email) {
-    const {user, updateUser} = this.props
-    const newUser = {...user, email}
-    updateUser(newUser)
   }
 
   onChangePassword(e) {
@@ -44,28 +37,31 @@ class Profile extends PureComponent {
       newPassword,
       confirmPassword
     } = this.state
+    const newPasswordValue = newPassword.value
+    const confirmPasswordValue = confirmPassword.value
     if (!currentPassword.value) {
       return this.setState({currentPassword: {errorMessage: 'Enter current password'}})
     }
-    if (!newPassword.value || !confirmPassword.value ||
-      newPassword.value !== confirmPassword.value) {
+    if (!newPasswordValue || !confirmPasswordValue ||
+      newPasswordValue !== confirmPasswordValue) {
       return this.setState({
         newPassword: {errorMessage: ' '},
-        confirmPassword: {errorMessage: 'Passwords doesn\'t match'}
+        confirmPassword: {errorMessage: 'Passwords don\'t match'}
       })
     }
     changeUserPassword({
-      currentPassword: currentPassword.value,
-      newPassword: newPassword.value
+      currentPassword: confirmPasswordValue,
+      newPassword: newPasswordValue
     })
   }
 
   render() {
     const {
-      user,
+      email,
       openDeleteAccountModal,
       closeDeleteAccountModal,
       deleteAccountModalOpened,
+      updateUser,
       deleteUser
     } = this.props
 
@@ -84,8 +80,8 @@ class Profile extends PureComponent {
             <label className="label">Email:</label>
             <div className="control">
               <EditableEmail
-                value={user.email}
-                onSave={(email) => this.onSaveEmail(email)}
+                value={email}
+                onSave={updateUser}
                 mapEditablePropsToComponent={({value, ...other}) => {
                   return {email: value || placeholder, ...other}
                 }}
@@ -94,27 +90,30 @@ class Profile extends PureComponent {
           </div>
 
           <Input
-            label={'Current Password'}
-            type={'password'}
-            name={'currentPassword'}
+            label='Current Password'
+            type='password'
+            name='currentPassword'
             value={currentPassword.value}
             onChange={this.onChangePassword}
+            withError={currentPassword.errorMessage}
             helpText={currentPassword.errorMessage}
           />
           <Input
-            label={'New Password'}
-            type={'password'}
-            name={'newPassword'}
+            label='New Password'
+            type='password'
+            name='newPassword'
             value={newPassword.value}
             onChange={this.onChangePassword}
+            withError={newPassword.errorMessage}
             helpText={newPassword.errorMessage}
           />
           <Input
-            label={'Confirm New Password'}
-            type={'password'}
-            name={'confirmPassword'}
+            label='Confirm New Password'
+            type='password'
+            name='confirmPassword'
             value={confirmPassword.value}
             onChange={this.onChangePassword}
+            withError={confirmPassword.errorMessage}
             helpText={confirmPassword.errorMessage}
           />
 
@@ -147,7 +146,7 @@ class Profile extends PureComponent {
 }
 
 Profile.propTypes = {
-  user: PropTypes.object,
+  email: PropTypes.string,
   updateUser: PropTypes.func,
   deleteUser: PropTypes.func,
   openDeleteAccountModal: PropTypes.func,

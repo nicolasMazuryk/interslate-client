@@ -115,11 +115,13 @@ function* updateUser(action) {
   try {
     const options = {
       method: 'PATCH',
-      body: action.payload,
+      body: {email: action.payload},
       token: provideToken()
     }
     const userId = yield select(state => state.main.user._id)
-    if (!options.token) throw new Error('Token is not provided for PATCH user/:id')
+    if (!options.token) {
+      throw new Error('Token is not provided for PATCH user/:id')
+    }
     const {payload} = yield call(request, `/api/v1/users/${userId}`, options)
     yield put(updateUserSuccess(payload))
   }

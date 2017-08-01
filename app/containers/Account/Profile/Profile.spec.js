@@ -8,15 +8,13 @@ import DeleteAccountModal from './DeleteAccountModal/DeleteAccountModal'
 describe('<Profile />', () => {
   let wrapper, deleteAccountModalOpened,
     updateUser, changeUserPassword,
-    user, state, expected
+    email, state, expected
 
   before(() => {
     deleteAccountModalOpened = false
     updateUser = sinon.spy()
     changeUserPassword = sinon.spy()
-    user = {
-      email: 'user@email.com'
-    }
+    email = 'user@email.com'
     state = {
       currentPassword: {errorMessage: '', value: ''},
       newPassword: {errorMessage: '', value: ''},
@@ -24,7 +22,7 @@ describe('<Profile />', () => {
     }
     wrapper = mount(
       <Profile
-        user={user}
+        email={email}
         deleteAccountModalOpened={deleteAccountModalOpened}
         updateUser={updateUser}
         changeUserPassword={changeUserPassword}
@@ -37,14 +35,12 @@ describe('<Profile />', () => {
   })
 
   it('should have proper email value', () => {
-    expect(wrapper.find(EditableEmail).prop('value')).to.equal(user.email)
+    expect(wrapper.find(EditableEmail).prop('value')).to.equal(email)
   })
 
   it('should show `currentPassword` error', () => {
     wrapper.find({name: 'changePassword'}).simulate('click')
-    expect(wrapper.state().currentPassword).to.be.deep.equal({
-      errorMessage: 'Enter current password'
-    })
+    expect(wrapper.state('currentPassword').errorMessage).to.be.equal('Enter current password')
   })
 
   it('should not update password on empty currentPassword', () => {
@@ -57,14 +53,9 @@ describe('<Profile />', () => {
       ...state,
       currentPassword: {errorMessage: '', value: 'test'}
     }
-    expected = {
-      ...state,
-      newPassword: {errorMessage: ' '},
-      confirmPassword: {errorMessage: 'Passwords doesn\'t match'}
-    }
     wrapper.setState(state)
     wrapper.find({name: 'changePassword'}).simulate('click')
-    expect(wrapper.state()).to.deep.equal(expected)
+    expect(wrapper.state('confirmPassword').errorMessage).to.be.equal('Passwords don\'t match')
   })
 
   it('should not update password on empty newPassword', () => {
@@ -81,22 +72,22 @@ describe('<Profile />', () => {
     expected = {
       ...state,
       newPassword: {errorMessage: ' '},
-      confirmPassword: {errorMessage: 'Passwords doesn\'t match'}
+      confirmPassword: {errorMessage: 'Passwords don\'t match'}
     }
     wrapper.setState(state)
     wrapper.find({name: 'changePassword'}).simulate('click')
     expect(wrapper.state()).to.deep.equal(expected)
   })
 
-  it('should update user password', () => {
-    state = {
-      ...state,
-      newPassword: {errorMessage: '', value: 'test'},
-      confirmPassword: {errorMessage: '', value: 'test'}
-    }
+  it('should update user password if passwords match', () => {
+    state.newPassword.value = 'test'
+    state.confirmPassword.value = 'test'
     wrapper.setState(state)
     wrapper.find({name: 'changePassword'}).simulate('click')
-    expect(changeUserPassword.calledOnce).to.be.true
+    expect(changeUserPassword.calledWith({
+      currentPassword: 'test',
+      newPassword: 'test'
+    })).to.be.true
   })
 
   it('should render <DeleteAccountModal /> on button click', () => {
