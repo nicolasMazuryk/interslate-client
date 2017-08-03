@@ -28,7 +28,9 @@ import {
 
   SELECT_LANGUAGE,
   SEARCH_FILTER_CHANGE,
-  PAGINATION_LIMIT_COUNT_CHANGE
+  PAGINATION_LIMIT_COUNT_CHANGE,
+  SELECT_TRANSLATION,
+  DESELECT_TRANSLATION
 } from './actions'
 
 const DEFAULT_STATE = {
@@ -38,6 +40,7 @@ const DEFAULT_STATE = {
   removing: false,
   addTranslationModalIsOpened: false,
   languages: [],
+  selectedTranslations: [],
   selectedLanguage: '',
   searchFilterValue: '',
   data: {},
@@ -255,6 +258,27 @@ const paginationLimitCountChange = (state, action) => {
   }
 }
 
+const selectTranslation = (state, action) => {
+  return {
+    ...state,
+    selectedTranslations: [
+      ...state.selectedTranslations,
+      action.payload
+    ]
+  }
+}
+
+const deselectTranslation = (state, action) => {
+  const index = state.selectedTranslations.findIndex((_id) => _id === action.payload)
+  return {
+    ...state,
+    selectedTranslations: [
+      ...state.selectedTranslations.slice(0, index),
+      ...state.selectedTranslations.slice(index + 1)
+    ]
+  }
+}
+
 export default createReducer(DEFAULT_STATE, {
   [GET_TRANSLATIONS_REQUEST]: getTranslationsRequest,
   [GET_TRANSLATIONS_SUCCESS]: getTranslationsSuccess,
@@ -284,5 +308,7 @@ export default createReducer(DEFAULT_STATE, {
 
   [SELECT_LANGUAGE]: selectLanguage,
   [SEARCH_FILTER_CHANGE]: searchFilterChange,
-  [PAGINATION_LIMIT_COUNT_CHANGE]: paginationLimitCountChange
+  [PAGINATION_LIMIT_COUNT_CHANGE]: paginationLimitCountChange,
+  [SELECT_TRANSLATION]: selectTranslation,
+  [DESELECT_TRANSLATION]: deselectTranslation
 })

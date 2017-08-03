@@ -12,7 +12,9 @@ import {
   updateTranslationRequest,
   searchFilterChange,
   uploadTranslationsRequest,
-  paginationLimitCountChange
+  paginationLimitCountChange,
+  selectTranslation,
+  deselectTranslation
 } from 'core/translations/actions'
 import {
   applyFilters,
@@ -28,6 +30,7 @@ const mapState = (state) => {
   const {translations} = state
   return {
     translations: applyFilters(state),
+    selectedTranslations: translations.selectedTranslations,
     uploadTranslationsData: translations.uploadData,
     addTranslationModalIsOpened: translations.addTranslationModalIsOpened,
     translationsAreLoading: translations.translationsAreLoading,
@@ -40,6 +43,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     addTranslation: (translation) => dispatch(addTranslationRequest(translation)),
+    selectTranslation: (_id) => dispatch(selectTranslation(_id)),
+    deselectTranslation: (_id) => dispatch(deselectTranslation(_id)),
     removeTranslation: (_id) => dispatch(removeTranslationRequest(_id)),
     updateTranslation: (_id, value) => dispatch(updateTranslationRequest(_id, value)),
     getLanguages: () => dispatch(getLanguagesRequest()),
@@ -110,6 +115,9 @@ export class Translations extends PureComponent {
       pagination,
       paginationLimitCountChange,
       getTranslations,
+      selectTranslation,
+      deselectTranslation,
+      selectedTranslations,
       user
     } = this.props
 
@@ -134,6 +142,9 @@ export class Translations extends PureComponent {
                 paginationLimitCountChange={paginationLimitCountChange}
                 getTranslations={getTranslations}
                 translationsAreLoading={translationsAreLoading}
+                selectTranslation={selectTranslation}
+                deselectTranslation={deselectTranslation}
+                selectedTranslations={selectedTranslations}
               />
             </div>
             <div className="column is-one-third">
@@ -183,7 +194,10 @@ Translations.propTypes = {
   selectLanguage: PropTypes.func,
   searchFilterChange: PropTypes.func,
   getUploadTranslations: PropTypes.func,
-  paginationLimitCountChange: PropTypes.func
+  paginationLimitCountChange: PropTypes.func,
+  selectTranslation: PropTypes.func,
+  deselectTranslation: PropTypes.func,
+  selectedTranslations: PropTypes.array
 }
 
 export default connect(mapState, mapDispatch)(Translations)

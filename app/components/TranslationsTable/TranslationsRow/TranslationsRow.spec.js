@@ -8,14 +8,17 @@ import EditableTranslation from 'components/TranslationsTable/EditableTranslatio
 describe('<TranslationsRow />', () => {
   let wrapper, _id, tKey,
     translation, onRemove,
-    onUpdate
+    onUpdate, isSelected,
+    onCheckboxClick
 
   before(() => {
     _id = 'id'
     tKey = 'key'
+    isSelected = true
     translation = 'translation'
     onRemove = sinon.spy()
     onUpdate = sinon.spy()
+    onCheckboxClick = sinon.spy()
     wrapper = mount(
       <table>
         <tbody>
@@ -23,6 +26,8 @@ describe('<TranslationsRow />', () => {
             _id={_id}
             tKey={tKey}
             translation={translation}
+            isSelected={isSelected}
+            onCheckboxClick={onCheckboxClick}
             onRemove={onRemove}
             onUpdate={onUpdate}
           />
@@ -37,6 +42,20 @@ describe('<TranslationsRow />', () => {
 
   it('should render editable translation value', () => {
     expect(wrapper.find(EditableTranslation)).to.have.length(1)
+  })
+
+  it('should be checked', () => {
+    expect(wrapper.find('input[type="checkbox"]').prop('checked')).to.be.true
+  })
+
+  it('should contain selected properties', () => {
+    const selectedStyle = {backgroundColor: '#ededed'}
+    expect(wrapper.find('tr').prop('style')).to.deep.equal(selectedStyle)
+  })
+
+  it('should call onCheckboxClick callback with _id', () => {
+    wrapper.find('input[type="checkbox"]').simulate('click')
+    expect(onCheckboxClick.calledWith(_id)).to.be.true
   })
 
   it('should call onRemove callback', () => {

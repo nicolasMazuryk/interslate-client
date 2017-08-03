@@ -9,10 +9,13 @@ const TranslationsRow = (props) => {
     tKey,
     translation,
     onUpdate,
-    onRemove
+    onRemove,
+    onCheckboxClick,
+    isSelected
   } = props
 
   const placeholder = 'Edit ...'
+  const selectedStyle = {backgroundColor: '#ededed'}
 
   const onKeyEdit = (key) => {
     if (key !== tKey) {
@@ -27,7 +30,16 @@ const TranslationsRow = (props) => {
   }
 
   return (
-    <tr key={_id}>
+    <tr style={isSelected ? selectedStyle : {}} key={_id}>
+      <td>
+        <label className="checkbox">
+          <input
+            onClick={() => onCheckboxClick(_id)}
+            checked={isSelected}
+            type="checkbox"
+          />
+        </label>
+      </td>
       <td>
         <EditableKey
           value={tKey}
@@ -60,6 +72,8 @@ TranslationsRow.propTypes = {
   translation: PropTypes.string,
   onRemove: PropTypes.func,
   onUpdate: PropTypes.func,
+  onCheckboxClick: PropTypes.func,
+  isSelected: PropTypes.bool
 }
 
 export default TranslationsRow
