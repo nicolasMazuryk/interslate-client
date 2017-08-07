@@ -12,14 +12,16 @@ import {connect} from 'react-redux'
 import {
   logoutRequest,
   getCurrentUserRequest,
-  generateUploadTokenRequest
+  updateUserRequest,
+  deleteUserRequest,
 } from 'core/main/actions'
 
 const mapDispatch = (dispatch) => {
   return {
     logout: () => dispatch(logoutRequest()),
     getCurrentUser: () => dispatch(getCurrentUserRequest()),
-    generateUploadToken: () => dispatch(generateUploadTokenRequest())
+    updateUser: (user) => dispatch(updateUserRequest(user)),
+    deleteUser: () => dispatch(deleteUserRequest()),
   }
 }
 
@@ -27,7 +29,6 @@ const mapState = ({main}) => {
   return {
     loading: main.loading,
     user: main.user,
-    uploadTokenIsGenerating: main.uploadTokenIsGenerating
   }
 }
 
@@ -42,8 +43,8 @@ export class Main extends PureComponent {
       logout,
       loading,
       user,
-      generateUploadToken,
-      uploadTokenIsGenerating
+      updateUser,
+      deleteUser,
     } = this.props
     const isLoggedIn = !!user
 
@@ -63,8 +64,8 @@ export class Main extends PureComponent {
               path="/account"
               componentProps={{
                 user,
-                generateUploadToken,
-                uploadTokenIsGenerating,
+                updateUser,
+                deleteUser,
               }}
               component={Account}
             />
@@ -77,11 +78,11 @@ export class Main extends PureComponent {
 
 Main.propTypes = {
   logout: PropTypes.func,
-  user: PropTypes.object,
   loading: PropTypes.bool,
-  uploadTokenIsGenerating: PropTypes.bool,
+  user: PropTypes.object,
   getCurrentUser: PropTypes.func,
-  generateUploadToken: PropTypes.func
+  updateUser: PropTypes.func,
+  deleteUser: PropTypes.func,
 }
 
 export default withRouter(connect(mapState, mapDispatch)(Main))
