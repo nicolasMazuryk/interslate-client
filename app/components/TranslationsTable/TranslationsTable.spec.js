@@ -11,6 +11,7 @@ describe('<TranslationsTable />', () => {
     translations,
     pagination,
     translationsAreLoading,
+    selectedTranslations,
     onTranslationRemove,
     onTranslationUpdate,
     getTranslations
@@ -21,6 +22,7 @@ describe('<TranslationsTable />', () => {
       limit: 10
     }
     translationsAreLoading = false
+    selectedTranslations = []
     translations = {
       _id1: {key: 'key1', values: [{translation: 'value1'}], _id: '_id1'},
       _id2: {key: 'key2', values: [{translation: 'value2'}], _id: '_id2'},
@@ -33,6 +35,7 @@ describe('<TranslationsTable />', () => {
       <TranslationsTable
         pagination={pagination}
         translationsAreLoading={translationsAreLoading}
+        selectedTranslations={selectedTranslations}
         translations={translations}
         getTranslations={getTranslations}
         onTranslationUpdate={onTranslationUpdate}

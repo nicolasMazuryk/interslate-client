@@ -29,6 +29,9 @@ export const SELECT_LANGUAGE = 'SELECT_LANGUAGE'
 export const SEARCH_FILTER_CHANGE = 'SEARCH_FILTER_CHANGE'
 export const PAGINATION_LIMIT_COUNT_CHANGE = 'PAGINATION_LIMIT_COUNT_CHANGE'
 
+export const SELECT_TRANSLATION = 'SELECT_TRANSLATION'
+export const DESELECT_TRANSLATION = 'DESELECT_TRANSLATION'
+
 export const getTranslationsRequest = () => {
   return {
     type: GET_TRANSLATIONS_REQUEST
@@ -188,6 +191,20 @@ export const paginationLimitCountChange = (limit) => {
   return {
     type: PAGINATION_LIMIT_COUNT_CHANGE,
     payload: limit
+  }
+}
+
+export const selectTranslation = (_id) => {
+  return {
+    type: SELECT_TRANSLATION,
+    payload: _id
+  }
+}
+
+export const deselectTranslation = (_id) => {
+  return {
+    type: DESELECT_TRANSLATION,
+    payload: _id
   }
 }
 
