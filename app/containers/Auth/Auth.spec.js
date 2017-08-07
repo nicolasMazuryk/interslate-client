@@ -77,11 +77,12 @@ describe('<Auth />', () => {
 
   it('should login new user if it is passed', () => {
     const user = null
+    const pathname = '/enter/login'
     const ctx = {
       user,
       history,
       newUser,
-      location: {pathname: '/enter/login'},
+      location: {pathname},
       login
     }
 
@@ -92,17 +93,34 @@ describe('<Auth />', () => {
 
   it('should redirect to translations', () => {
     const newUser = null
+    const pathname = '/enter/login'
     const ctx = {
       user,
       history,
       newUser,
-      location: {pathname: '/enter/login'},
+      location: {pathname},
       login
     }
 
     componentWillReceiveProps.call(null, ctx)
 
     expect(history.push.calledWith('/translations')).to.be.true
+  })
+
+  it('should redirect to login view', () => {
+    const newUser = null
+    const pathname = '/enter'
+    const ctx = {
+      user,
+      history,
+      newUser,
+      location: {pathname},
+      login
+    }
+
+    componentWillReceiveProps.call(null, ctx)
+
+    expect(history.push.calledWith('/enter/login')).to.be.true
   })
 
   it('should redirect from /enter', () => {

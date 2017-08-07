@@ -10,6 +10,10 @@ export const getLanguages = (state) => (
   state.translations.languages
 )
 
+export const getRecentlySelectedLanguages = (state) => (
+  state.translations.recentlySelectedLanguages
+)
+
 export const getTranslations = (state) => (
   state.translations.data
 )
@@ -19,9 +23,13 @@ export const getSearchFilterValue = (state) => (
 )
 
 export const getMappedLanguages = createSelector(
-  [getLanguages],
-  (languages) => {
-    return languages.map(({code, name}) => ({key: code, value: name}))
+  [getLanguages, getRecentlySelectedLanguages],
+  (languages, recent) => {
+    const mapLanguage = ({code, name}) => ({key: code, value: name})
+    return [
+      languages.map(mapLanguage),
+      recent.map(mapLanguage)
+    ]
   }
 )
 

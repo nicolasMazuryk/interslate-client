@@ -26,6 +26,7 @@ import {throttle} from 'core/utils'
 
 const mapState = (state) => {
   const {translations} = state
+  const [languages, recentlySelectedLanguages] = getMappedLanguages(state)
   return {
     translations: applyFilters(state),
     uploadTranslationsData: translations.uploadData,
@@ -33,7 +34,8 @@ const mapState = (state) => {
     translationsAreLoading: translations.translationsAreLoading,
     selectedLanguage: translations.selectedLanguage,
     pagination: translations.pagination,
-    languages: getMappedLanguages(state)
+    recentlySelectedLanguages,
+    languages
   }
 }
 
@@ -76,17 +78,6 @@ export class Translations extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {
-      languages,
-      selectedLanguage,
-      selectLanguage,
-    } = nextProps
-
-    if (!selectedLanguage && languages.length) {
-      const first = languages[0].key
-      selectLanguage(first)
-    }
-
     if (this.props.translations !== nextProps.translations) {
       this.delayGetUploadTranslations()
     }
@@ -107,6 +98,7 @@ export class Translations extends PureComponent {
       selectedLanguage,
       searchFilterChange,
       uploadTranslationsData,
+      recentlySelectedLanguages,
       pagination,
       paginationLimitCountChange,
       getTranslations,
@@ -119,6 +111,7 @@ export class Translations extends PureComponent {
           languages={languages}
           onLanguageChange={selectLanguage}
           selectedLanguage={selectedLanguage}
+          recentlySelectedLanguages={recentlySelectedLanguages}
           openAddTranslationModal={openAddTranslationModal}
           searchFilterChange={searchFilterChange}
           uploadToken={user.uploadToken}
@@ -170,6 +163,7 @@ Translations.propTypes = {
   translationsAreLoading: PropTypes.bool,
   translations: PropTypes.object.isRequired,
   languages: PropTypes.arrayOf(languageShape).isRequired,
+  recentlySelectedLanguages: PropTypes.arrayOf(languageShape),
   selectedLanguage: PropTypes.string,
   uploadTranslationsData: PropTypes.object.isRequired,
   pagination: paginationShape.isRequired,
