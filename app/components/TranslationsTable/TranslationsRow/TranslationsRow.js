@@ -7,12 +7,16 @@ const TranslationsRow = (props) => {
   const {
     _id,
     tKey,
+    group,
     translation,
     onUpdate,
-    onRemove
+    onRemove,
+    onCheckboxClick,
+    isSelected
   } = props
 
   const placeholder = 'Edit ...'
+  const selectedStyle = {backgroundColor: '#ededed'}
 
   const onKeyEdit = (key) => {
     if (key !== tKey) {
@@ -27,7 +31,16 @@ const TranslationsRow = (props) => {
   }
 
   return (
-    <tr key={_id}>
+    <tr style={isSelected ? selectedStyle : {}} key={_id}>
+      <td>
+        <label className="checkbox">
+          <input
+            onClick={() => onCheckboxClick(_id)}
+            checked={isSelected}
+            type="checkbox"
+          />
+        </label>
+      </td>
       <td>
         <EditableKey
           value={tKey}
@@ -47,6 +60,9 @@ const TranslationsRow = (props) => {
           }}
         />
       </td>
+      <td>
+        {group}
+      </td>
       <td style={{textAlign: 'center'}}>
         <button onClick={() => onRemove(_id)} className="delete" />
       </td>
@@ -57,9 +73,12 @@ const TranslationsRow = (props) => {
 TranslationsRow.propTypes = {
   _id: PropTypes.string,
   tKey: PropTypes.string,
+  group: PropTypes.string,
   translation: PropTypes.string,
   onRemove: PropTypes.func,
   onUpdate: PropTypes.func,
+  onCheckboxClick: PropTypes.func,
+  isSelected: PropTypes.bool
 }
 
 export default TranslationsRow

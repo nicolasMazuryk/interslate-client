@@ -17,16 +17,24 @@ class TranslationsTable extends PureComponent {
     const {
       translations,
       onTranslationRemove,
-      onTranslationUpdate
+      onTranslationUpdate,
+      selectTranslation,
+      deselectTranslation,
+      selectedTranslations
     } = this.props
 
     return Object.keys(translations).map((_id) => {
-      const {key, values} = translations[_id]
+      const {key, group, values} = translations[_id]
       const translation = (values[0] || {}).translation
+      const isSelected = selectedTranslations.includes(_id)
+
       return (
         <TranslationsRow
           key={_id}
           tKey={key}
+          group={group}
+          onCheckboxClick={isSelected ? deselectTranslation : selectTranslation}
+          isSelected={isSelected}
           translation={translation}
           _id={_id}
           onUpdate={onTranslationUpdate}
@@ -42,7 +50,7 @@ class TranslationsTable extends PureComponent {
       pagination: {total, limit},
       paginationLimitCountChange,
       translationsAreLoading,
-      getTranslations
+      getTranslations,
     } = this.props
 
     const translationsLength = Object.keys(translations).length
@@ -55,15 +63,17 @@ class TranslationsTable extends PureComponent {
         <table className="table is-bordered">
           <thead>
           <tr>
-            <th style={{width: '30%'}}>Key</th>
-            <th style={{width: '60%'}}>Translation</th>
+            <th style={{width: '5%'}}> </th>
+            <th style={{width: '20%'}}>Key</th>
+            <th style={{width: '45%'}}>Translation</th>
+            <th style={{width: '20%'}}>Group</th>
             <th style={{width: '10%'}}>Actions</th>
           </tr>
           </thead>
           <tbody>
           {translationsLength > 0
             ? this.makeTranslations()
-            : <tr><td style={{textAlign: 'center'}} colSpan={3}>No data is available</td></tr>
+            : <tr><td style={{textAlign: 'center'}} colSpan={4}>No data is available</td></tr>
           }
           </tbody>
         </table>
@@ -91,7 +101,10 @@ TranslationsTable.propTypes = {
   onTranslationRemove: PropTypes.func,
   onTranslationUpdate: PropTypes.func,
   paginationLimitCountChange: PropTypes.func,
-  getTranslations: PropTypes.func
+  getTranslations: PropTypes.func,
+  selectTranslation: PropTypes.func,
+  deselectTranslation: PropTypes.func,
+  selectedTranslations: PropTypes.array
 }
 
 export default TranslationsTable

@@ -2,15 +2,17 @@ import React from 'react'
 import {mount} from 'enzyme'
 import AddTranslationModal from './AddTranslationModal'
 import Modal from 'common/Modal/Modal'
+import GroupsAutocomplete from './GroupsAutocomplete/GroupsAutocomplete'
 import sinon from 'sinon'
 
 describe('<AddTranslationModal />', () => {
   let
-    wrapper, onSubmit,
+    wrapper, onSubmit, groups,
     onClose, opened, languages
 
   before(() => {
     opened = true
+    groups = []
     onSubmit = sinon.spy()
     onClose = sinon.spy()
     languages = [
@@ -24,6 +26,7 @@ describe('<AddTranslationModal />', () => {
         opened={opened}
         onSubmit={onSubmit}
         onClose={onClose}
+        groups={groups}
       />
     )
   })
@@ -34,6 +37,10 @@ describe('<AddTranslationModal />', () => {
 
   it('should render key input', () => {
     expect(wrapper.find({name: 'key'})).to.have.length(1)
+  })
+
+  it('should render groups autocomplete', () => {
+    expect(wrapper.find(GroupsAutocomplete)).to.have.length(1)
   })
 
   it('should modify key prop in state when input value is changed', () => {
@@ -62,6 +69,7 @@ describe('<AddTranslationModal />', () => {
         opened={opened}
         onSubmit={onSubmit}
         onClose={onClose}
+        groups={groups}
       />
     )
     const translations = [
@@ -81,10 +89,25 @@ describe('<AddTranslationModal />', () => {
 
   it('should submit form with current state', () => {
     const event = {preventDefault: () => {}}
-    const {key, translations} = wrapper.state()
+    wrapper.setState({group: 'test'})
+    const {key, group, translations} = wrapper.state()
     wrapper.instance().onSubmit(event)
 
-    expect(onSubmit.calledWith(({key, values: translations}))).to.be.true
+    expect(onSubmit.calledWith(({key, group, values: translations}))).to.be.true
+  })
+
+  it('should submit form with current with null group value', () => {
+    const event = {preventDefault: () => {}}
+    wrapper.setState({group: ''})
+    const {key, translations} = wrapper.state()
+    const expected = {
+      key,
+      group: null,
+      values: translations
+    }
+    wrapper.instance().onSubmit(event)
+
+    expect(onSubmit.calledWith(expected)).to.be.true
   })
 
   it('should clear state after submit', () => {
@@ -93,6 +116,7 @@ describe('<AddTranslationModal />', () => {
     wrapper.instance().onSubmit(event)
     expect(wrapper.state()).to.deep.equal({
       key: '',
+      group: '',
       translations: [],
       availableLanguages: []
     })
@@ -103,6 +127,7 @@ describe('<AddTranslationModal />', () => {
     wrapper.find('button[name="close"]').simulate('click')
     expect(wrapper.state()).to.deep.equal({
       key: '',
+      group: '',
       translations: [],
       availableLanguages: []
     })
@@ -113,6 +138,7 @@ describe('<AddTranslationModal />', () => {
     wrapper.find('.modal-card-head button.delete').simulate('click')
     expect(wrapper.state()).to.deep.equal({
       key: '',
+      group: '',
       translations: [],
       availableLanguages: []
     })

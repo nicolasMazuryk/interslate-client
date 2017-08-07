@@ -34,8 +34,7 @@ Select.propTypes = {
   options: PropTypes.array,
   recentOptions: PropTypes.array,
   onChange: PropTypes.func,
-  divider: PropTypes.string,
-  label: PropTypes.string
+  divider: PropTypes.string
 }
 
 Select.defaultProps = {

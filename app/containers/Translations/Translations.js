@@ -12,7 +12,12 @@ import {
   updateTranslationRequest,
   searchFilterChange,
   uploadTranslationsRequest,
-  paginationLimitCountChange
+  paginationLimitCountChange,
+  selectTranslation,
+  deselectTranslation,
+  getTranslationGroupsRequest,
+  selectTranslationGroup,
+  deselectTranslationGroup,
 } from 'core/translations/actions'
 import {
   applyFilters,
@@ -29,11 +34,14 @@ const mapState = (state) => {
   const [languages, recentlySelectedLanguages] = getMappedLanguages(state)
   return {
     translations: applyFilters(state),
+    selectedTranslations: translations.selectedTranslations,
     uploadTranslationsData: translations.uploadData,
     addTranslationModalIsOpened: translations.addTranslationModalIsOpened,
     translationsAreLoading: translations.translationsAreLoading,
     selectedLanguage: translations.selectedLanguage,
     pagination: translations.pagination,
+    groups: translations.groups,
+    selectedGroups: translations.selectedGroups,
     recentlySelectedLanguages,
     languages
   }
@@ -42,6 +50,8 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     addTranslation: (translation) => dispatch(addTranslationRequest(translation)),
+    selectTranslation: (_id) => dispatch(selectTranslation(_id)),
+    deselectTranslation: (_id) => dispatch(deselectTranslation(_id)),
     removeTranslation: (_id) => dispatch(removeTranslationRequest(_id)),
     updateTranslation: (_id, value) => dispatch(updateTranslationRequest(_id, value)),
     getLanguages: () => dispatch(getLanguagesRequest()),
@@ -51,7 +61,10 @@ const mapDispatch = (dispatch) => {
     selectLanguage: (key) => dispatch(selectLanguage(key)),
     searchFilterChange: (searchValue) => dispatch(searchFilterChange(searchValue)),
     getUploadTranslations: () => dispatch(uploadTranslationsRequest()),
-    paginationLimitCountChange: (limit) => dispatch(paginationLimitCountChange(limit))
+    paginationLimitCountChange: (limit) => dispatch(paginationLimitCountChange(limit)),
+    getTranslationGroups: () => dispatch(getTranslationGroupsRequest()),
+    selectTranslationGroup: (group) => dispatch(selectTranslationGroup(group)),
+    deselectTranslationGroup: (group) => dispatch(deselectTranslationGroup(group))
   }
 }
 
@@ -67,10 +80,12 @@ export class Translations extends PureComponent {
     const {
       getLanguages,
       getTranslations,
+      getTranslationGroups
     } = this.props
 
     getLanguages()
     getTranslations()
+    getTranslationGroups()
   }
 
   delayGetUploadTranslations() {
@@ -102,7 +117,14 @@ export class Translations extends PureComponent {
       pagination,
       paginationLimitCountChange,
       getTranslations,
-      user
+      selectTranslation,
+      deselectTranslation,
+      selectedTranslations,
+      selectTranslationGroup,
+      deselectTranslationGroup,
+      user,
+      groups,
+      selectedGroups
     } = this.props
 
     return (
@@ -115,6 +137,10 @@ export class Translations extends PureComponent {
           openAddTranslationModal={openAddTranslationModal}
           searchFilterChange={searchFilterChange}
           uploadToken={user.uploadToken}
+          groups={groups}
+          selectTranslationGroup={selectTranslationGroup}
+          deselectTranslationGroup={deselectTranslationGroup}
+          selectedGroups={selectedGroups}
         />
         <div className="container">
           <div className="columns">
@@ -127,6 +153,9 @@ export class Translations extends PureComponent {
                 paginationLimitCountChange={paginationLimitCountChange}
                 getTranslations={getTranslations}
                 translationsAreLoading={translationsAreLoading}
+                selectTranslation={selectTranslation}
+                deselectTranslation={deselectTranslation}
+                selectedTranslations={selectedTranslations}
               />
             </div>
             <div className="column is-one-third">
@@ -140,6 +169,7 @@ export class Translations extends PureComponent {
           onSubmit={addTranslation}
           languages={languages}
           selectedLanguage={selectedLanguage}
+          groups={groups}
         />
       </div>
     )
@@ -177,7 +207,15 @@ Translations.propTypes = {
   selectLanguage: PropTypes.func,
   searchFilterChange: PropTypes.func,
   getUploadTranslations: PropTypes.func,
-  paginationLimitCountChange: PropTypes.func
+  paginationLimitCountChange: PropTypes.func,
+  selectTranslation: PropTypes.func,
+  deselectTranslation: PropTypes.func,
+  selectedTranslations: PropTypes.array,
+  getTranslationGroups: PropTypes.func,
+  groups: PropTypes.arrayOf(PropTypes.string),
+  selectTranslationGroup: PropTypes.func,
+  deselectTranslationGroup: PropTypes.func,
+  selectedGroups: PropTypes.arrayOf(PropTypes.string)
 }
 
 export default connect(mapState, mapDispatch)(Translations)

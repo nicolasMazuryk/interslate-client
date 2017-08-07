@@ -4,6 +4,7 @@ import Modal from 'common/Modal/Modal'
 import Input from 'common/Input/Input'
 import TranslationField from './TranslationField/TranslationField'
 import TranslationTable from './TranslationTable/TranslationTable'
+import GroupsAutocomplete from './GroupsAutocomplete/GroupsAutocomplete'
 
 export default class AddTranslationModal extends PureComponent {
   constructor(props) {
@@ -11,6 +12,7 @@ export default class AddTranslationModal extends PureComponent {
 
     this.state = {
       key: '',
+      group: '',
       translations: [],
       availableLanguages: []
     }
@@ -70,10 +72,15 @@ export default class AddTranslationModal extends PureComponent {
 
   onSubmit(e) {
     e.preventDefault()
-    const {key, translations} = this.state
-    this.props.onSubmit({key, values: translations})
+    const {key, group, translations} = this.state
+    this.props.onSubmit({
+      key,
+      group: group || null,
+      values: translations
+    })
     this.setState({
       key: '',
+      group: '',
       translations: [],
       availableLanguages: this.props.languages
     })
@@ -83,6 +90,7 @@ export default class AddTranslationModal extends PureComponent {
   closeModal() {
     this.setState({
       key: '',
+      group: '',
       translations: [],
       availableLanguages: []
     })
@@ -92,12 +100,15 @@ export default class AddTranslationModal extends PureComponent {
   render() {
     const {
       key,
+      group,
       translations,
       availableLanguages
     } = this.state
+
     const {
       opened,
       languages,
+      groups
     } = this.props
 
     return (
@@ -109,15 +120,27 @@ export default class AddTranslationModal extends PureComponent {
         onClose={this.closeModal}
       >
         <form>
-          <Input
-            type="text"
-            placeholder="Your key ..."
-            helpText="Type a key to your translations"
-            name="key"
-            label="Key"
-            value={key}
-            onChange={this.onTranslationKeyChange}
-          />
+          <div className="columns">
+            <div className="column">
+              <Input
+                type="text"
+                placeholder="Your key ..."
+                helpText="Type a key to your translations"
+                name="key"
+                label="Key"
+                value={key}
+                onChange={this.onTranslationKeyChange}
+              />
+            </div>
+            <div className="column">
+              <GroupsAutocomplete
+                groups={groups}
+                group={group}
+                changeGroup={(e) => this.setState({group: e.target.value})}
+                selectGroup={(group) => this.setState({group})}
+              />
+            </div>
+          </div>
           <div className="field">
             <label className="label">Translations</label>
           </div>
@@ -145,4 +168,5 @@ AddTranslationModal.propTypes = {
   onSubmit: PropTypes.func,
   onClose: PropTypes.func,
   languages: PropTypes.array,
+  groups: PropTypes.arrayOf(PropTypes.string)
 }
