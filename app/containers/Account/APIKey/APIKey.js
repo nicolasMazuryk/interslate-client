@@ -42,7 +42,7 @@ export class APIKey extends PureComponent {
           <p className={`control textarea-control${uploadTokenIsGenerating && ' is-loading'}`}>
             <textarea
               readOnly
-              value={uploadToken}
+              value={uploadToken || ''}
               ref={(element) => this.textArea = element}
               className="textarea"
               placeholder="API key"

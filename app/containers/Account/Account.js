@@ -37,9 +37,17 @@ export class Account extends PureComponent {
     this.getMenuItems = this.getMenuItems.bind(this)
     this.getActiveLink = this.getActiveLink.bind(this)
   }
+
+  componentWillReceiveProps(nextProps) {
+    const {history, location} = nextProps
+    if (location.pathname === '/account') {
+      history.push('/account/api-key')
+    }
+  }
   
   componentWillMount() {
     const {history, location} = this.props
+
     if (location.pathname === '/account') {
       history.push('/account/api-key')
     }
