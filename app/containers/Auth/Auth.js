@@ -38,8 +38,8 @@ export function componentWillReceiveProps(nextProps) {
     user,
     history,
     newUser,
-    login,
-    location: {pathname}
+    location: {pathname},
+    login
   } = nextProps
 
   if (pathname === '/enter') {

@@ -60,6 +60,21 @@ describe('<Auth />', () => {
     expect(wrapper.find(Route).at(2).prop('path')).to.equal('/enter/recover')
   })
 
+  it('should redirect to login form', () => {
+    const user = null
+    const ctx = {
+      user,
+      history,
+      newUser,
+      location: {pathname: '/enter'},
+      login
+    }
+
+    componentWillReceiveProps.call(null, ctx)
+
+    expect(history.push.calledWith('/enter/login')).to.be.true
+  })
+
   it('should login new user if it is passed', () => {
     const user = null
     const pathname = '/enter/login'
