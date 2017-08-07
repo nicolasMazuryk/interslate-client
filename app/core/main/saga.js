@@ -10,9 +10,10 @@ import {
   LOGIN_REQUEST,
   LOGOUT_REQUEST,
   GET_CURRENT_USER_REQUEST,
+  UPDATE_USER_REQUEST,
+  DELETE_USER_REQUEST,
   RECOVER_REQUEST,
   REGISTER_REQUEST,
-  GENERATE_UPLOAD_TOKEN_REQUEST,
   loginSuccess,
   loginFailure,
   logoutSuccess,
@@ -21,11 +22,15 @@ import {
   getCurrentUserFailure,
   recoverSuccess,
   recoverFailure,
+  updateUserSuccess,
+  updateUserFailure,
+  deleteUserSuccess,
+  deleteUserFailure,
   registerSuccess,
   registerFailure,
-  generateUploadTokenSuccess,
-  generateUploadTokenFailure
 } from './actions'
+
+import {closeDeleteAccountModal} from 'core/account/actions'
 
 const provideToken = () => {
   const cookieToken = getCookie('token')
@@ -63,6 +68,20 @@ function* logout() {
   }
 }
 
+function* register(action) {
+  try {
+    const options = {
+      method: 'POST',
+      body: action.payload
+    }
+    yield call(request, '/auth/register', options)
+    yield put(registerSuccess(action.payload))
+  }
+  catch (error) {
+    yield put(registerFailure(error))
+  }
+}
+
 function* getCurrentUser() {
   try {
     const token = provideToken()
@@ -92,29 +111,38 @@ function* recover(action) {
   }
 }
 
-function* register(action) {
+function* updateUser(action) {
   try {
     const options = {
-      method: 'POST',
-      body: action.payload
+      method: 'PATCH',
+      body: {email: action.payload},
+      token: provideToken()
     }
-    yield call(request, '/auth/register', options)
-    yield put(registerSuccess(action.payload))
+    const userId = yield select(state => state.main.user._id)
+    if (!options.token) {
+      throw new Error('Token is not provided for PATCH user/:id')
+    }
+    const {payload} = yield call(request, `/api/v1/users/${userId}`, options)
+    yield put(updateUserSuccess(payload))
   }
   catch (error) {
-    yield put(registerFailure(error))
+    yield put(updateUserFailure(error))
   }
 }
 
-function* generateAPIKey() {
+function* deleteUser() {
   try {
+    const options = {
+      method: 'DELETE',
+      token: provideToken()
+    }
     const userId = yield select(state => state.main.user._id)
-    const token = yield call(getLocalStorageItem, 'token')
-    const {payload} = yield call(request, `/api/v1/users/${userId}/uploadToken`, {token})
-    yield put(generateUploadTokenSuccess(payload))
+    yield call(request, `/api/v1/users/${userId}`, options)
+    yield put(deleteUserSuccess())
+    yield put(closeDeleteAccountModal())
   }
   catch (error) {
-    yield put(generateUploadTokenFailure(error))
+    yield put(deleteUserFailure())
   }
 }
 
@@ -123,8 +151,9 @@ export default function* main() {
     takeLatest(LOGIN_REQUEST, login),
     takeLatest(LOGOUT_REQUEST, logout),
     takeLatest(GET_CURRENT_USER_REQUEST, getCurrentUser),
+    takeLatest(UPDATE_USER_REQUEST, updateUser),
+    takeLatest(DELETE_USER_REQUEST, deleteUser),
     takeLatest(RECOVER_REQUEST, recover),
     takeLatest(REGISTER_REQUEST, register),
-    takeLatest(GENERATE_UPLOAD_TOKEN_REQUEST, generateAPIKey)
   ])
 }

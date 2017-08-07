@@ -15,17 +15,26 @@ import {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_FAILURE,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAILURE,
+} from './actions'
+
+import {
   GENERATE_UPLOAD_TOKEN_REQUEST,
   GENERATE_UPLOAD_TOKEN_SUCCESS,
-  GENERATE_UPLOAD_TOKEN_FAILURE
-} from './actions'
+  GENERATE_UPLOAD_TOKEN_FAILURE,
+} from 'core/account/actions'
 
 const DEFAULT_STATE = {
   loading: false,
-  uploadTokenIsGenerating: false,
   user: null,
   newUser: null,
   error: null,
+  uploadTokenIsGenerating: false,
 }
 
 const setLoading = (state) => {
@@ -96,7 +105,6 @@ const setUploadToken = (state, action) => {
   }
 }
 
-
 export default createReducer(DEFAULT_STATE, {
   
   [LOGIN_REQUEST]: setLoading,
@@ -106,10 +114,6 @@ export default createReducer(DEFAULT_STATE, {
   [LOGOUT_REQUEST]: setLoading,
   [LOGOUT_SUCCESS]: removeUser,
   [LOGOUT_FAILURE]: setError,
-  
-  [GET_CURRENT_USER_REQUEST]: setLoading,
-  [GET_CURRENT_USER_SUCCESS]: setUser,
-  [GET_CURRENT_USER_FAILURE]: setError,
 
   [RECOVER_REQUEST]: setLoading,
   [RECOVER_SUCCESS]: unsetLoading,
@@ -119,9 +123,21 @@ export default createReducer(DEFAULT_STATE, {
   [REGISTER_SUCCESS]: setNewUser,
   [REGISTER_FAILURE]: setError,
 
+  [GET_CURRENT_USER_REQUEST]: setLoading,
+  [GET_CURRENT_USER_SUCCESS]: setUser,
+  [GET_CURRENT_USER_FAILURE]: setError,
+
+  [UPDATE_USER_REQUEST]: setLoading,
+  [UPDATE_USER_SUCCESS]: setUser,
+  [UPDATE_USER_FAILURE]: setError,
+
+  [DELETE_USER_REQUEST]: setLoading,
+  [DELETE_USER_SUCCESS]: removeUser,
+  [DELETE_USER_FAILURE]: setError,
+
   [GENERATE_UPLOAD_TOKEN_REQUEST]: setUploadTokenGenerating,
   [GENERATE_UPLOAD_TOKEN_SUCCESS]: setUploadToken,
-  [GENERATE_UPLOAD_TOKEN_FAILURE]: setError
+  [GENERATE_UPLOAD_TOKEN_FAILURE]: setError,
 
 })
 
