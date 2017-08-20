@@ -1,6 +1,9 @@
 import {createSelector} from 'reselect'
 import propEq from 'ramda/src/propEq'
 import filter from 'ramda/src/filter'
+import pipe from 'ramda/src/pipe'
+import map from 'ramda/src/map'
+import reduce from 'ramda/src/reduce'
 
 export const getLanguage = (state) => (
   state.translations.selectedLanguage
@@ -8,6 +11,10 @@ export const getLanguage = (state) => (
 
 export const getLanguages = (state) => (
   state.translations.languages
+)
+
+export const getGroups = (state) => (
+  state.translations.selectedGroups
 )
 
 export const getRecentlySelectedLanguages = (state) => (
@@ -34,19 +41,35 @@ export const getMappedLanguages = createSelector(
 )
 
 export const applyFilters = createSelector(
-  [getTranslations, getSearchFilterValue, getLanguage],
-  (translations, searchFilterValue, selectedLanguage) => {
-    return Object.keys(translations).reduce((acc, _id) => {
-      const translation = {...translations[_id]}
-      const {key} = translation
-      if (key.toLowerCase().includes(searchFilterValue)) {
-        translation.values = filter(propEq('language', selectedLanguage), translation.values)
-        return {
-          ...acc,
-          [_id]: translation
-        }
-      }
-      return acc
-    }, {})
+  [getTranslations, getSearchFilterValue, getLanguage, getGroups],
+  (translations, searchFilterValue, selectedLanguage, selectedGroups) => {
+    const translationsKeys = Object.keys(translations)
+
+    const getTranslation = (translations) => (key) => translations[key]
+
+    const filterByGroup = (translation) => {
+      return !selectedGroups.length || selectedGroups.includes(translation.group)
+    }
+
+    const filterBySearchValue = (translation) => {
+      return translation.key.toLowerCase().includes(searchFilterValue)
+    }
+
+    const filterValuesBySelectedLanguage = (selectedLanguage) => (translation) => {
+      translation.values = filter(propEq('language', selectedLanguage), translation.values)
+      return translation
+    }
+
+    const convertToObject = (acc, translation) => ({...acc, [translation.key]: translation})
+
+    const apply = pipe(
+      map(getTranslation(translations)),
+      filter(filterByGroup),
+      filter(filterBySearchValue),
+      map(filterValuesBySelectedLanguage(selectedLanguage)),
+      reduce(convertToObject, {})
+    )
+
+    return apply(translationsKeys)
   }
 )

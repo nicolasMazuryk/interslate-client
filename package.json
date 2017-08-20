@@ -49,15 +49,16 @@
     "style-loader": "0.18.2",
     "uglifyjs-webpack-plugin": "0.4.3",
     "webpack": "3.4.1",
-    "webpack-dev-server": "2.6.1"
+    "webpack-dev-server": "^2.6.1"
   },
   "dependencies": {
-    "bulma": "0.5.0",
+    "bulma": "^0.5.1",
     "js-cookie": "2.1.4",
     "prismjs": "1.6.0",
     "prop-types": "15.5.10",
     "ramda": "0.23.0",
     "react": "15.6.1",
+    "react-autocomplete": "^1.5.10",
     "react-dom": "15.6.1",
     "react-redux": "5.0.5",
     "react-router-dom": "4.1.2",

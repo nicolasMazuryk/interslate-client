@@ -24,13 +24,15 @@ class TranslationsTable extends PureComponent {
     } = this.props
 
     return Object.keys(translations).map((_id) => {
-      const {key, values} = translations[_id]
+      const {key, group, values} = translations[_id]
       const translation = (values[0] || {}).translation
       const isSelected = selectedTranslations.includes(_id)
+
       return (
         <TranslationsRow
           key={_id}
           tKey={key}
+          group={group}
           onCheckboxClick={isSelected ? deselectTranslation : selectTranslation}
           isSelected={isSelected}
           translation={translation}
@@ -62,8 +64,9 @@ class TranslationsTable extends PureComponent {
           <thead>
           <tr>
             <th style={{width: '5%'}}> </th>
-            <th style={{width: '25%'}}>Key</th>
-            <th style={{width: '60%'}}>Translation</th>
+            <th style={{width: '20%'}}>Key</th>
+            <th style={{width: '45%'}}>Translation</th>
+            <th style={{width: '20%'}}>Group</th>
             <th style={{width: '10%'}}>Actions</th>
           </tr>
           </thead>

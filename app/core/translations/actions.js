@@ -25,12 +25,19 @@ export const GET_LANGUAGES_REQUEST = 'GET_LANGUAGES_REQUEST'
 export const GET_LANGUAGES_SUCCESS = 'GET_LANGUAGES_SUCCESS'
 export const GET_LANGUAGES_FAILURE = 'GET_LANGUAGES_FAILURE'
 
+export const GET_TRANSLATION_GROUPS_REQUEST = 'GET_TRANSLATION_GROUPS_REQUEST'
+export const GET_TRANSLATION_GROUPS_SUCCESS = 'GET_TRANSLATION_GROUPS_SUCCESS'
+export const GET_TRANSLATION_GROUPS_FAILURE = 'GET_TRANSLATION_GROUPS_FAILURE'
+
 export const SELECT_LANGUAGE = 'SELECT_LANGUAGE'
 export const SEARCH_FILTER_CHANGE = 'SEARCH_FILTER_CHANGE'
 export const PAGINATION_LIMIT_COUNT_CHANGE = 'PAGINATION_LIMIT_COUNT_CHANGE'
 
 export const SELECT_TRANSLATION = 'SELECT_TRANSLATION'
 export const DESELECT_TRANSLATION = 'DESELECT_TRANSLATION'
+
+export const SELECT_TRANSLATION_GROUP = 'SELECT_TRANSLATION_GROUP'
+export const DESELECT_TRANSLATION_GROUP = 'DESELECT_TRANSLATION_GROUP'
 
 export const getTranslationsRequest = () => {
   return {
@@ -208,3 +215,37 @@ export const deselectTranslation = (_id) => {
   }
 }
 
+export const getTranslationGroupsRequest = () => {
+  return {
+    type: GET_TRANSLATION_GROUPS_REQUEST,
+  }
+}
+
+export const getTranslationGroupsSuccess = (groups) => {
+  return {
+    type: GET_TRANSLATION_GROUPS_SUCCESS,
+    payload: groups
+  }
+}
+
+export const getTranslationGroupsFailure = (error) => {
+  return {
+    type: GET_TRANSLATION_GROUPS_FAILURE,
+    payload: error,
+    error: true
+  }
+}
+
+export const selectTranslationGroup = (group) => {
+  return {
+    type: SELECT_TRANSLATION_GROUP,
+    payload: group
+  }
+}
+
+export const deselectTranslationGroup = (group) => {
+  return {
+    type: DESELECT_TRANSLATION_GROUP,
+    payload: group
+  }
+}

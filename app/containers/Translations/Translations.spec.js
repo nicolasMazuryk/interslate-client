@@ -12,7 +12,8 @@ describe('<Translations />', () => {
     selectedLanguage, selectLanguage,
     translations, uploadTranslationsData,
     getLanguages, getTranslations,
-    getUploadTranslations
+    getUploadTranslations, groups,
+    getTranslationGroups, selectedGroups
 
   before(() => {
     user = {
@@ -25,6 +26,8 @@ describe('<Translations />', () => {
       {key: 'fr', value: 'French'}
     ]
     translations = {}
+    groups = []
+    selectedGroups = []
     uploadTranslationsData = {}
     pagination = {
       limit: 0,
@@ -36,6 +39,7 @@ describe('<Translations />', () => {
     getLanguages = sinon.spy()
     getUploadTranslations = sinon.spy()
     getTranslations = sinon.spy()
+    getTranslationGroups = sinon.spy()
     wrapper = mount(
       <Translations
         languages={languages}
@@ -48,6 +52,9 @@ describe('<Translations />', () => {
         getTranslations={getTranslations}
         user={user}
         pagination={pagination}
+        getTranslationGroups={getTranslationGroups}
+        groups={groups}
+        selectedGroups={selectedGroups}
       />
     )
   })

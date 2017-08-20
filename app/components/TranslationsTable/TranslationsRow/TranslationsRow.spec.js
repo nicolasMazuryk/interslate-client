@@ -9,11 +9,12 @@ describe('<TranslationsRow />', () => {
   let wrapper, _id, tKey,
     translation, onRemove,
     onUpdate, isSelected,
-    onCheckboxClick
+    onCheckboxClick, group
 
   before(() => {
     _id = 'id'
     tKey = 'key'
+    group = 'group'
     isSelected = true
     translation = 'translation'
     onRemove = sinon.spy()
@@ -25,6 +26,7 @@ describe('<TranslationsRow />', () => {
           <TranslationsRow
             _id={_id}
             tKey={tKey}
+            group={group}
             translation={translation}
             isSelected={isSelected}
             onCheckboxClick={onCheckboxClick}
@@ -42,6 +44,10 @@ describe('<TranslationsRow />', () => {
 
   it('should render editable translation value', () => {
     expect(wrapper.find(EditableTranslation)).to.have.length(1)
+  })
+
+  it('should render proper translation group', () => {
+    expect(wrapper.find('td').at(3).text()).to.equal(group)
   })
 
   it('should be checked', () => {

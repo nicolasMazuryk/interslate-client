@@ -6,10 +6,13 @@ import sinon from 'sinon'
 
 describe('<ActionBar />', () => {
   let
-    wrapper, languages,
-    openAddTranslationModal
+    wrapper, languages, groups,
+    openAddTranslationModal,
+    selectedGroups
 
   before(() => {
+    groups = []
+    selectedGroups = []
     languages = [
       {key: 'ru', value: 'Russian'},
       {key: 'en', value: 'English'},
@@ -17,6 +20,8 @@ describe('<ActionBar />', () => {
     openAddTranslationModal = sinon.spy()
     wrapper = mount(
       <ActionBar
+        groups={groups}
+        selectedGroups={selectedGroups}
         languages={languages}
         openAddTranslationModal={openAddTranslationModal}
       />

@@ -23,6 +23,10 @@ import {
   UPDATE_TRANSLATION_SUCCESS,
   UPDATE_TRANSLATION_FAILURE,
 
+  GET_TRANSLATION_GROUPS_REQUEST,
+  GET_TRANSLATION_GROUPS_SUCCESS,
+  GET_TRANSLATION_GROUPS_FAILURE,
+
   OPEN_ADD_TRANSLATION_MODAL,
   CLOSE_ADD_TRANSLATION_MODAL,
 
@@ -30,16 +34,21 @@ import {
   SEARCH_FILTER_CHANGE,
   PAGINATION_LIMIT_COUNT_CHANGE,
   SELECT_TRANSLATION,
-  DESELECT_TRANSLATION
+  DESELECT_TRANSLATION,
+  SELECT_TRANSLATION_GROUP,
+  DESELECT_TRANSLATION_GROUP
 } from './actions'
 
 const DEFAULT_STATE = {
   translationsAreLoading: false,
   translationsAreUploading: false,
+  groupsAreLoading: false,
   adding: false,
   removing: false,
   addTranslationModalIsOpened: false,
   languages: [],
+  groups: [],
+  selectedGroups: [],
   selectedTranslations: [],
   recentlySelectedLanguages: [],
   selectedLanguage: '',
@@ -288,6 +297,50 @@ const deselectTranslation = (state, action) => {
   }
 }
 
+const getTranslationGroupsRequest = (state) => {
+  return {
+    ...state,
+    groupsAreLoading: true
+  }
+}
+
+const getTranslationGroupsSuccess = (state, action) => {
+  return {
+    ...state,
+    groupsAreLoading: false,
+    groups: action.payload
+  }
+}
+
+const getTranslationGroupsFailure = (state, action) => {
+  return {
+    ...state,
+    groupsAreLoading: false,
+    error: action.payload
+  }
+}
+
+const selectTranslationGroup = (state, action) => {
+  return {
+    ...state,
+    selectedGroups: [
+      ...state.selectedGroups,
+      action.payload
+    ]
+  }
+}
+
+const deselectTranslationGroup = (state, action) => {
+  const index = state.selectedGroups.findIndex((item) => item === action.payload)
+  return {
+    ...state,
+    selectedGroups: [
+      ...state.selectedGroups.slice(0, index),
+      ...state.selectedGroups.slice(index + 1)
+    ]
+  }
+}
+
 export default createReducer(DEFAULT_STATE, {
   [GET_TRANSLATIONS_REQUEST]: getTranslationsRequest,
   [GET_TRANSLATIONS_SUCCESS]: getTranslationsSuccess,
@@ -312,6 +365,10 @@ export default createReducer(DEFAULT_STATE, {
   [UPDATE_TRANSLATION_SUCCESS]: updateTranslationSuccess,
   [UPDATE_TRANSLATION_FAILURE]: updateTranslationFailure,
 
+  [GET_TRANSLATION_GROUPS_REQUEST]: getTranslationGroupsRequest,
+  [GET_TRANSLATION_GROUPS_SUCCESS]: getTranslationGroupsSuccess,
+  [GET_TRANSLATION_GROUPS_FAILURE]: getTranslationGroupsFailure,
+
   [OPEN_ADD_TRANSLATION_MODAL]: openTranslationModal,
   [CLOSE_ADD_TRANSLATION_MODAL]: closeTranslationModal,
 
@@ -319,5 +376,7 @@ export default createReducer(DEFAULT_STATE, {
   [SEARCH_FILTER_CHANGE]: searchFilterChange,
   [PAGINATION_LIMIT_COUNT_CHANGE]: paginationLimitCountChange,
   [SELECT_TRANSLATION]: selectTranslation,
-  [DESELECT_TRANSLATION]: deselectTranslation
+  [DESELECT_TRANSLATION]: deselectTranslation,
+  [SELECT_TRANSLATION_GROUP]: selectTranslationGroup,
+  [DESELECT_TRANSLATION_GROUP]: deselectTranslationGroup
 })

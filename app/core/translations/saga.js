@@ -8,7 +8,8 @@ import {
   ADD_TRANSLATION_REQUEST,
   REMOVE_TRANSLATION_REQUEST,
   UPDATE_TRANSLATION_REQUEST,
-  UPLOAD_TRANSLATIONS_REQUEST
+  UPLOAD_TRANSLATIONS_REQUEST,
+  GET_TRANSLATION_GROUPS_REQUEST
 } from './actions'
 import {
   getTranslationsSuccess,
@@ -23,6 +24,8 @@ import {
   removeTranslationFailure,
   updateTranslationSuccess,
   updateTranslationFailure,
+  getTranslationGroupsSuccess,
+  getTranslationGroupsFailure
 } from './actions'
 
 export function* getTranslations() {
@@ -107,6 +110,19 @@ export function* updateTranslation(action) {
   }
 }
 
+export function* getTranslationGroups() {
+  try {
+    const options = {
+      token: getLocalStorageItem('token')
+    }
+    const {payload} = yield call(request, '/api/v1/translations?groups', options)
+    yield put(getTranslationGroupsSuccess(payload))
+  }
+  catch (error) {
+    yield put(getTranslationGroupsFailure(error))
+  }
+}
+
 export default function* main() {
   yield all([
     takeLatest(GET_TRANSLATIONS_REQUEST, getTranslations),
@@ -114,6 +130,7 @@ export default function* main() {
     takeLatest(UPLOAD_TRANSLATIONS_REQUEST, uploadTranslations),
     takeEvery(ADD_TRANSLATION_REQUEST, addTranslation),
     takeEvery(REMOVE_TRANSLATION_REQUEST, removeTranslation),
-    takeEvery(UPDATE_TRANSLATION_REQUEST, updateTranslation)
+    takeEvery(UPDATE_TRANSLATION_REQUEST, updateTranslation),
+    takeEvery(GET_TRANSLATION_GROUPS_REQUEST, getTranslationGroups)
   ])
 }

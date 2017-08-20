@@ -7,6 +7,7 @@ const TranslationsRow = (props) => {
   const {
     _id,
     tKey,
+    group,
     translation,
     onUpdate,
     onRemove,
@@ -59,6 +60,9 @@ const TranslationsRow = (props) => {
           }}
         />
       </td>
+      <td>
+        {group}
+      </td>
       <td style={{textAlign: 'center'}}>
         <button onClick={() => onRemove(_id)} className="delete" />
       </td>
@@ -69,6 +73,7 @@ const TranslationsRow = (props) => {
 TranslationsRow.propTypes = {
   _id: PropTypes.string,
   tKey: PropTypes.string,
+  group: PropTypes.string,
   translation: PropTypes.string,
   onRemove: PropTypes.func,
   onUpdate: PropTypes.func,
