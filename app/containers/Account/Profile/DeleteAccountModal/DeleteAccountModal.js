@@ -12,10 +12,11 @@ class DeleteAccountModal extends PureComponent {
 
     return (
       <Modal
-        title={'Delete Account'}
+        title='Delete Account'
         opened={deleteAccountModalOpened}
         onSubmit={deleteUser}
         onClose={closeDeleteAccountModal}
+        submitName='Confirm'
       >
         <div>
           Do you really want to delete your account?
